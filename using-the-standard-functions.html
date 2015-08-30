@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Haskell Examples</title>
+  <link rel="stylesheet" href="hs.css">
+</head>
+<body><table><tr><td>
+
+<h1>Numbers</h1>
+
+<span class="ex"><span class="args">3</span><span class="fn">+</span><span class="args">2</span></span>
+<span class="ex"><span class="args">3</span><span class="fn">-</span><span class="args">2</span></span>
+<span class="ex"><span class="args">3</span><span class="fn">*</span><span class="args">2</span></span>
+<span class="ex"><span class="args">3</span><span class="fn">/</span><span class="args">2</span></span>
+<span class="ex"><span class="args">3</span><span class="fn">^</span><span class="args">2</span></span>
+<span class="ex"><span class="args">3</span><span class="fn">**</span><span class="args">2.5</span></span>
+<br>
+
+<span class="ex"><span class="fn">quot</span><span class="args">3 2</span></span>
+<span class="ex"><span class="fn">rem</span><span class="args">3 2</span></span>
+<span class="ex"><span class="fn">div</span><span class="args">3 2</span></span>
+<span class="ex"><span class="fn">mod</span><span class="args">3 2</span></span>
+<br>
+
+<span class="ex"><span class="fn">max</span><span class="args">3 4</span></span>
+<span class="ex"><span class="fn">min</span><span class="args">3 4</span></span>
+<span class="ex"><span class="fn">abs</span><span class="args">(-3)</span></span>
+<br>
+
+<span class="ex"><span class="fn">odd</span><span class="args">3</span></span>
+<span class="ex"><span class="fn">even</span><span class="args">3</span></span>
+<span class="ex"><span class="fn">gcd</span><span class="args">4 6</span></span>
+<span class="ex"><span class="fn">lcm</span><span class="args">4 6</span></span>
+<br>
+
+<span class="ex"><span class="fn">floor</span><span class="args">3.6</span></span>
+<span class="ex"><span class="fn">round</span><span class="args">3.6</span></span>
+<span class="ex"><span class="fn">ceiling</span><span class="args">3.6</span></span>
+<br>
+
+<span class="ex"><span class="fn">sum</span><span class="args">[1..5]</span></span>
+<span class="ex"><span class="fn">product</span><span class="args">[1..5]</span></span>
+<br>
+
+<span class="ex"><span class="fn">maximum</span><span class="args">[1,3,2]</span></span>
+<span class="ex"><span class="fn">minimum</span><span class="args">[1,3,2]</span></span>
+<br>
+
+<span class="ex"><span class="fn">pi</span><span class="args"></span></span>
+<span class="ex"><span class="fn">sqrt</span><span class="args">2</span></span>
+<span class="ex"><span class="fn">sin</span><span class="args">0.4</span></span>
+<span class="ex"><span class="fn">cos</span><span class="args">0.4</span></span>
+<u>...</u>
+
+<br>
+
+
+<h1>Booleans</h1>
+
+<span class="ex"><span class="args">3</span><span class="fn">></span><span class="args">2</span></span>
+<span class="ex"><span class="args">3</span><span class="fn">>=</span><span class="args">2</span></span>
+<span class="ex"><span class="args">3</span><span class="fn"><</span><span class="args">2</span></span>
+<span class="ex"><span class="args">3</span><span class="fn"><=</span><span class="args">2</span></span>
+<span class="ex"><span class="args">3</span><span class="fn">==</span><span class="args">2</span></span>
+<span class="ex"><span class="args">3</span><span class="fn">/=</span><span class="args">2</span></span>
+<br>
+
+<span class="ex"><span class="args">True</span><span class="fn">&&</span><span class="args">False</span></span>
+<span class="ex"><span class="args">True</span><span class="fn">||</span><span class="args">False</span></span>
+<span class="ex"><span class="fn">not</span><span class="args">True</span></span>
+<br>
+
+<span class="ex"><span class="fn">and</span><span class="args">[False, False, True]</span></span>
+<span class="ex"><span class="fn">or</span><span class="args">[False, False, True]</span></span>
+<br>
+
+
+<h1>Constructing Lists</h1>
+
+<span class="ex"><span class="args">'h'</span><span class="fn">:</span><span class="args">"ello"</span></span>
+<span class="ex"><span class="args">"he"</span><span class="fn">++</span><span class="args">"llo"</span></span>
+<br>
+
+<span class="ex"><span class="fn">concat</span><span class="args">["he", "ll", "o"]</span></span>
+<span class="ex"><span class="fn">concatMap</span><span class="args">?????</span></span>
+<br>
+
+<span class="ex"><span class="fn">intersperse</span><span class="args">',' "abc"</span></span>
+<span class="ex"><span class="fn">intercalate</span><span class="args">"--" ["one", "two"]</span></span>
+<br>
+
+
+<h1>Querying Lists</h1>
+
+<span class="ex"><span class="fn">null</span><span class="args">"abc"</span></span>
+<span class="ex"><span class="fn">length</span><span class="args">"abc"</span></span>
+<br>
+
+<span class="ex"><span class="fn">elem</span><span class="args">e "hello"</span></span>
+<span class="ex"><span class="fn">find</span><span class="args">odd [2,4,5,6]</span></span>
+<u>...</u>
+
+
+<br>
+
+<span class="ex"><span class="fn">isPrefixOf</span><span class="args">"he" "hello"</span></span>
+<u>...</u>
+
+<br>
+
+<span class="ex"><span class="fn">FindIndex</span><span class="args">odd [2,3,5]</span></span>
+<span class="ex"><span class="fn">FindIndices</span><span class="args">odd [2,3,5]</span></span>
+<br>
+
+</td><td>
+
+
+<h1>Extracting from Lists</h1>
+
+<span class="ex"><span class="args">"hello"</span><span class="fn">!!</span><span class="args">4</span></span>
+<br>
+
+<span class="ex"><span class="fn">head</span><span class="args">"abc"</span></span>
+<span class="ex"><span class="fn">tail</span><span class="args">"abc"</span></span>
+<span class="ex"><span class="fn">init</span><span class="args">"abc"</span></span>
+<span class="ex"><span class="fn">last</span><span class="args">"abc"</span></span>
+<br>
+
+<span class="ex"><span class="fn">take</span><span class="args">2 "hello"</span></span>
+<span class="ex"><span class="fn">drop</span><span class="args">2 "hello"</span></span>
+<br>
+
+<span class="ex"><span class="fn">takeWhile</span><span class="args">odd [1,3,2]</span></span>
+<span class="ex"><span class="fn">dropWhile</span><span class="args">odd [1,3,2]</span></span>
+<br>
+
+<span class="ex"><span class="fn">stripPrefix</span><span class="args">"he" "hello"</span></span>
+<br>
+
+
+<h1>Splitting Lists</h1>
+
+<span class="ex"><span class="fn">splitAt</span><span class="args">2 "hello"</span></span>
+<span class="ex"><span class="fn">span</span><span class="args">odd [1,3,4]</span></span>
+<span class="ex"><span class="fn">break</span><span class="args">even [1,3,4]</span></span>
+<br>
+
+<span class="ex"><span class="fn">partition</span><span class="args">odd [1,2,3,4]</span></span>
+<br>
+
+
+<h1>Infinite lists</h1>
+
+<span class="ex"><span class="fn">iterate</span><span class="args">(+1) 0</span></span>
+<span class="ex"><span class="fn">repeat</span><span class="args">'a'</span></span>
+<span class="ex"><span class="fn">replicate</span><span class="args">3 'a'</span></span>
+<span class="ex"><span class="fn">cycle</span><span class="args">"hello"</span></span>
+<br>
+
+
+<h1>Lists as sets</h1>
+
+<span class="ex"><span class="fn">nub</span><span class="args">"mississippi"</span></span>
+<br>
+
+<span class="ex"><span class="fn">delete</span><span class="args">'e' "hello"</span></span>
+<br>
+
+<span class="ex"><span class="args">"ab"</span><span class="fn">\\</span><span class="args">"ac"</span></span>
+<span class="ex"><span class="fn">union</span><span class="args">"ab" "ac"</span></span>
+<u>...</u>
+
+<br>
+
+
+<h1>Sorting</h1>
+
+<span class="ex"><span class="fn">sort</span><span class="args">[3,4,2]</span></span>
+<u>...</u>
+
+<span class="ex"><span class="fn">insert</span><span class="args">3 [1,2,4]</span></span>
+<u>...</u>
+
+<span class="ex"><span class="fn">compare</span><span class="args">3 4</span></span>
+<br>
+
+
+<h1>Foo Lists</h1>
+
+<span class="ex"><span class="fn">zip</span><span class="args">[1..] "hello"</span></span>
+<span class="ex"><span class="fn">zipWith</span><span class="args">(+) [1,2,3] [4,5,6]</span></span>
+<u>...</u>
+
+<br>
+
+<span class="ex"><span class="fn">unzip</span><span class="args">[(4,'a'),(5,'z')]</span></span>
+<u>...</u>
+
+<br>
+
+<span class="ex"><span class="fn">reverse</span><span class="args">"hi"</span></span>
+<span class="ex"><span class="fn">transpose</span><span class="args">["abc", "123"]</span></span>
+<br>
+
+<span class="ex"><span class="fn">subsequences</span><span class="args">"abc"</span></span>
+<span class="ex"><span class="fn">permutations</span><span class="args">"abc"</span></span>
+<br>
+
+<span class="ex"><span class="fn">group</span><span class="args">"hello"</span></span>
+<br>
+
+<span class="ex"><span class="fn">inits</span><span class="args">"abc"</span></span>
+<span class="ex"><span class="fn">tails</span><span class="args">"abc"</span></span>
+<br>
+
+</td><td>
+
+
+<h1>Strings</h1>
+
+<span class="ex"><span class="fn">lines</span><span class="args">"one\ntwo\n"</span></span>
+<span class="ex"><span class="fn">unlines</span><span class="args">["one", "two"]</span></span>
+<br>
+
+<span class="ex"><span class="fn">words</span><span class="args">"one two"</span></span>
+<span class="ex"><span class="fn">unwords</span><span class="args">["one", "two"]</span></span>
+<br>
+
+<span class="ex"><span class="fn">show</span><span class="args">3</span></span>
+<span class="ex"><span class="fn">read</span><span class="args">"3"</span></span>
+
+<h1>Characters</h1>
+
+<span class="ex"><span class="fn">toUpper</span><span class="args">'a'</span></span>
+<span class="ex"><span class="fn">toLower</span><span class="args">'A'</span></span>
+<br>
+
+<span class="ex"><span class="fn">digitToInt</span><span class="args">'5'</span></span>
+<span class="ex"><span class="fn">intToDigit</span><span class="args">5</span></span>
+<br>
+
+<span class="ex"><span class="fn">ord</span><span class="args">'A'</span></span>
+<span class="ex"><span class="fn">chr</span><span class="args">65</span></span>
+<br>
+
+<span class="ex"><span class="fn">isNumber</span><span class="args">'4'</span></span>
+<span class="ex"><span class="fn">isLetter</span><span class="args">'a'</span></span>
+<u>...</u>
+
+<br>
+
+
+<h1>Higher order</h1>
+
+<span class="ex"><span class="fn">map</span><span class="args">sqrt [1..5]</span></span>
+<span class="ex"><span class="fn">filter</span><span class="args">odd [1..5]</span></span>
+<br>
+
+<span class="ex"><span class="fn">all</span><span class="args">odd [2,3,4]</span></span>
+<span class="ex"><span class="fn">any</span><span class="args">odd [2,3,4]</span></span>
+<br>
+
+<span class="ex"><span class="args">sqrt</span><span class="fn">.</span><span class="args">sqrt</span></span>
+<span class="ex"><span class="args">sqrt</span><span class="fn">$</span><span class="args">4</span></span>
+<span class="ex"><span class="fn">flip</span><span class="args">take</span></span>
+<br>
+
+<span class="ex"><span class="fn">foldr</span><span class="args">(+) 0 [1..5]</span></span>
+<span class="ex"><span class="fn">foldl'</span><span class="args">(+) 0 [1..5]</span></span>
+<u>...</u>
+
+<br>
+
+<span class="ex"><span class="fn">scanr</span><span class="args">(+) 0 [1..5]</span></span>
+<span class="ex"><span class="fn">scanl'</span><span class="args">(+) 0 [1..5]</span></span>
+<u>...</u>
+
+<br>
+
+
+<h1>I/O</h1>
+
+<span class="ex"><span class="fn">main</span><span class="args"></span></span>
+<span class="ex"><span class="fn">interact</span><span class="args">$ map toUpper</span></span>
+<br>
+
+<span class="ex"><span class="fn">putChar</span><span class="args">'a'</span></span>
+<span class="ex"><span class="fn">putStr</span><span class="args">"hi"</span></span>
+<span class="ex"><span class="fn">putStrLn</span><span class="args">"hi"</span></span>
+<span class="ex"><span class="fn">print</span><span class="args">4</span></span>
+<br>
+
+<span class="ex"><span class="fn">getchar</span><span class="args"></span></span>
+<span class="ex"><span class="fn">getLine</span><span class="args"></span></span>
+<span class="ex"><span class="fn">getContents</span><span class="args"></span></span>
+<br>
+
+<span class="ex"><span class="fn">readFile</span><span class="args">"a.txt"</span></span>
+<span class="ex"><span class="fn">writeFile</span><span class="args">"a.txt"</span></span>
+<span class="ex"><span class="fn">appendFile</span><span class="args">"a.txt"</span></span>
+
+<h1>Misc</h1>
+
+<span class="ex"><span class="fn">fst</span><span class="args">(3,"hi")</span></span>
+<span class="ex"><span class="fn">snd</span><span class="args">(3,"hi")</span></span>
+<span class="ex"><span class="fn">id</span><span class="args">3</span></span>
+<span class="ex"><span class="fn">const</span><span class="args">3 "hi"</span></span>
+<br>
+
+
+<h1>Map operators</h1>
+
+<span class="ex"><span class="args">m</span><span class="fn">!</span><span class="args">k</span></span>
+<span class="ex"><span class="args">m</span><span class="fn">\\</span><span class="args">m</span></span>
+<br>
+
+
+<h1>Map queries</h1>
+
+<span class="ex"><span class="fn">null</span><span class="args">m</span></span>
+<span class="ex"><span class="fn">size</span><span class="args">m</span></span>
+<span class="ex"><span class="fn">member</span><span class="args">k m</span></span>
+<br>
+
+<span class="ex"><span class="fn">findWithDefault</span><span class="args">v k m</span></span>
+<span class="ex"><span class="fn">lookup</span><span class="args">k m</span></span>
+<span class="ex"><span class="fn">lookupLT</span><span class="args">k m</span></span>
+<u>...</u>
+
+</td><td>
+
+
+<h1>Map construct/insert/delete/update</h1>
+
+<span class="ex"><span class="fn">empty</span><span class="args"></span></span>
+<span class="ex"><span class="fn">singleton</span><span class="args">k v</span></span>
+<br>
+
+<span class="ex"><span class="fn">insert</span><span class="args">k v m</span></span>
+<span class="ex"><span class="fn">insertWith</span><span class="args">f k v m</span></span>
+
+
+<u>...</u>
+
+<br>
+
+<span class="ex"><span class="fn">delete</span><span class="args">k m</span></span>
+<span class="ex"><span class="fn">adjust</span><span class="args">f k m</span></span>
+
+<u>...</u>
+
+<span class="ex"><span class="fn">update</span><span class="args">f k m</span></span>
+
+
+<u>...</u>
+
+<span class="ex"><span class="fn">alter</span><span class="args">f k m</span></span>
+<br>
+
+
+<h1>Map combine</h1>
+
+<span class="ex"><span class="fn">union</span><span class="args">m m</span></span>
+
+
+<u>...</u>
+
+<span class="ex"><span class="fn">unions</span><span class="args">ms</span></span>
+
+
+<u>...</u>
+
+<br>
+
+<span class="ex"><span class="fn">difference</span><span class="args">m m</span></span>
+
+<u>...</u>
+
+<span class="ex"><span class="fn">intersection</span><span class="args">m m</span></span>
+
+<u>...</u>
+
+<br>
+
+<span class="ex"><span class="fn">mergeWithKey</span><span class="args">f f f m m</span></span>
+<br>
+
+
+<h1>Map traversal</h1>
+
+<span class="ex"><span class="fn">map</span><span class="args">f m</span></span>
+<span class="ex"><span class="fn">mapWithKey</span><span class="args">f m</span></span>
+<span class="ex"><span class="fn">traverseWithKey</span><span class="args">f m</span></span>
+<br>
+
+<span class="ex"><span class="fn">mapAccum</span><span class="args">f v m</span></span>
+<u>...</u>
+
+<span class="ex"><span class="fn">mapKeys</span><span class="args">f m</span></span>
+<u>...</u>
+
+<span class="ex"><span class="fn">foldr</span><span class="args">f b m</span></span>
+<u>...</u>
+
+<br>
+
+
+<h1>Map conversion</h1>
+
+<span class="ex"><span class="fn">elems</span><span class="args">m</span></span>
+<span class="ex"><span class="fn">keys</span><span class="args">m</span></span>
+<span class="ex"><span class="fn">assocs</span><span class="args">m</span></span>
+<span class="ex"><span class="fn">keysSet</span><span class="args">m</span></span>
+<span class="ex"><span class="fn">fromSet</span><span class="args">f s</span></span>
+<br>
+
+<span class="ex"><span class="fn">toList</span><span class="args">m</span></span>
+<span class="ex"><span class="fn">fromList</span><span class="args">lis</span></span>
+<span class="ex"><span class="fn">fromListWith</span><span class="args">f lis</span></span>
+<u>...</u>
+
+<br>
+
+<span class="ex"><span class="fn">toAscList</span><span class="args">m</span></span>
+<span class="ex"><span class="fn">toDescList</span><span class="args">m</span></span>
+<u>...</u>
+
+<br>
+
+
+<h1>Map filters</h1>
+
+<span class="ex"><span class="fn">filter</span><span class="args">f m</span></span>
+<u>...</u>
+
+<span class="ex"><span class="fn">partition</span><span class="args">f m</span></span>
+<u>...</u>
+
+<br>
+
+<span class="ex"><span class="fn">mapMaybe</span><span class="args">f m</span></span>
+<u>...</u>
+
+<span class="ex"><span class="fn">mapEither</span><span class="args">f m</span></span>
+<u>...</u>
+
+<br>
+
+<span class="ex"><span class="fn">split</span><span class="args">k m</span></span>
+<span class="ex"><span class="fn">splitLookup</span><span class="args">k m</span></span>
+<span class="ex"><span class="fn">splitRoot</span><span class="args">m</span></span>
+<br>
+
+
+<h1>Map submaps</h1>
+
+<span class="ex"><span class="fn">isSubmapOf</span><span class="args">m m</span></span>
+<u>...</u>
+
+<span class="ex"><span class="fn">isProperSubmapOf</span><span class="args">m m</span></span>
+<br>
+
+
+<h1>Map Indexed</h1>
+
+<span class="ex"><span class="fn">lookupIndex</span><span class="args">k m</span></span>
+<span class="ex"><span class="fn">findIndex</span><span class="args">k m</span></span>
+<span class="ex"><span class="fn">elemAt</span><span class="args">i m</span></span>
+<br>
+
+<span class="ex"><span class="fn">updateAt</span><span class="args">f i m</span></span>
+<span class="ex"><span class="fn">deleteAt</span><span class="args">i m</span></span>
+<br>
+
+
+<h1>Map min/max</h1>
+
+<span class="ex"><span class="fn">findMin</span><span class="args">m</span></span>
+<u>...</u>
+
+<span class="ex"><span class="fn">deleteMin</span><span class="args">m</span></span>
+<u>...</u>
+
+<br>
+
+<span class="ex"><span class="fn">updateMin</span><span class="args">f m</span></span>
+<u>...</u>
+
+<span class="ex"><span class="fn">minView</span><span class="args">m</span></span>
+<u>...</u>
+
+<br>
+
+
+</td></tr></table></body>
+</html>
