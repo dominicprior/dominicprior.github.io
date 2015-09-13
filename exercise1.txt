@@ -36,7 +36,7 @@
     (b). Factorial 50.
     (c). The sum of the squares of the first 10 odd numbers.
 
-7. *** Extra challenge exercises ***.  Use GHCi to calculate
+8. *** Extra challenge exercises ***.  Use GHCi to calculate
    the following.
 
     (a). The first power of 2 greater than a million.
