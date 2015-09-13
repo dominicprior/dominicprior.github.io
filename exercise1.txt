@@ -21,7 +21,7 @@
 4. Experiment with infinite lists like [1..].
 
 5. See if you can guess what the answer is for the following expression.
-   Paste parts of it or all of it into the GHCi and see if your guess was
+   Paste parts of it or all of it into GHCi and see if your guess was
    correct.
 
      product (filter odd (map (^2) [1..5]))
