@@ -1,19 +1,43 @@
-1. Try the following functions at the GHCi prompt:
+1. Start a GHCi prompt and check it is working by trying some simple arithmetic.
+   (For example, type 3*3 and then press enter).  Check that the up-arrow key
+   recalls previous commands and that you can edit the commands before pressing
+   enter again.
+
+2. See if partial functions like (*10), (+1), (2^) and (^2) do what you
+   expect, by trying examples like the following.
+   
+   (a). map (*10) [1,2,3]
+   (b). (+1) 4
+
+3. Try the following functions at the GHCi prompt.  Note that you can type
+   part of a function name and press TAB to get the completion.  Don't be
+   alarmed if GHCi replies with half a page of errors!  This is a normal
+   part of Haskell doing its type inferencing.  We will look at type
+   inferencing later this evening, but, for now, it is ok to ignore the error
+   message and try another guess!
 
      map, filter, sum, product, takeWhile, dropWhile, head, last, odd
 
-2. Experiment with infinite lists like [1..].
+4. Experiment with infinite lists like [1..].
 
-3. Replace two sets of parentheses with dollars in the following,
-   and see if it still works at the GHCi prompt:
+5. See if you can guess what the answer is for the following expression.
+   Paste parts of it or all of it into the GHCi and see if your guess was
+   correct.
 
      product (filter odd (map (^2) [1..5]))
 
-4. Use the functions in question (1) to calculate the following
-   at the GHCi prompt:
+6. Replace two sets of parentheses with dollars in the expression from
+   question (4) and see if you still get the same answer.
+
+7. Use the functions in question (2) to calculate the following
+   at the GHCi prompt.
 
     (a). The sum of the first 100 numbers.
     (b). Factorial 50.
     (c). The sum of the squares of the first 10 odd numbers.
-    (d). The first power of 2 greater than a million.
-    (e). The square numbers greater than 800 and less than 1000.
+
+7. *** Extra challenge exercises ***.  Use GHCi to calculate
+   the following.
+
+    (a). The first power of 2 greater than a million.
+    (b). The square numbers greater than 800 and less than 1000.
