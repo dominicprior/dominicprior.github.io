@@ -44,3 +44,14 @@
 5. If you have time, start browsing the standard Haskell functions here:
 
       http://dominicprior.github.io/standard.html
+
+   You can experiment with them in your programs, or directly at the
+   GHCi prompt.  Many of the list functions or char functions have to
+   be imported from Data.List or Data.Char.  In a program, you import,
+   say, Data.List by putting this at the start of your program:
+
+      import Data.List
+
+   At the GHCi prompt, you would import Data.List by typing this:
+
+      :m +Data.List
