@@ -1,0 +1,31 @@
+1. Find out the type for the function, head, by typing this at
+   the GHCi prompt.  "t" is short for "type".  (Remember that
+   GHCi has TAB completion, so you can type :t he TAB).
+
+      :t head
+
+2. Ask GHCi about some more types.  See if you can find three
+   functions from the previous exercises that have this type:
+
+      (a -> Bool) -> [a] -> [a]
+
+3. Infix functions have types too.  Ask GHCi about (!!) by
+   typing this:
+
+      :t (!!)
+
+4. Expressions also have types.  Ask GHCi the following.
+   (Remember to use the up arrow to recall previous commands).
+
+      :t not
+      :t map
+      :t map not
+      :t map not [True,True,False]
+
+5. Haskell can infer most types for us.  Load one of your earlier programs
+   (factorial or average or palindrome or whatever), and ask GHCi what
+   type your function has.
+
+   It is considered good style to put types in your programs.  Therefore,
+   paste that type in front of your function definition, and see if your
+   program still loads.
