@@ -1,7 +1,7 @@
 1. Write this one-line "hello world" program using a text editor,
    and save it as hello.hs.
 
-main = putStr "Hello World!\n"
+      main = putStr "Hello World!\n"
 
    Start a shell or command prompt.
 
@@ -20,15 +20,15 @@ main = putStr "Hello World!\n"
 
 2. Write this program in hello2.hs, and compile and run it as before.
 
-main = do
-  putStr "What is your name?\n"
-  name <- getLine
-  putStr $ "Welcome to Haskell, " ++ name ++ "!\n"
+      main = do
+        putStr "What is your name?\n"
+        name <- getLine
+        putStr $ "Welcome to Haskell, " ++ name ++ "!\n"
 
 3. Consider the following program.
 
-import Data.Char
-main = interact $ map toUpper
+      import Data.Char
+      main = interact $ map toUpper
 
    Find out what toUpper does, by doing a web search for:
 
@@ -36,7 +36,7 @@ main = interact $ map toUpper
 
    What is toUpper's signature?
 
-   What about the signature of: map toUpper ?
+   What about the signature of map toUpper ?
 
    Check these signatures by loading Data.Char into GHCi with:
 
@@ -57,7 +57,7 @@ main = interact $ map toUpper
 
    What do you reckon this program does?
 
-main = interact $ unlines . map (drop 2) . lines
+      main = interact $ unlines . map (drop 2) . lines
 
    Check your guess by doing web searches for things like: haskell unlines
 
@@ -68,4 +68,4 @@ main = interact $ unlines . map (drop 2) . lines
 
    How about this program?
 
-main = interact $ unlines . filter (/= "") . lines
+      main = interact $ unlines . filter (/= "") . lines
