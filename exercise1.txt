@@ -27,9 +27,9 @@
      product (filter odd (map (^2) [1..5]))
 
 6. Replace two sets of parentheses with dollars in the expression from
-   question (4) and see if you still get the same answer.
+   question (5) and see if you still get the same answer.
 
-7. Use the functions in question (2) to calculate the following
+7. Use the functions in question (3) to calculate the following
    at the GHCi prompt.
 
     (a). The sum of the first 100 numbers.
