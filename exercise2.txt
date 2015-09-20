@@ -1,7 +1,7 @@
-1. Make a directory called, for example, "hs" where we can write our
+1. Make a directory called, for example, "hs", where we can write our
    Haskell programs.
 
-   In a text editor, write a file called, for example, "factorial.hs"
+   In a text editor, write a file called, say, "factorial.hs"
    that contains the following.  The function definitions should go
    against the left margin.  (They are indented here just for neatness).
    Advanced text editors like Emacs, Vim, Sublime and Notepad++ will
@@ -21,7 +21,7 @@
 
       :l fa
 
-   GHCi will apply TAB completion to give you ":l factorial.hs" so all
+   GHCi will apply TAB completion to give you ":l factorial.hs", so all
    you have to do is press ENTER.
 
    If your program loads without complaint, try it out by typing this
@@ -30,7 +30,7 @@
       f 100
 
    If you get complicated error messages, don't panic!  This is normal.
-   Just tweak your program and try loading it again, using this (short
+   Just tweak your program and try loading it again, using this ("r" is short
    for "reload"):
 
       :r
@@ -52,6 +52,6 @@
 
       import Data.List
 
-   At the GHCi prompt, you would import Data.List by typing this:
+   At the GHCi prompt, you can import Data.List by typing this:
 
       :m +Data.List
