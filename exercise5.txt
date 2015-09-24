@@ -1,0 +1,67 @@
+-- The exercise is to complete this program, by replacing the undefined
+-- functions with something that actually works!
+
+-- The trick for seeing if two words are anagrams of each other is
+-- to sort the characters in each word and see if the two words are
+-- then the same.
+
+-- The overall plan for the program is to read a word list and assemble
+-- it into a mapping from sorted word to list of matching words.
+-- For example, there might be an entry that maps from "act" to
+-- ["act", "cat", "tac"] (assuming there is a word called "tac"!).
+-- Then an individual word can be looked up quickly by sorting it
+-- and fetching the list from the map.
+
+-- We call our mapping a dictionary.
+
+
+import qualified Data.List as L
+import Data.Char
+import qualified Data.Map as M
+import System.Environment
+import Control.Monad
+
+type Dict = M.Map String [String]
+
+-- This function should map all the characters to lowercase, get rid of
+-- non-letter characters and sort it.
+-- For example, we should expect this:
+--    wordToKey "It's"
+-- to evaluate to this:
+--    "ist"
+wordToKey :: String -> String
+wordToKey = undefined
+
+-- This function should add a word to our map.
+-- Here is an example of starting from the empty map and adding
+-- one word.  We expect this:
+--    addWord "cat" M.empty
+-- to evaluate to this:
+--    fromList [("act",["cat"])]
+-- You will need to use the Haskell function, insertWith, which you
+-- look up with google.
+addWord :: String -> Dict -> Dict
+addWord word = undefined
+
+-- This function should make a dictionary out of a list of words,
+-- For example, this:
+--    buildDictionary ["cat, "mouse", "act"]
+-- should evaluate to this:
+--    fromList [("act",["cat","act"]),("emosu",["mouse"])]
+-- You will need the Haskell function called foldr.
+buildDictionary :: [String] -> Dict
+buildDictionary strings = undefined
+
+-- This function should look up a string in a dictionary.
+-- For example, this:
+--    anagrams (buildDictionary ["cat, "mouse", "act"]) "cat"
+-- should evaluate to this:
+--    ["act", "cat"]
+anagrams :: Dict -> String -> [String]
+anagrams dict word = undefined
+
+main = do
+  str <- readFile "words.txt"
+  let dict = buildDictionary $ lines str
+  args <- getArgs
+  mapM_ putStrLn $ anagrams dict $ head args
