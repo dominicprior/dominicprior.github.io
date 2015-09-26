@@ -35,11 +35,14 @@
 
       :r
 
-2. Write a function that computes the average of a list of numbers.
+2. Write a function that says if a string is a palindrome.
 
-3. Write a function that says if a string is a palindrome.
+3. Write a function that cuts all the spaces out of a string.
 
-4. Write a function that cuts all the spaces out of a string.
+4. Write a function that computes the average of a list of numbers.
+   (This one is tricky because you will need to use the fromIntegral
+    function to get round the fact that the length functions and
+    sum functions return different types).
 
 5. If you have time, start browsing the standard Haskell functions here:
 
