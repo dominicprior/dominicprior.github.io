@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Circles and squares</title>
+</head>
+<body>
+<div id="paper1"></div>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+<script>
+
+var N = 20;
+var nums = new Array();
+var mode = "circles";
+var blue = "#48f";
+var green = "#4b8";
+var rad = 10;
+var spacing = 30;
+var zone_spacing = 650;
+var num_specials = 5;
+
+function is_special(n) {
+    for (var i=0; i < nums.length; i++) {
+        if (nums[i] === n) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+function circ(i, j, zone, col) {
+    paper.circle(30 + i * spacing,
+                 80 + j * spacing + zone * zone_spacing,
+                 rad).attr({fill: col, "stroke-width": 0});
+}
+
+function rect(i, j, zone, col) {
+    paper.rect(30 + i * spacing - rad,
+               80 + j * spacing + zone * zone_spacing - rad,
+               2 * rad, 2 * rad).attr({fill: col, "stroke-width": 0});
+}
+
+function draw(i, j, zone) {
+    var ij = i * N + j;
+    if (is_special(ij)) {
+        circ(i, j, zone, blue);
+        return;
+    }
+    var s = Math.floor(Math.random() * 2);
+    if (zone == 0 || zone == 2 && s == 0) {
+        circ(i, j, zone, green);
+    }
+    else {
+        rect(i, j, zone, blue);
+    }
+}
+
+function calc_special_nums() {
+    nums.length = 0;
+    for (var k=0; k < num_specials; k++) {
+        add_a_special_num();
+    }
+}
+
+function add_a_special_num() {
+    while (1) {
+        var n = Math.floor(Math.random() * N * N);
+        if (! is_special(n)) {
+            nums.push(n);
+            return;
+        }
+    }
+}
+
+$( document ).ready(function() {
+    paper = Raphael("paper1", 800, 2000);
+    paper.text(300, 20, "There are five blue circles in each grid.  Can you find them?").scale(2);
+    for (var zone=0; zone < 3; zone++) {
+        calc_special_nums();
+        for (var i=0; i < N; i++) {
+            for (var j=0; j < N; j++) {
+                draw(i, j, zone);
+            }
+        }
+    }
+});
+</script>
+</body>
+</html>
