@@ -6,7 +6,7 @@ ghcjs-base-0.2.0.0-9RAUV0fc0ApBW3Hd7VHXty:764
 ghcjs-dom-jsffi-0.4.0.0-B6aY5o5hSShK4MzUxvI1MZ:15254
 ghcjs-prim-0.1.0.0-IFhsWclGfLr1HfhUvIVylA:10652
 integer-gmp:             48746
-main:                    76934
+main:                    76936
 
 
 code size per module:
@@ -87,9 +87,9 @@ integer-gmp
     GHC.Integer.Type:                   48746
 
 main
-    Main:                               76934
+    Main:                               76936
 
 
 
-packed metadata: 120332
+packed metadata: 120337
 
