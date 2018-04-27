@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>time</title>
+<script>
+// Displays a large digital stop-watch.
+
+// Helps keep the innovation weeks presentations on time.
+
+// The clock starts ticking as soon as the page loads, so the trick
+// is to hit F5 when each presentation starts.
+
+var w = 1600;
+var h = 900;
+var snd;
+
+var t = 0;
+function show_time() {
+    paper.clear();
+    var s = t % 60;
+    var m = (t - s) / 60;
+    var z = s <= 9 ? "0" : "";
+    var c = t < 180 ? "black" : t < 240 ? "blue" : t < 300 ? "purple" : "red";
+    paper.text(w / 2, h / 2, "" + m + ":" + z + s).
+        attr({"font-size": 650, fill: c});
+    if (t === 180 || t === 240 || t === 300) {
+        snd.play();
+    }
+    t += 1;
+}
+
+$( document ).ready(function() {
+    paper = Raphael("paper1", w, h);
+    show_time();
+    setInterval(show_time, 1000);
+    snd = new Audio("windows balloon.wav");
+});
+</script>
+</head>
+<body>
+<div id="paper1"></div>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+<script type="text/javascript" src="time.js"></script>
+</body>
+</html> 
