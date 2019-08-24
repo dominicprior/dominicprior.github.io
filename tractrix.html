@@ -3,23 +3,32 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>Bounce demo</title>
+    <title>tractrix</title>
 </head>
 <body>
 <div id="paper1"></div>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
 <script>
-var paper_w = 900;
-var paper_h = 600;
-var wall_x1 = 0;
-var wall_x2 = paper_w;
-var wall_y1 = 0;       // the floor
-var wall_y2 = paper_h; // the ceiling
+const paper_w = 900;
+const paper_h = 600;
+const rad = 40;
+const acc = 5;  // pixels / sec / sec
+const frameDuration = 0.1;  // in seconds
 var paper;
 var blobs = new Array();
-var g = 0.02;
-var textid;
+var textId;
+var headId;
+var tailId;
+var newPos;  // for the whole transition
+var prevPos; // for the whole transition
+var newFramePos;
+var prevFramePos;
+var tailPos;
+var totalDuration;  // of the animation in seconds
+var numFrames;
+var frameNum;
+var intervalHandle;
 
 
 
@@ -35,6 +44,9 @@ function Vec(x,y) {
     this.dot = function(v) {
         return this.x * v.x + this.y * v.y;
     }
+    this.len = function() {
+        return Math.sqrt(this.dot(this));
+    }
     this.times = function(k) {
         return new Vec(this.x * k, this.y * k);
     }
@@ -43,184 +55,55 @@ function Vec(x,y) {
     }
 }
 
-function Blob(pos, r, col, v) {
-    this.pos = pos;
-    this.v = v;
-    this.r = r;
-    this.col = col;
-    this.id = paper.circle(this.pos.x, paper_h - this.pos.y, r).attr({fill: this.col, "stroke-width": 0});
-    this.repaint = function() {
-        this.id.attr({cx: this.pos.x, cy: paper_h - this.pos.y});
+function weightedAverage(t, u, v) {
+    return v.times(t).add(u.times(1-t));
+}
+
+// Gives a uniform acceleration until t = 0.5 and then a uniform deceleration.
+function transitionFn(t) {
+    return t < 0.5 ? 2*t*t : 1 - 2*(1-t)*(1-t);
+}
+
+function repaint() {
+    headId.attr({cx: newFramePos.x, cy: newFramePos.y});
+    tailId.attr({cx: tailPos.x, cy: tailPos.y});
+}
+
+function clickFn(e) {
+    newPos = new Vec(e.offsetX, paper_h - e.offsetY);
+    if (textId) {
+        textId.remove();
+        textId = 0;
     }
+    var segmentLen = newPos.sub(prevPos).len();
+    totalDuration = 2 * Math.sqrt(segmentLen / acc);
+    numFrames = Math.round(totalDuration / frameDuration);
+    if (numFrames == 0)
+        return;
+    frameNum = 0;
+    intervalHandle = setInterval(timerfn, frameDuration * 1000);
 }
 
-function BlobEvent(id, type, time, other_id) {
-    this.id = id;
-    this.type = type;
-    this.time = time;
-    this.other_id = other_id;
+function timerFn() {
+    frameNum++;
+    var timeProportion = frameNum / numFrames;
+    var posProportion = transitionFn(timeProportion);
+    prevFramePos = newFramePos;
+    newFramePos = weightedAverage(posProportion, prevPos, newPos);
+    tailPos = tractrix(prevFramePos, newFramePos, tailPos);
+    repaint();
+    if (frameNum == numFrames)
+        clearInterval(intervalHandle);
 }
 
-// Moves all the blobs forward by the time t.
-function advance_time_no_bounce(t) {
-    for (var i=0; i < blobs.length; i++) {
-        var b = blobs[i];
-        b.pos.x += b.v.x * t;
-        var new_v = b.v.y - g * t;
-        var average_v = (b.v.y + new_v) / 2;
-        b.pos.y += average_v * t;
-        b.repaint();
-        b.v.y = new_v;
-    }
-}
-
-// Moves the whole system forward by the given time,
-// including processing any collisions.
-function advance_time(time) {
-    var time_remaining = time;
-    while (time_remaining > 0) {
-        var ev = find_next_event();
-        if (ev.time > time_remaining) {
-            advance_time_no_bounce(time_remaining);
-            break;
-        }
-        advance_time_no_bounce(ev.time);
-        time_remaining -= ev.time;
-        bounce(ev);
-    }
-}
-
-// Looks through all n-squared possible collisions (and the wall
-// collisions) for the next collision that is going
-// to happen and returns it as a BlobEvent.
-function find_next_event() {
-    var ans = new BlobEvent(-1, "nothing", 1e99, 0);
-    var len = blobs.length;
-    for (var i = 0; i < len; i++) {
-        var b = blobs[i];
-        for (var j = 0; j < len; j++) {
-            var b2 = blobs[j];
-            var p = b2.pos.sub(b.pos);
-            var v = b2.v.sub(b.v);
-            var v_dot_v = v.dot(v);
-            var p_dot_v = p.dot(v);
-            var p_dot_p = p.dot(p);
-            var r = b.r + b2.r;
-            // The relative position at a future time t is pos + vel * t.
-            // We are looking for a t when sq(pos + vel * t) = r*r.
-            // We get a quadratic in t:
-            // v.v t*t + 2 p.v t + p.p - r*r = 0
-            var discr = p_dot_v * p_dot_v - v_dot_v * (p_dot_p - r * r);
-            if (i !== j && p_dot_v < 0 && discr > 0 && v_dot_v > 0 && p_dot_p > r*r) {
-                var t = (-p_dot_v - Math.sqrt(discr)) / v_dot_v;
-                if (t < ans.time) {
-                    ans.id = i;
-                    ans.type = "another_blob";
-                    ans.time = t;
-                    ans.other_id = j;
-                }
-            }
-        }
-        if (b.v.x > 0) {
-            var t = (wall_x2 - b.pos.x - b.r) / b.v.x;
-            if (t < ans.time) {
-                ans.id = i;
-                ans.type = "right_wall";
-                ans.time = t;
-            }
-        }
-        if (b.v.x < 0) {
-            var t = - (b.pos.x - b.r - wall_x1) / b.v.x;
-            if (t < ans.time) {
-                ans.id = i;
-                ans.type = "left_wall";
-                ans.time = t;
-            }
-        }
-        var h = b.pos.y - b.r - wall_y1;
-        // we hit the floor when y(t) = h + v*t - g*t*t = 0.
-        var t2;
-        if (g === 0) {
-            if (b.v.y >= 0)
-                t2 = 1e99;  // never
-            else
-                t2 = -h / b.v.y;
-        }
-        else
-            t2 = (b.v.y + Math.sqrt(b.v.y * b.v.y + 4 * g * h)) / (2 * g);
-        if (t2 < ans.time) {
-            ans.id = i;
-            ans.type = "floor";
-            ans.time = t2;
-        }
-        if (b.v.y > 0) {
-            var h2 = b.pos.y + b.r - wall_y2;   // our height
-            // we hit the lid when y(t) = h + v*t - g*t*t = 0.
-            var discr = b.v.y * b.v.y + 4 * g * h2;
-            if (h2 < 0 && discr > 0) {
-                var t3;
-                if (g == 0)
-                    t3 = - h2 / b.v.y;
-                else
-                    t3 = (b.v.y - Math.sqrt(discr)) / (2 * g);
-                if (t3 < ans.time) {
-                    ans.id = i;
-                    ans.type = "ceiling";
-                    ans.time = t3;
-                }
-            }
-        }
-    }
-    return ans;
-}
-
-// Processes an event by making the blob(s) in ev change velocity.
-function bounce(ev) {
-    if (ev.type === "left_wall" || ev.type === "right_wall")
-        blobs[ev.id].v.x *= -1;
-    else if (ev.type === "floor" || ev.type == "ceiling")
-        blobs[ev.id].v.y *= -1;
-    else if (ev.type === "another_blob") {
-        var b1 = blobs[ev.id];
-        var b2 = blobs[ev.other_id];
-        var m1 = b1.r * b1.r;
-        var m2 = b2.r * b2.r;
-        var av_velocity = (b1.v.times(m1).add(b2.v.times(m2))).div(m1 + m2);
-        var rel_pos = b2.pos.sub(b1.pos);
-        var len = Math.sqrt(rel_pos.dot(rel_pos));
-        rel_pos = rel_pos.div(len);
-        var b1_velocity = b1.v.sub(av_velocity);
-        var b2_velocity = b2.v.sub(av_velocity);
-        var b1_speed = b1_velocity.dot(rel_pos);
-        var b2_speed = b2_velocity.dot(rel_pos);
-        blobs[ev.id].v = blobs[ev.id].v.sub(rel_pos.times(2 * b1_speed));
-        blobs[ev.other_id].v = blobs[ev.other_id].v.sub(rel_pos.times(2 * b2_speed));
-    }
-}
-
-function clickfn(e) {
-    var k = Math.random();
-    var rad = Math.round(6 + 25 * k * k);
-    var r = Math.round(255 * Math.random());
-    var g = Math.round(255 * Math.random());
-    var b = Math.round(255 * Math.random());
-    var col = "rgb(" + r + ", " + g + ", " + b + ")";
-    blobs.push(new Blob(new Vec(e.offsetX, paper_h - e.offsetY), rad, col, new Vec(1,1)));
-    if (textid) {
-        textid.remove();
-        textid = 0;
-    }
-}
-
-$( document ).ready(function() {
+$(document).ready(function() {
     paper = Raphael("paper1", paper_w, paper_h);
     paper.rect(0, 0, paper_w, paper_h).attr({fill: "#FFD", "stroke-width": 0}).click(clickfn);
-    textid = paper.text(paper_w / 2, paper_h / 2, "click in here a few times");
-    blobs.push(new Blob(new Vec(700, 150), 40, 'rgb(255,200,200)', new Vec(1,1)));
-    blobs.push(new Blob(new Vec(300, 150), 40, 'rgb(222,200,255)', new Vec(1,1)));
-    // blobs[0].repaint();
-    var t = 1;
-    // setInterval(function() { advance_time(t) }, 10);
+    textId = paper.text(paper_w / 2, paper_h / 2, "click anywhere");
+    headId = paper.circle(0, 0, rad);
+    headId.attr({fill: 'pink', 'stroke-width': 0});
+    // set initial positions
+    repaint();
 });
 </script>
 </body>
