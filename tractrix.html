@@ -129,14 +129,14 @@ function timerFn() {
 $(document).ready(function() {
     paper = Raphael("paper1", paper_w, paper_h);
     paper.rect(0, 0, paper_w, paper_h).attr({fill: "#FFD", "stroke-width": 0}).click(clickFn);
-    textId = paper.text(paper_w / 2, paper_h / 2, "click anywhere").attr({'font-size': 40});
+    textId = paper.text(paper_w / 2, paper_h / 2, "click anywhere").attr({'font-size': 40}).click(clickFn);
     newPos  = new Vec(400, 200);
     tailPos = new Vec(200, 200);
-    headId = paper.circle(newPos.x, paper_h - newPos.y, rad);
+    headId = paper.circle(newPos.x, paper_h - newPos.y, rad).click(clickFn);
     headId.attr({fill: 'pink', 'stroke-width': 0});
-    tailId = paper.circle(tailPos.x, paper_h - tailPos.y, rad);
+    tailId = paper.circle(tailPos.x, paper_h - tailPos.y, rad).click(clickFn);
     tailId.attr({fill: 'cyan', 'stroke-width': 0});
-    strutId = paper.path();
+    strutId = paper.path().click(clickFn);
     repaint(newPos);
 });
 </script>
