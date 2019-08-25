@@ -61,7 +61,10 @@ function weightedAverage(t, u, v) {
     return v.times(t).add(u.times(1-t));
 }
 
-// Gives a uniform acceleration until t = 0.5 and then a uniform deceleration.
+// The commented out line in this function gave a uniform acceleration until
+// t = 0.5 and then a uniform deceleration, but it turned out not to be
+// pleasing.  So now we implement a constant velocity.  (The velocity is
+// still greater for greater distances, using a sqrt law).
 function transitionFn(t) {
     // return t < 0.5 ? 2*t*t : 1 - 2*(1-t)*(1-t);
     return t;
