@@ -19,13 +19,9 @@ const frameDuration = 0.01;  // in seconds
 var paper;
 var blobs = new Array();
 var textId;
-var headId;
-var tailId;
-var strutId;
 var newPos;  // for the whole transition
 var prevPos; // for the whole transition
 var framePos;
-var tailPos;
 var totalDuration;  // of the animation in seconds
 var numFrames;
 var frameNum;
@@ -57,6 +53,15 @@ function Vec(x,y) {
     }
 }
 
+function Blob(pos, col) {
+    this.pos = pos;
+    this.col = col;
+    this.id = paper.circle(this.pos.x, paper_h - this.pos.y, rad)
+        .attr({fill: this.col, "stroke-width": 0})
+        .click(clickFn);
+    this.strutId = paper.path().click(clickFn);
+}
+
 function weightedAverage(t, u, v) {
     return v.times(t).add(u.times(1-t));
 }
@@ -71,28 +76,35 @@ function transitionFn(t) {
 }
 
 function repaint(headPos) {
-    headId.attr({cx: headPos.x, cy: paper_h - headPos.y});
-    tailId.attr({cx: tailPos.x, cy: paper_h - tailPos.y});
-    strutId.attr({path: ['M', headPos.x, paper_h - headPos.y,
-                         'L', tailPos.x, paper_h - tailPos.y]});
+    for (t=0; t < blobs.length; t++) {
+        var x = blobs[t].pos.x;
+        var y = paper_h - blobs[t].pos.y;
+        blobs[t].id.attr({cx: x, cy: y});
+        if (t > 0) {
+            var pos = blobs[t-1].pos;
+            var path = ['M', x, y, 'L', pos.x, paper_h - pos.y];
+            blobs[t].strutId.attr({path: path});
+        }
+    }
 }
 
 // Returns a new tail position that is moved towards (or away from) the head.
-function tractrixStep(head, tail) {
+function adjustTail(head, tail) {
     const v = tail.sub(head);
     return head.add(v.times(rodLen / v.len()));
 }
 
-// Returns a new tail that is a numerical approximation to the true tractrix position.
-function tractrix(oldHead, newHead, tail) {
+// Moves all the tails.
+function tractrix(oldHead, newHead) {
     const numSteps = 10;
     const step = newHead.sub(oldHead).div(numSteps);
-    var head = oldHead;
+    blobs[0].pos = oldHead;
     for (var i=0; i < numSteps; i++) {
-        head = head.add(step);
-        tail = tractrixStep(head, tail);
+        blobs[0].pos = blobs[0].pos.add(step);
+        for (var t=1; t < blobs.length; t++) {
+            blobs[t].pos = adjustTail(blobs[t-1].pos, blobs[t].pos);
+        }
     }
-    return tail;
 }
 
 function clickFn(e) {
@@ -121,8 +133,8 @@ function timerFn() {
     var posProportion = transitionFn(timeProportion);
     var prevFramePos = framePos;
     framePos = weightedAverage(posProportion, prevPos, newPos);
-    tailPos = tractrix(prevFramePos, framePos, tailPos);
-    repaint(framePos);
+    tractrix(prevFramePos, framePos);
+    repaint();
     if (frameNum == numFrames) {
         clearInterval(intervalHandle);
         moving = false;
@@ -133,14 +145,12 @@ $(document).ready(function() {
     paper = Raphael("paper1", paper_w, paper_h);
     paper.rect(0, 0, paper_w, paper_h).attr({fill: "#FFD", "stroke-width": 0}).click(clickFn);
     textId = paper.text(paper_w / 2, paper_h / 2, "click anywhere").attr({'font-size': 40}).click(clickFn);
-    newPos  = new Vec(400, 200);
-    tailPos = new Vec(200, 200);
-    headId = paper.circle(newPos.x, paper_h - newPos.y, rad).click(clickFn);
-    headId.attr({fill: 'pink', 'stroke-width': 0});
-    tailId = paper.circle(tailPos.x, paper_h - tailPos.y, rad).click(clickFn);
-    tailId.attr({fill: 'cyan', 'stroke-width': 0});
-    strutId = paper.path().click(clickFn);
-    repaint(newPos);
+    blobs.push(new Blob(new Vec(800, 200), 'green'));
+    blobs.push(new Blob(new Vec(600, 200), 'pink'));
+    blobs.push(new Blob(new Vec(400, 200), 'cyan'));
+    blobs.push(new Blob(new Vec(200, 200), 'orange'));
+    newPos = blobs[0].pos
+    repaint();
 });
 </script>
 </body>
