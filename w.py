@@ -61,6 +61,13 @@ data = '''
 21 d Wildclaw
 20 pr Zuzszi
 
+20 w Littletinker
+24 pr Tokidoki
+23 lock Omnipotancy
+21 h Dotterel
+21 r Cornwallis
+
+
 '''
 
 print(intro)
