@@ -67,7 +67,11 @@ data = '''
 21 h Dotterel
 21 r Cornwallis
 
-
+27 pa Krass
+25 pr Tokidoki
+24 h Dotterel
+22 r Roguettie
+19 w Willbo
 '''
 
 print(intro)
