@@ -72,6 +72,12 @@ data = '''
 24 h Dotterel
 22 r Roguettie
 19 w Willbo
+
+23 w Grenam
+26 pr Tokidoki
+31 h Kimsung
+27 m Verryl
+22 h Glenmo
 '''
 
 print(intro)
