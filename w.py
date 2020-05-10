@@ -78,6 +78,18 @@ data = '''
 31 h Kimsung
 27 m Verryl
 22 h Glenmo
+
+31 d Cinex
+27 pr Tokidoki
+32 h Prestingrass
+27 pa Berdus
+27 pa Odindenstore
+
+27 w Donney
+28 pr Tokidoki
+28 lock Darkchaos
+27 m Friezy
+25 pa Lulli
 '''
 
 print(intro)
