@@ -90,6 +90,30 @@ data = '''
 28 lock Darkchaos
 27 m Friezy
 25 pa Lulli
+
+29 w Hoobachus
+28 pr Tokidoki
+28 pa Aauron
+23 lock Bubbles
+21 lock Lokotamtam
+
+60 w Robynne
+29 w Blokkade
+31 pa Eldairlight
+28 pr Tokidoki
+27 d Softrock
+
+30 pa Aaros
+29 pr Tokidoki
+30 m Haaranoja
+26 pa Blackbean
+24 pa Attomx
+
+33 r Akimboblade
+30 pr Tokidoki
+27 pa Blackbean
+31 m Rihanna
+28 pr Japiekrekel
 '''
 
 print(intro)
