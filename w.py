@@ -114,6 +114,19 @@ data = '''
 27 pa Blackbean
 31 m Rihanna
 28 pr Japiekrekel
+
+33 w Brutmann
+31 pr Tokidoki
+35 lock Contre
+32 m Imbaby
+31 m Esfahan
+
+30 w Kyrush
+31 pr Tokidoki
+38 r Morathian
+32 m Wiles
+30 w Unclerat
+
 '''
 
 print(intro)
