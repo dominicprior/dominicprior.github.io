@@ -128,7 +128,7 @@ data = '''
 30 w Unclerat
 
 34 d Keyleth
-31 tr Tokidoki
+31 pr Tokidoki
 31 lock Neliza
 30 d Ziream
 29 r Juret
