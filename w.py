@@ -132,6 +132,12 @@ data = '''
 31 lock Neliza
 30 d Ziream
 29 r Juret
+
+33 pa Ebolar
+33 pr Tokidoki
+33 m Glittergold
+32 d Cryzis
+30 w Sosor
 '''
 
 print(intro)
