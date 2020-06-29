@@ -138,6 +138,12 @@ data = '''
 33 m Glittergold
 32 d Cryzis
 30 w Sosor
+
+18 w Triplebigmac
+34 pr Tokidoki
+28 h Dotterel
+24 d Lebud
+23 r Veganstab
 '''
 
 print(intro)
