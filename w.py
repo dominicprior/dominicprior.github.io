@@ -144,6 +144,18 @@ data = '''
 28 h Dotterel
 24 d Lebud
 23 r Veganstab
+
+32 w Heartache
+35 pr Tokidoki
+35 pr Limoles
+31 pa Rucosto
+28 d Herbstealer
+
+34 w Auerbach
+35 pr Tokidoki
+36 d Elwilda
+34 r Bigbattygyal
+33 lock Coronavirrus
 '''
 
 print(intro)
