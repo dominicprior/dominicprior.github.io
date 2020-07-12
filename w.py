@@ -156,6 +156,18 @@ data = '''
 36 d Elwilda
 34 r Bigbattygyal
 33 lock Coronavirrus
+
+32 d Sajki
+31 pa Valkian
+36 pr Tokidoki
+34 m Demityrant
+34 lock Xielle
+
+42 d Whocares
+37 pr Tokidoki
+41 pa Orbry
+39 m Nodions
+39 w Viking
 '''
 
 print(intro)
