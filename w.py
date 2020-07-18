@@ -168,6 +168,12 @@ data = '''
 41 pa Orbry
 39 m Nodions
 39 w Viking
+
+33 w Krstiann
+38 pr Tokidoki
+36 m Muramana
+32 h Dotterel
+32 h Namo
 '''
 
 print(intro)
