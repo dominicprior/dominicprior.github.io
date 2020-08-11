@@ -174,6 +174,48 @@ data = '''
 36 m Muramana
 32 h Dotterel
 32 h Namo
+
+39 w Kenath
+40 pr Tokidoki
+43 m Alg
+42 r Yalson
+41 w Mightstone
+
+41 w Mightstone
+41 pr Tokidoki
+44 d Nerafina
+36 w Setanta
+34 d Oomkins
+
+36 w Setanta
+41 pr Tokidoki
+34 d Moline
+34 d Oomkins
+34 lock Coralz
+
+39 d Kuffe
+41 pr Tokidoki
+41 d Megatronix
+41 r Saraguldske
+40 lock Platonios
+
+44 w Mightstone
+42 pr Tokidoki
+42 pa Vodkapal
+40 d Vulpes
+40 h Itame
+
+60 r Seneric
+43 pr Tokidoki
+47 m Ozarkh
+47 h Dalmond
+
+44 w Bowarrdin
+44 pr Tokidoki
+54 m Bobdebobbob
+45 m Spiritspark
+43 r Kooya
+
 '''
 
 print(intro)
