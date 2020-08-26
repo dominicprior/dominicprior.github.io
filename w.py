@@ -216,6 +216,23 @@ data = '''
 45 m Spiritspark
 43 r Kooya
 
+60 w Rautakoura
+45 pr Tokidoki
+30 d Lebud
+29 m Spinxxy
+
+30 d Lebud
+45 pr Tokidoki
+29 m Wiserman
+23 lock Indevious
+22 d Savi
+
+32 d Lebud
+45 pr Tokidoki
+36 h Dotterel
+34 lock Hakeldama
+34 m Deloina
+
 '''
 
 print(intro)
