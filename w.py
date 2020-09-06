@@ -233,7 +233,7 @@ data = '''
 34 lock Hakeldama
 34 m Deloina
 
-24 w Rainbird
+23 w Rainbird
 24 pr Mennopaws
 20 w Rheyt
 20 m Midge
