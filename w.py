@@ -233,6 +233,18 @@ data = '''
 34 lock Hakeldama
 34 m Deloina
 
+24 w Rainbird
+24 pr Mennopaws
+20 w Rheyt
+20 m Midge
+18 h Straylight
+
+24 w Rainbird
+19 pr Drmacca
+20 pa Horses
+18 d Lynz
+18 lock Demonfella
+
 '''
 
 print(intro)
