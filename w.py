@@ -245,6 +245,12 @@ data = '''
 18 d Lynz
 18 lock Demonfella
 
+35 d Lebud
+46 pr Tokidoki
+45 h Dotterel
+44 m Lost
+37 r Vindiesel
+
 '''
 
 print(intro)
