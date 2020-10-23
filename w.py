@@ -251,6 +251,12 @@ data = '''
 44 m Lost
 37 r Vindiesel
 
+49 w Jayquelin
+46 pr Tokidoki
+45 h Dotterel
+42 m Teixeira
+41 pa Palamerser
+
 '''
 
 print(intro)
