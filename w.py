@@ -259,9 +259,9 @@ data = '''
 
 49 w Pridebreeze
 46 pr Tokidoki
-46 h Dotterel
+47 h Dotterel
 48 r Nigira
-46 pr Mistal
+48 pr Mistal
 
 '''
 
