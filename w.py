@@ -257,6 +257,12 @@ data = '''
 42 m Teixeira
 41 pa Palamerser
 
+49 w Pridebreeze
+46 pr Tokidoki
+46 h Dotterel
+48 r Nigira
+46 pr Mistal
+
 '''
 
 print(intro)
