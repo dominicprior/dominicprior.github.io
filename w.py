@@ -263,6 +263,12 @@ data = '''
 48 r Nigira
 48 pr Mistal
 
+47 w Zorst
+47 pr Tokidoki
+45 m Tassie
+41 h Mommagoose
+41 r Nupu
+
 '''
 
 print(intro)
