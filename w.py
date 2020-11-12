@@ -269,6 +269,19 @@ data = '''
 41 h Mommagoose
 41 r Nupu
 
+48 w Norenew
+48 pr Tokidoki
+49 h Beerdy
+49 m Deathusian
+47 r Sisuke
+
+51 w Milty
+49 w Arooh
+48 pr Tokidoki
+45 lock Shltsangiglz
+43 d Annaburano
+
+
 '''
 
 print(intro)
