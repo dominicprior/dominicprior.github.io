@@ -162,6 +162,7 @@ draw.node.onpointerdown = (event) => {
   cx = b[0] - x
   cy = b[1] - y
   down = true
+  return false
 }
 
 // Update the picture according to the mouse position as
@@ -175,8 +176,10 @@ draw.node.onpointermove = (event) => {
     updateTransforms(newMatrices, mainGroup)
     updateCircles()
   }
+  return false
 }
 
 draw.node.onpointerup = () => {
   down = false
+  return false
 }
