@@ -26,20 +26,28 @@ function updateTransforms(matrices, group) {
 
 let w  = window.innerWidth
 let h = window.innerHeight
+let minWH = Math.min(w, h)
+let trunkHeight = minWH / 3
+let trunkWidth = trunkHeight / 10
+let trunkbase = 0.9 * h
+let circleDiameter = trunkWidth
+let numLevels = 12
+
+let t = trunkHeight
+let blobs = [ [ [0, 0.8 * t], [0.4 * t, 1.2 * t] ],
+              [ [0, 0.98 * t], [-0.4 * t, 1.5 * t] ] ]
+
 let draw = SVG().addTo('body').size(w, h)
 let mainGroup = draw.group()
-      .transform({tx: w / 2, ty: 4 * h / 5, flip: 'y'})
-
-let blobs = [ [ [0, 300], [150, 580] ],
-              [ [0, 420], [-150, 640] ] ]
+      .transform({tx: w / 2, ty: trunkbase, flip: 'y'})
 
 let circles = []
 
 function calcMatrices() {
   let result = []
   for (let br of blobs) {  // e.g. [ [0, 300], [150, 580] ]
-    let a = (br[1][1] - br[0][1]) / (h / 3)
-    let b = (br[1][0] - br[0][0]) / (h / 3)
+    let a = (br[1][1] - br[0][1]) / trunkHeight
+    let b = (br[1][0] - br[0][0]) / trunkHeight
     let matrix = new SVG.Matrix(a, -b, b, a, br[0][0], br[0][1])
     result.push(matrix)
   }
@@ -48,13 +56,17 @@ function calcMatrices() {
 
 let matrices = calcMatrices()
 
-drawTree(10, matrices, mainGroup, h / 30, h / 3, 'brown')
+drawTree(numLevels, matrices, mainGroup, trunkWidth, trunkHeight, 'brown')
 drawCircles()
+
+function coords(event) {
+  return [event.x - w / 2, trunkbase - event.y]
+}
 
 function drawCircles() {
   for (let br of blobs) {  // e.g. [ [0, 300], [150, 580] ]
     for (let end of br) {
-      let circle = mainGroup.circle(50).
+      let circle = mainGroup.circle(circleDiameter).
             center(end[0], end[1]).fill('red')
       circles.push(circle)
     }
@@ -68,10 +80,6 @@ function updateCircles() {
       circles[i++].center(end[0], end[1])
     }
   }
-}
-
-function coords(event) {
-  return [event.x - w / 2, 4 * h / 5 - event.y]
 }
 
 function nearestBlob(x, y) {
@@ -108,7 +116,6 @@ draw.node.onpointerdown = (event) => {
   down = true
 }
 
-
 draw.node.onpointermove = (event) => {
   if (down) {
     let [x, y] = coords(event)
@@ -118,7 +125,6 @@ draw.node.onpointermove = (event) => {
     updateCircles()
   }
 }
-
 
 draw.node.onpointerup = () => {
   down = false
