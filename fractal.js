@@ -9,9 +9,12 @@ const trunkHeight = minWH / 3
 const trunkWidth = trunkHeight / 10
 const trunkBaseY = 0.9 * h
 const circleDiameter = trunkWidth
-const numLevels = 12
+const numLevels = 11
 
 const t = trunkHeight
+
+// The initial positions of the four blobs.
+
 let blobs = [ [ [0, 0.8 * t], [0.4 * t, 1.2 * t] ],
               [ [0, 0.98 * t], [-0.4 * t, 1.5 * t] ] ]
 
