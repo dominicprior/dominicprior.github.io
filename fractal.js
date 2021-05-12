@@ -1,4 +1,19 @@
+// A fractal animation.
+
 'use strict'
+
+const w  = window.innerWidth
+const h = window.innerHeight
+const minWH = Math.min(w, h)
+const trunkHeight = minWH / 3
+const trunkWidth = trunkHeight / 10
+const trunkbase = 0.9 * h
+const circleDiameter = trunkWidth
+const numLevels = 12
+
+const t = trunkHeight
+let blobs = [ [ [0, 0.8 * t], [0.4 * t, 1.2 * t] ],
+              [ [0, 0.98 * t], [-0.4 * t, 1.5 * t] ] ]
 
 function drawTree(numLevels, matrices, group,
                   width, height, colour) {
@@ -23,19 +38,6 @@ function updateTransforms(matrices, group) {
     }
   }
 }
-
-const w  = window.innerWidth
-const h = window.innerHeight
-const minWH = Math.min(w, h)
-const trunkHeight = minWH / 3
-const trunkWidth = trunkHeight / 10
-const trunkbase = 0.9 * h
-const circleDiameter = trunkWidth
-const numLevels = 12
-
-const t = trunkHeight
-let blobs = [ [ [0, 0.8 * t], [0.4 * t, 1.2 * t] ],
-              [ [0, 0.98 * t], [-0.4 * t, 1.5 * t] ] ]
 
 let draw = SVG().addTo('body').size(w, h)
 let mainGroup = draw.group()
