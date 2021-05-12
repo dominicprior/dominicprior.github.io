@@ -60,6 +60,9 @@ let matrices = calcMatrices()
 
 drawTree(numLevels, matrices, mainGroup, trunkWidth, trunkHeight, 'brown')
 drawCircles()
+let div = document.createElement('div')
+div.innerHTML = "Drag the red blobs around"
+document.body.append(div)
 
 function coords(event) {
   return [event.x - w / 2, trunkbase - event.y]
