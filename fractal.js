@@ -5,7 +5,7 @@ function drawTree(numLevels, matrices, group,
   group.rect(width, height).fill(colour).cx(0).opacity(1)
   if (numLevels > 1) {
     for (let matrix of matrices) {
-      let subGroup = group.group().transform(matrix)
+      const subGroup = group.group().transform(matrix)
       drawTree(numLevels - 1, matrices, subGroup,
                width, height, colour)
     }
@@ -13,7 +13,7 @@ function drawTree(numLevels, matrices, group,
 }
 
 function updateTransforms(matrices, group) {
-  let ch = group.children()
+  const ch = group.children()
   let n = 0
   for (let i=0; i < ch.length; i++) {
     let child = ch[i]
@@ -24,16 +24,16 @@ function updateTransforms(matrices, group) {
   }
 }
 
-let w  = window.innerWidth
-let h = window.innerHeight
-let minWH = Math.min(w, h)
-let trunkHeight = minWH / 3
-let trunkWidth = trunkHeight / 10
-let trunkbase = 0.9 * h
-let circleDiameter = trunkWidth
-let numLevels = 12
+const w  = window.innerWidth
+const h = window.innerHeight
+const minWH = Math.min(w, h)
+const trunkHeight = minWH / 3
+const trunkWidth = trunkHeight / 10
+const trunkbase = 0.9 * h
+const circleDiameter = trunkWidth
+const numLevels = 12
 
-let t = trunkHeight
+const t = trunkHeight
 let blobs = [ [ [0, 0.8 * t], [0.4 * t, 1.2 * t] ],
               [ [0, 0.98 * t], [-0.4 * t, 1.5 * t] ] ]
 
@@ -46,9 +46,9 @@ let circles = []
 function calcMatrices() {
   let result = []
   for (let br of blobs) {  // e.g. [ [0, 300], [150, 580] ]
-    let a = (br[1][1] - br[0][1]) / trunkHeight
-    let b = (br[1][0] - br[0][0]) / trunkHeight
-    let matrix = new SVG.Matrix(a, -b, b, a, br[0][0], br[0][1])
+    const a = (br[1][1] - br[0][1]) / trunkHeight
+    const b = (br[1][0] - br[0][0]) / trunkHeight
+    const matrix = new SVG.Matrix(a, -b, b, a, br[0][0], br[0][1])
     result.push(matrix)
   }
   return result
@@ -66,7 +66,7 @@ function coords(event) {
 function drawCircles() {
   for (let br of blobs) {  // e.g. [ [0, 300], [150, 580] ]
     for (let end of br) {
-      let circle = mainGroup.circle(circleDiameter).
+      const circle = mainGroup.circle(circleDiameter).
             center(end[0], end[1]).fill('red')
       circles.push(circle)
     }
@@ -87,10 +87,10 @@ function nearestBlob(x, y) {
   let bestI
   let bestJ
   for (let i in blobs) {
-    let br = blobs[i]    // e.g. [ [0, 300], [150, 580] ]
+    const br = blobs[i]    // e.g. [ [0, 300], [150, 580] ]
     for (let j in br) {  // e.g. [0, 300]
-      let end = br[j]
-      let distance = Math.hypot(end[0] - x, end[1] - y)
+      const end = br[j]
+      const distance = Math.hypot(end[0] - x, end[1] - y)
       if (distance < bestDistance) {
         bestDistance = distance
         bestI = i
@@ -108,9 +108,9 @@ let nearestI, nearestJ
 // note what blob we are moving and its offset from the mouse
 
 draw.node.onpointerdown = (event) => {
-  let [x, y] = coords(event);
+  const [x, y] = coords(event);
   [nearestI, nearestJ] = nearestBlob(x, y)
-  let b = blobs[nearestI][nearestJ]
+  const b = blobs[nearestI][nearestJ]
   cx = b[0] - x
   cy = b[1] - y
   down = true
@@ -118,9 +118,9 @@ draw.node.onpointerdown = (event) => {
 
 draw.node.onpointermove = (event) => {
   if (down) {
-    let [x, y] = coords(event)
+    const [x, y] = coords(event)
     blobs[nearestI][nearestJ] = [x+cx, y+cy]
-    let newMatrices = calcMatrices()
+    const newMatrices = calcMatrices()
     updateTransforms(newMatrices, mainGroup)
     updateCircles()
   }
