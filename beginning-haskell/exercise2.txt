@@ -46,7 +46,7 @@
 
 5. If you have time, start browsing the standard Haskell functions here:
 
-      http://dominicprior.github.io/standard.html
+      https://dominicprior.github.io/standard.html
 
    You can experiment with them in your programs, or directly at the
    GHCi prompt.  Many of the list functions or char functions have to
