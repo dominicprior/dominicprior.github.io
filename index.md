@@ -36,3 +36,7 @@ layout: menu
 [circles](circles.html)
 
 [w](w.html)
+
+# Notes
+
+[Jekyll](jekyll.html)
