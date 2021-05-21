@@ -1,12 +1,11 @@
 ---
+layout: menu
 ---
 # Graphics
 
 [fractal](fractal.html)
 
 [bounce](bounce.html)
-
-[circles](circles.html)
 
 [tractrix](tractrix.html)
 
@@ -20,7 +19,7 @@
 
 [Standard functions](standard.html)
 
-[Beginning Haskell course](/beginning-haskell/)
+[Haskell course](/beginning-haskell/)
 
 [Gloss demo](https://github.com/dominicprior/gloss-demo)
 
@@ -33,5 +32,7 @@
 # Misc
 
 [Stopwatch](stopwatch.html)
+
+[circles](circles.html)
 
 [w](w.html)
