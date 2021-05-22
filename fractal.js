@@ -9,7 +9,7 @@ const trunkHeight = minWH / 3
 const trunkWidth = trunkHeight / 10
 const trunkBaseY = 0.9 * h
 const circleDiameter = trunkWidth
-const numLevels = 7
+const numLevels = 10
 
 const t = trunkHeight
 
