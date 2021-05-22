@@ -34,7 +34,3 @@ layout: menu
 [Stopwatch](stopwatch.html)
 
 [circles](circles.html)
-
-# Notes
-
-[Jekyll](jekyll.html)
