@@ -1,6 +1,7 @@
 html {
   font-family: sans-serif;
   text-align: center;
+  font-size: 6mm;
 }
 body { margin: 0; }
 a {
@@ -16,9 +17,9 @@ h1 {
   flex-wrap: wrap;
 }
 .outer > div {
-  flex: 300px;
-  padding: 10px;
-  margin: 10px;
+  flex: 15rem;
+  padding: 0.3rem;
+  margin: 0.3rem;
 }
 .outer > div:nth-child(1) { background-color: hsl(0, 100%, 96%); }
 .outer > div:nth-child(2) { background-color: hsl(60, 100%, 94%); }
