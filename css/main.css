@@ -16,9 +16,9 @@ h1 {
   flex-wrap: wrap;
 }
 .outer > div {
+  flex: 200px;
   padding: 10px;
   margin: 10px;
-  background-color: aqua;
 }
 .outer > div:nth-child(1) { background-color: hsl(0, 100%, 96%); }
 .outer > div:nth-child(2) { background-color: hsl(60, 100%, 94%); }
