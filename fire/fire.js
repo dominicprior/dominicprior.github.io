@@ -10,6 +10,7 @@ const boardTop = 100
 const boardLeft = 50
 const numUpdatesPerFrame = 400
 const range = 2
+const splodgeRadius = 8
 
 let cells = new Array(n)
 
@@ -61,6 +62,23 @@ function updateOneCell() {
 // we want a cubic
 function getThreshold(p) {
   return p * p * (3 - 2 * p)
+}
+
+document.onpointerdown = (event) => {
+  const i = Math.floor((event.y - boardTop)  / stride)
+  const j = Math.floor((event.x - boardLeft) / stride)
+  for (var ii = i - splodgeRadius; ii < i + splodgeRadius; ii++) {
+    for (var jj = j - splodgeRadius; jj < j + splodgeRadius; jj++) {
+      if (ii >= 0 && ii < n && jj >= 0 && jj < n) {
+        const dist = Math.hypot(jj - j, ii - i)
+        if (dist < splodgeRadius) {
+          var cell = cells[ii][jj]
+          cell.on = 0
+          cell.style['background-color'] = 'blue'
+        }
+      }
+    }
+  }
 }
 
 function updateCells() {
