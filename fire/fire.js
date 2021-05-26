@@ -2,13 +2,13 @@
 
 'use strict'
 
-const n = 30
+const n = 50
 const cellSize = 5
 const spacing = 0
 const stride = cellSize + spacing
 const boardTop = 100
 const boardLeft = 50
-const numUpdatesPerFrame = 20
+const numUpdatesPerFrame = 400
 const range = 2
 
 let cells = new Array(n)
@@ -27,7 +27,7 @@ for (let i=0; i < n; i++) {
     cell.style.left = (boardLeft + j * stride) + 'px'
     cell.style.height = cellSize + 'px'
     cell.style.width  = cellSize + 'px'
-    cell.on = Math.random() > 0.45
+    cell.on = Math.random() > 0.47
     cell.style['background-color'] = cell.on ? 'red' : 'blue'
     cells[i][j] = cell
   }
@@ -52,8 +52,15 @@ function updateOneCell() {
   }
   const proportionOnFire = numOnFire / (maxI - minI + 1) / (maxJ - minJ + 1)
   let cell = cells[i][j]
-  cell.on = Math.random() < proportionOnFire
-  cell.style['background-color'] = cell.on
+  const threshold = getThreshold(proportionOnFire)
+  cell.on = Math.random() < threshold
+  cell.style['background-color'] = cell.on ? 'red' : 'blue'
+}
+
+// 0 -> 0, 1 -> 1, 0.5 -> 0.5
+// we want a cubic
+function getThreshold(p) {
+  return p * p * (3 - 2 * p)
 }
 
 function updateCells() {
