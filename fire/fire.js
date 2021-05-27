@@ -1,8 +1,8 @@
-// An animation of putting out a fire.
+// An interactive animation of putting out a fire.
 
 'use strict'
 
-const n = 50
+const n = 40
 const cellSize = 5
 const spacing = 0
 const stride = cellSize + spacing
@@ -10,27 +10,35 @@ const boardTop = 100
 const boardLeft = 50
 const numUpdatesPerFrame = 400
 const range = 2
-const splodgeRadius = 8
+const splodgeRadius = 12
+const initialProbabilityOfBeingRed = 0.53
+
+// An array of arrays of div elements.  The div elements are positioned
+// in a grid using the 'position: fixed' attribute.
+//
+// Each element has an 'on' property saying whether it is red (as well
+// as having the corresponding background-colour attribute).
 
 let cells = new Array(n)
 
-let board = document.getElementById('board')
+// Create the n by n set of div elements and append them straight onto
+// the document body.
 
-for (let i=0; i < n; i++) {
-  cells[i] = new Array(n)
-  let row = document.createElement('div')
-  board.append(row)
-  for (let j=0; j < n; j++) {
-    let cell = document.createElement('div')
-    row.append(cell)
-    cell.style.position = 'fixed'
-    cell.style.top =  (boardTop  + i * stride) + 'px'
-    cell.style.left = (boardLeft + j * stride) + 'px'
-    cell.style.height = cellSize + 'px'
-    cell.style.width  = cellSize + 'px'
-    cell.on = Math.random() > 0.47
-    cell.style['background-color'] = cell.on ? 'red' : 'blue'
-    cells[i][j] = cell
+function initializeCells() {
+  for (let i=0; i < n; i++) {
+    cells[i] = new Array(n)
+    for (let j=0; j < n; j++) {
+      let cell = document.createElement('div')
+      document.body.append(cell)
+      cell.style.position = 'fixed'
+      cell.style.top =  (boardTop  + i * stride) + 'px'
+      cell.style.left = (boardLeft + j * stride) + 'px'
+      cell.style.height = cellSize + 'px'
+      cell.style.width  = cellSize + 'px'
+      cell.on = Math.random() < initialProbabilityOfBeingRed
+      cell.style['background-color'] = cell.on ? 'red' : 'blue'
+      cells[i][j] = cell
+    }
   }
 }
 
@@ -38,9 +46,24 @@ function randomInt(max) {
   return Math.floor(Math.random() * max);
 }
 
+// Update the 'on' attribute (and colour) of a randomly selected cell.
+// The probability of the cell being on fire depends on how many of its
+// surrounding cells were on fire.
+
 function updateOneCell() {
   const i = randomInt(n)
   const j = randomInt(n)
+  const proportionOnFire = getProportionOnFire(i, j)
+  let cell = cells[i][j]
+  cell.on = Math.random() < getProbabitity(proportionOnFire)
+  cell.style['background-color'] = cell.on ? 'red' : 'blue'
+}
+
+// Return the proportion of neighbours (including itself) that are on fire.
+// This function clips the neighbours to the grid, rather than doing any
+// wrap-around.
+
+function getProportionOnFire(i, j) {
   const maxI = Math.min(i + range, n - 1)
   const maxJ = Math.min(j + range, n - 1)
   const minI = Math.max(i - range, 0)
@@ -51,18 +74,23 @@ function updateOneCell() {
       numOnFire += cells[ii][jj].on
     }
   }
-  const proportionOnFire = numOnFire / (maxI - minI + 1) / (maxJ - minJ + 1)
-  let cell = cells[i][j]
-  const threshold = getThreshold(proportionOnFire)
-  cell.on = Math.random() < threshold
-  cell.style['background-color'] = cell.on ? 'red' : 'blue'
+  return numOnFire / (maxI - minI + 1) / (maxJ - minJ + 1)
 }
 
-// 0 -> 0, 1 -> 1, 0.5 -> 0.5
-// we want a cubic
-function getThreshold(p) {
+// Return the probability that the cell will be red, depending on the
+// proportion of neighbours that are red.
+//
+// The function is a bit like a https://en.wikipedia.org/wiki/Sigmoid_function
+// but cheaper.
+// 
+// It is monotonic on 0 to 1 and goes through (0,0) and (1,1).
+// It is also symmetric.
+
+function getProbabitity(p) {
   return p * p * (3 - 2 * p)
 }
+
+// Respond to a mouse click by setting a circle of cells to blue.
 
 document.onpointerdown = (event) => {
   const i = Math.floor((event.y - boardTop)  / stride)
@@ -81,10 +109,15 @@ document.onpointerdown = (event) => {
   }
 }
 
+// Update the page and schedule another update.
+// The updates should happen at 60Hz.
+
 function updateCells() {
   for (let i=0; i < numUpdatesPerFrame; i++) {
     updateOneCell()
   }
   requestAnimationFrame(updateCells)
 }
+
+initializeCells()
 requestAnimationFrame(updateCells)
