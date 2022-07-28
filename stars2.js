@@ -16,7 +16,7 @@ document.body.append(div)
 let draw = SVG().addTo('body').size(winW, winH)
 
 const numStars = 240
-const starDiam = 4
+const starDiam = 15
 const boxSize = 1000
 let furthestStars = 0
 let speed = 15
@@ -78,9 +78,10 @@ function step(timestamp) {
     if (z > 0 && z < boxSize) {
       const k = 1 - z / boxSize
       const opacity = k < 0.2 ? 5 * k : 1
-      draw.circle(starDiam * boxSize / z).center(
-        star[0] / z * winW / 10 + winW / 2,
-        star[1] / z * winW / 10 + winH / 2).fill(star[3]).opacity(opacity)
+      const scale = Math.min(winW, winH) / 10
+      draw.circle(starDiam * scale / z).center(
+        star[0] / z * scale + winW / 2,
+        star[1] / z * scale + winH / 2).fill(star[3]).opacity(opacity)
     }
   }
   window.requestAnimationFrame(step)
