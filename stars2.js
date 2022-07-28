@@ -17,8 +17,8 @@ let div = document.createElement('div')
 document.body.append(div)
 let draw = SVG().addTo('body').size(winW, winH)
 
-const numStars = 640
-const starDiam = 0.5
+const numStars = 240
+const starDiam = 1
 const boxSize = 100
 let furthestStars = 0
 let speed = 15
@@ -38,10 +38,8 @@ function rndColor() {
 let stars = []
 
 function addNewStars() {
-  console.log('addNewStars:  ' + furthestStars + '  ' + eyeZ + '  ' + boxSize)
   stars = stars.filter(star => star[2] > 0)
   while (furthestStars < eyeZ + boxSize) {
-    console.log('adding')
     const h = boxSize / 2
     for (let i=0; i < numStars / 2; i++) {
       const star = [rnd(-h, h), rnd(-h, h),
@@ -62,7 +60,6 @@ draw.circle(200).center(200,100).fill('yellow').attr('foo', 6)
 
 function step(timestamp) {
   let t = timestamp / 1000
-  div.innerHTML = "t: " + t
   if (t > 20) {
     return
   }
