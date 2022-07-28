@@ -38,7 +38,7 @@ let stars = []
 // Add new stars that have potentially come into view and
 // discard stars that are now behind us.  Also sort them
 // by distance so SVG makes the nearer stars occlude the
-// further stars.
+// more distant stars.
 
 function addNewStars() {
   stars = stars.filter(star => star[2] > 0)
@@ -60,6 +60,10 @@ function hypotSq(a) {
 }
 
 draw.circle(200).center(200,100).fill('yellow').attr('foo', 6)
+
+// Update the SVG model (in response to requestAnimationFrame).
+// For simplicity, it throws away the current SVG model and
+// regenerates it from the circles array.
 
 function step(timestamp) {
   let t = timestamp / 1000
