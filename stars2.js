@@ -60,7 +60,7 @@ draw.circle(200).center(200,100).fill('yellow').attr('foo', 6)
 
 function step(timestamp) {
   let t = timestamp / 1000
-  if (t > 20) {
+  if (t > 60) {
     return
   }
   eyeZ = speed * t
