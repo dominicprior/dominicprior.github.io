@@ -72,9 +72,11 @@ function step(timestamp) {
   for (let star of stars) {
     const z = star[2] - eyeZ
     if (z > 0 && z < boxSize) {
+      const k = 1 - z / boxSize
+      const opacity = k < 0.2 ? 5 * k : 1
       draw.circle(starDiam * boxSize / z).center(
         star[0] / z * winW + winW / 2,
-        star[1] / z * winW + winH / 2).fill(star[3])
+        star[1] / z * winW + winH / 2).fill(star[3]).opacity(opacity)
     }
   }
   window.requestAnimationFrame(step)
