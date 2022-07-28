@@ -18,10 +18,10 @@ document.body.append(div)
 let draw = SVG().addTo('body').size(winW, winH)
 
 const numStars = 640
-const starDiam = 2
+const starDiam = 0.5
 const boxSize = 100
 let furthestStars = 0
-let speed = 25
+let speed = 15
 
 let eyeZ = 0
 
@@ -63,7 +63,7 @@ draw.circle(200).center(200,100).fill('yellow').attr('foo', 6)
 function step(timestamp) {
   let t = timestamp / 1000
   div.innerHTML = "t: " + t
-  if (t > 15) {
+  if (t > 20) {
     return
   }
   eyeZ = speed * t
