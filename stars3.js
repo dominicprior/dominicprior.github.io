@@ -14,7 +14,6 @@ const winH = window.innerHeight
 let div = document.createElement('div')
 document.body.append(div)
 let svg = SVG().addTo('body').size(winW, winH)
-// svg.node.contentEditable = true
 
 const numStars = 240
 const starDiam = 0.4
@@ -42,14 +41,14 @@ svg.node.onpointerdown = (event) => {
 }
 
 svg.node.onpointermove = (event) => {
-  if (event.buttons === 1) {
+  if (event.buttons === 2) {
     const dx = event.x - prevMousePos[0]
     const dy = event.y - prevMousePos[1]
     if (dx) {
-      updateDirs(eyeDir, eyeRight, dx/400)
+      updateDirs(eyeDir, eyeRight, -dx/400)
     }
     if (dy) {
-      updateDirs(eyeDir, eyeUp, -dy/400)
+      updateDirs(eyeDir, eyeUp, dy/400)
     }
   }
   prevMousePos = [event.x, event.y]
@@ -124,8 +123,8 @@ function draw() {
     const y = dot(pos, eyeUp)
     const x = dot(pos, eyeRight)
     if (z < boxSize) {
-      let tanFov = 1
-      // z += Math.sqrt(x*x + y*y + z*z) ; tanFov /= 2
+      let tanFov = 2
+      z += Math.sqrt(x*x + y*y + z*z) ; tanFov /= 2
       if (z > starDiam) {
         const scale = Math.min(winW, winH) / tanFov
         svg.circle(starDiam * scale / z).center(
