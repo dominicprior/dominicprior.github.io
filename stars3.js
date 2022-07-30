@@ -29,11 +29,12 @@ let eyeUp    = [0, 0, 1]
 
 let prevMousePos = false
 
-svg.node.keydown = (event) => {
-  console.log(event)
-  speed = 0.1
+window.addEventListener('keydown', (event) => {
+  if (event.key === ' ') {
+    speed = 1 - speed
+  }
   return false
-}
+})
 
 svg.node.onpointerdown = (event) => {
   prevMousePos = [event.x, event.y]
