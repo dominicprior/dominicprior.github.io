@@ -28,9 +28,34 @@ let eyeUp    = [0, 0, 1]
 
 let prevMousePos = false
 
+let arrowLeft = false
+let arrowRight = false
+
+let pressed = {}
+
 window.addEventListener('keydown', (event) => {
+  console.log(event)
   if (event.key === ' ') {
     speed = 1 - speed
+  }
+  pressed[event.key] = true
+  if (event.key === 'ArrowLeft') {
+    arrowLeft = true
+  }
+  if (event.key === 'ArrowRight') {
+    arrowRight = true
+  }
+  return false
+})
+
+window.addEventListener('keyup', (event) => {
+  console.log(event)
+  delete pressed[event.key];
+  if (event.key === 'ArrowLeft') {
+    arrowLeft = false
+  }
+  if (event.key === 'ArrowRight') {
+    arrowRight = false
   }
   return false
 })
@@ -123,8 +148,8 @@ function draw() {
     const y = dot(pos, eyeUp)
     const x = dot(pos, eyeRight)
     if (z < boxSize) {
-      let tanFov = 2
-      z += Math.sqrt(x*x + y*y + z*z) ; tanFov /= 2
+      let tanFov = 1.5
+      // z += 1.0 * Math.sqrt(x*x + y*y + z*z) ; tanFov /= 2
       if (z > starDiam) {
         const scale = Math.min(winW, winH) / tanFov
         svg.circle(starDiam * scale / z).center(
@@ -146,6 +171,42 @@ function step(timestamp) {
   let deltaT = t - prevT
   prevT = t
   eyePos = plus(eyePos, times(deltaT * speed, eyeDir))
+  if (pressed.ArrowLeft) {
+    updateDirs(eyeDir, eyeRight, 0.01)
+  }
+  if (pressed.ArrowRight) {
+    updateDirs(eyeDir, eyeRight, -0.01)
+  }
+  if (pressed.ArrowUp) {
+    updateDirs(eyeDir, eyeUp, -0.01)
+  }
+  if (pressed.ArrowDown) {
+    updateDirs(eyeDir, eyeUp, 0.01)
+  }
+  if (pressed.o) {
+    updateDirs(eyeRight, eyeUp, 0.01)
+  }
+  if (pressed.p) {
+    updateDirs(eyeRight, eyeUp, -0.01)
+  }
+  if (pressed.q) {
+    eyePos = plus(eyePos, times(-0.04, eyeRight))
+  }
+  if (pressed.e) {
+    eyePos = plus(eyePos, times(0.04, eyeRight))
+  }
+  if (pressed.t) {
+    eyePos = plus(eyePos, times(0.04, eyeUp))
+  }
+  if (pressed.g) {
+    eyePos = plus(eyePos, times(-0.04, eyeUp))
+  }
+  if (pressed.y) {
+    eyePos = plus(eyePos, times(0.04, eyeDir))
+  }
+  if (pressed.h) {
+    eyePos = plus(eyePos, times(-0.04, eyeDir))
+  }
   if (t > 60) {
     // return
   }
