@@ -21,6 +21,9 @@ let svg = SVG().addTo('body').size(winW, winH)
 const starDiam = 0.2
 const boxSize = 1000
 let speed = 0
+let baseSpeed = 0.04
+let warpFactor = 0
+let strafeDist = baseSpeed
 
 let eyePos   = [0, -6, 0]
 let eyeDir   = [0, 1, 0]   // facing North
@@ -154,7 +157,8 @@ function draw() {
   svg.text(`strafe: Q, E, T, G
 roll: O, P
 pitch and yaw: arrow keys
-forward and back: Y, H`).font({size: 20, fill: '#ffddcc'})
+forward and back: Y, H
+faster and slower (warp: ${warpFactor}): N, M`).font({size: 20, fill: '#ffddcc'})
 }
 
 let prevT = 0
@@ -187,22 +191,30 @@ function step(timestamp) {
     updateDirs(eyeRight, eyeUp, -0.01)
   }
   if (pressed.q) {
-    eyePos = plus(eyePos, times(-0.04, eyeRight))
+    eyePos = plus(eyePos, times(-strafeDist, eyeRight))
   }
   if (pressed.e) {
-    eyePos = plus(eyePos, times(0.04, eyeRight))
+    eyePos = plus(eyePos, times(strafeDist, eyeRight))
   }
   if (pressed.t) {
-    eyePos = plus(eyePos, times(0.04, eyeUp))
+    eyePos = plus(eyePos, times(strafeDist, eyeUp))
   }
   if (pressed.g) {
-    eyePos = plus(eyePos, times(-0.04, eyeUp))
+    eyePos = plus(eyePos, times(-strafeDist, eyeUp))
   }
   if (pressed.y) {
-    eyePos = plus(eyePos, times(0.04, eyeDir))
+    eyePos = plus(eyePos, times(strafeDist, eyeDir))
   }
   if (pressed.h) {
-    eyePos = plus(eyePos, times(-0.04, eyeDir))
+    eyePos = plus(eyePos, times(-strafeDist, eyeDir))
+  }
+  if (pressed.n) {
+    warpFactor++
+    strafeDist = baseSpeed * 1.04 ** warpFactor
+  }
+  if (pressed.m) {
+    warpFactor--
+    strafeDist = baseSpeed * 1.04 ** warpFactor
   }
   if (t > 60) {
     // return
