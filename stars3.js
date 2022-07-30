@@ -19,9 +19,9 @@ const numStars = 240
 const starDiam = 0.4
 const boxSize = 1000
 let furthestStars = 0
-let speed = 1
+let speed = 0
 
-let eyePos   = [0, 0, 0]
+let eyePos   = [0, -6, 0]
 let eyeDir   = [0, 1, 0]   // facing North
 let eyeRight = [1, 0, 0]   // screen x dir
 let eyeUp    = [0, 0, 1]
@@ -133,7 +133,7 @@ function assign(u, v) {
 }
 
 stars = []
-for (let j=2; j >= -2; j--) {
+for (let j=6; j >= -6; j--) {
   for (let i=2; i >= -2; i--) {
     stars.push([2*j, 4, 2*i, rndColor()])
   }
@@ -149,7 +149,7 @@ function draw() {
     const x = dot(pos, eyeRight)
     if (z < boxSize) {
       let tanFov = 1.5
-      // z += 1.0 * Math.sqrt(x*x + y*y + z*z) ; tanFov /= 2
+      z += 1.0 * Math.sqrt(x*x + y*y + z*z) ; tanFov /= 2
       if (z > starDiam) {
         const scale = Math.min(winW, winH) / tanFov
         svg.circle(starDiam * scale / z).center(
