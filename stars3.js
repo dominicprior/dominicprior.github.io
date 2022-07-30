@@ -14,18 +14,55 @@ const winH = window.innerHeight
 let div = document.createElement('div')
 document.body.append(div)
 let svg = SVG().addTo('body').size(winW, winH)
+// svg.node.contentEditable = true
 
-const fov = 45  // degrees - see https://threejs.org/manual/#en/fundamentals
 const numStars = 240
-const starDiam = 1
+const starDiam = 0.4
 const boxSize = 1000
 let furthestStars = 0
-let speed = 75
+let speed = 1
 
 let eyePos   = [0, 0, 0]
 let eyeDir   = [0, 1, 0]   // facing North
 let eyeRight = [1, 0, 0]   // screen x dir
 let eyeUp    = [0, 0, 1]
+
+let prevMousePos = false
+
+svg.node.keydown = (event) => {
+  console.log(event)
+  speed = 0.1
+  return false
+}
+
+svg.node.onpointerdown = (event) => {
+  prevMousePos = [event.x, event.y]
+  return false
+}
+
+svg.node.onpointermove = (event) => {
+  if (event.buttons === 1) {
+    const dx = event.x - prevMousePos[0]
+    const dy = event.y - prevMousePos[1]
+    if (dx) {
+      updateDirs(eyeDir, eyeRight, dx/400)
+    }
+    if (dy) {
+      updateDirs(eyeDir, eyeUp, -dy/400)
+    }
+  }
+  prevMousePos = [event.x, event.y]
+  return false
+}
+
+function updateDirs(u, v, angle) {
+  const c = Math.cos(angle)
+  const s = Math.sin(angle)
+  const uu = minus(times(c,u), times(s,v))
+  const vv = plus (times(s,u), times(c,v))
+  assign(u, uu)
+  assign(v, vv)
+}
 
 function rnd(a, b) {
   return a + (b - a) * Math.random()
@@ -44,6 +81,10 @@ function hypotSq(a) {
   return a[0] * a[0] + a[1] * a[1] + a[2] * a[2]
 }
 
+function plus(u, v) {
+  return [u[0] + v[0], u[1] + v[1], u[2] + v[2]]
+}
+
 function minus(u, v) {
   return [u[0] - v[0], u[1] - v[1], u[2] - v[2]]
 }
@@ -52,23 +93,24 @@ function dot(u, v) {
   return u[0] * v[0] + u[1] * v[1] + u[2] * v[2]
 }
 
-function draw(t) {
-  // eyePos[0] = t
-  const c = Math.cos(t/4)
-  const s = Math.sin(t/4)
-  let eyeDir   = [-s, c, 0]   // facing North
-  let eyeRight = [c, s, 0]   // screen x dir
-    stars = []
-  for (let j=2; j >= -2; j--) {
-    for (let i=2; i >= -2; i--) {
-      stars.push([2*j, 4, 2*i, 'pink'])
-    }
+function times(k, u) {
+  return [k * u[0], k * u[1], k * u[2]]
+}
+
+function assign(u, v) {
+  u[0] = v[0]
+  u[1] = v[1]
+  u[2] = v[2]
+}
+
+stars = []
+for (let j=2; j >= -2; j--) {
+  for (let i=2; i >= -2; i--) {
+    stars.push([2*j, 4, 2*i, rndColor()])
   }
-/*  stars = [
-          [0, 4, 0, 'pink'],
-          [0, 4, 1, 'blue'],
-          [0, 4, 2, 'red']
-] */
+}
+
+function draw() {
   svg.clear()
   stars.sort((a, b) => hypotSq(b) - hypotSq(a))
   for (let star of stars) {
@@ -77,7 +119,7 @@ function draw(t) {
     const y = dot(pos, eyeUp)
     const x = dot(pos, eyeRight)
     if (z < boxSize) {
-      let tanFov = 3
+      let tanFov = 1
       z += Math.sqrt(x*x + y*y + z*z) ; tanFov /= 2
       const scale = Math.min(winW, winH) / tanFov
       svg.circle(starDiam * scale / z).center(
@@ -91,12 +133,17 @@ function draw(t) {
 // For simplicity, it throws away the current SVG model and
 // regenerates it from the circles array.
 
+let prevT = 0
+
 function step(timestamp) {
   let t = timestamp / 1000
-  if (t > 6) {
-    return
+  let deltaT = t - prevT
+  prevT = t
+  eyePos = plus(eyePos, times(deltaT * speed, eyeDir))
+  if (t > 60) {
+    // return
   }
-  draw(t)
+  draw()
   window.requestAnimationFrame(step)
 }
 
