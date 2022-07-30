@@ -28,35 +28,18 @@ let eyeUp    = [0, 0, 1]
 
 let prevMousePos = false
 
-let arrowLeft = false
-let arrowRight = false
-
 let pressed = {}
 
 window.addEventListener('keydown', (event) => {
-  console.log(event)
   if (event.key === ' ') {
     speed = 1 - speed
   }
   pressed[event.key] = true
-  if (event.key === 'ArrowLeft') {
-    arrowLeft = true
-  }
-  if (event.key === 'ArrowRight') {
-    arrowRight = true
-  }
   return false
 })
 
 window.addEventListener('keyup', (event) => {
-  console.log(event)
   delete pressed[event.key];
-  if (event.key === 'ArrowLeft') {
-    arrowLeft = false
-  }
-  if (event.key === 'ArrowRight') {
-    arrowRight = false
-  }
   return false
 })
 
@@ -158,6 +141,10 @@ function draw() {
       }
     }
   }
+  svg.text(`strafe: Q, E, T, G
+roll: O, P
+pitch and yaw: arrow keys
+forward and back: Y, H`).font({size: 20, fill: '#ffddcc'})
 }
 
 // Update the SVG model (in response to requestAnimationFrame).
@@ -216,4 +203,4 @@ function step(timestamp) {
 
 window.requestAnimationFrame(step)
 
-// draw(0)
+// draw()
