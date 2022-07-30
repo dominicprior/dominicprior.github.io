@@ -18,7 +18,7 @@ let div = document.createElement('div')
 document.body.append(div)
 let svg = SVG().addTo('body').size(winW, winH)
 
-const starDiam = 0.4
+const starDiam = 0.2
 const boxSize = 1000
 let speed = 0
 
@@ -117,11 +117,20 @@ function assign(u, v) {
 }
 
 stars = []
+/*
 for (let j=6; j >= -6; j--) {
   for (let i=2; i >= -2; i--) {
     stars.push([2*j, 4, 2*i, rndColor()])
   }
 }
+*/
+const h = 5
+for (let i=0; i < 200; i++) {
+  stars.push([rnd(-h, h), rnd(0, 2 * h),
+    rnd(-h, h),
+    rndColor()])
+}
+
 
 function draw() {
   svg.clear()
