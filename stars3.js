@@ -79,7 +79,7 @@ function rndColor() {
 let stars = []
 
 function hypotSq(a) {
-  return a[0] * a[0] + a[1] * a[1] + a[2] * a[2]
+  return dot(a, a)
 }
 
 function plus(u, v) {
@@ -92,6 +92,10 @@ function minus(u, v) {
 
 function dot(u, v) {
   return u[0] * v[0] + u[1] * v[1] + u[2] * v[2]
+}
+
+function distSq(u, v) {
+  return hypotSq(minus(u, v))
 }
 
 function times(k, u) {
@@ -113,7 +117,7 @@ for (let j=2; j >= -2; j--) {
 
 function draw() {
   svg.clear()
-  stars.sort((a, b) => hypotSq(b) - hypotSq(a))
+  stars.sort((a, b) => distSq(b, eyePos) - distSq(a, eyePos))
   for (let star of stars) {
     const pos = minus(star, eyePos)
     let z = dot(pos, eyeDir)
@@ -121,11 +125,13 @@ function draw() {
     const x = dot(pos, eyeRight)
     if (z < boxSize) {
       let tanFov = 1
-      z += Math.sqrt(x*x + y*y + z*z) ; tanFov /= 2
-      const scale = Math.min(winW, winH) / tanFov
-      svg.circle(starDiam * scale / z).center(
-        x / z * scale + winW / 2,
-        - y / z * scale + winH / 2).fill(star[3])
+      // z += Math.sqrt(x*x + y*y + z*z) ; tanFov /= 2
+      if (z > starDiam) {
+        const scale = Math.min(winW, winH) / tanFov
+        svg.circle(starDiam * scale / z).center(
+          x / z * scale + winW / 2,
+          - y / z * scale + winH / 2).fill(star[3])
+      }
     }
   }
 }
