@@ -156,8 +156,9 @@ function draw() {
   }
   svg.text(`strafe: Q, E, T, G
 roll: O, P
-pitch and yaw: arrow keys
-forward and back: Y, H
+yaw: A, D, left, right
+pitch: Y, H
+forward and back: W, S, up, down
 faster and slower (warp: ${warpFactor}): N, M`).font({size: 20, fill: '#ffddcc'})
 }
 
@@ -172,16 +173,16 @@ function step(timestamp) {
   let deltaT = t - prevT
   prevT = t
   eyePos = plus(eyePos, times(deltaT * speed, eyeDir))
-  if (pressed.ArrowLeft) {
+  if (pressed.ArrowLeft || pressed.a) {
     updateDirs(eyeDir, eyeRight, 0.01)
   }
-  if (pressed.ArrowRight) {
+  if (pressed.ArrowRight || pressed.d) {
     updateDirs(eyeDir, eyeRight, -0.01)
   }
-  if (pressed.ArrowUp) {
+  if (pressed.y) {
     updateDirs(eyeDir, eyeUp, -0.01)
   }
-  if (pressed.ArrowDown) {
+  if (pressed.h) {
     updateDirs(eyeDir, eyeUp, 0.01)
   }
   if (pressed.o) {
@@ -202,10 +203,10 @@ function step(timestamp) {
   if (pressed.g) {
     eyePos = plus(eyePos, times(-strafeDist, eyeUp))
   }
-  if (pressed.y) {
+  if (pressed.ArrowUp || pressed.w) {
     eyePos = plus(eyePos, times(strafeDist, eyeDir))
   }
-  if (pressed.h) {
+  if (pressed.ArrowDown || pressed.s) {
     eyePos = plus(eyePos, times(-strafeDist, eyeDir))
   }
   if (pressed.n) {
