@@ -174,7 +174,9 @@ function draw(eyePos, eyeDir, eyeRight, eyeUp, scrPos, scale, clip) {
       }
     }
   }
-  group.clipWith(clip)
+  if (clip) {
+    group.clipWith(clip)
+  }
 }
 
 function writeInstructions() {
@@ -183,8 +185,12 @@ roll: O, P
 yaw: A, D, left, right
 pitch: Y, H
 forward and back: W, S, up, down
-faster and slower (warp: ${warpFactor}): N, M`).font({size: 20, fill: '#ffddcc'})
+faster and slower (warp: ${warpFactor}): N, M
+one viewport or two: 1, 2`).
+  font({size: 20, fill: '#ffddcc'})
 }
+
+let numPortals = 1
 
 let prevT = 0
 let prevView = 'no view yet'
@@ -212,23 +218,29 @@ function step(timestamp) {
   if (pressed.ArrowDown || pressed.s) { eyePos = plus(eyePos, times(-strafeDist, eyeDir)) }
   if (pressed.n) { warpFactor++; strafeDist = baseSpeed * 1.04 ** warpFactor  }
   if (pressed.m) { warpFactor--; strafeDist = baseSpeed * 1.04 ** warpFactor  }
+  if (pressed['1']) { numPortals = 1 }
+  if (pressed['2']) { numPortals = 2 }
 
-  let newView = _.cloneDeep([eyePos, eyeDir, eyeRight, eyeUp, warpFactor])
+  let newView = _.cloneDeep([eyePos, eyeDir, eyeRight, eyeUp, warpFactor, numPortals])
   if (! _.isEqual(newView, prevView)) {
     svg.clear()
     stars.sort((a, b) => distSq(b, eyePos) - distSq(a, eyePos))
 
-    let circle = svg.circle(minWH).center(winW / 4, winH / 2).stroke('blue')
-    svg.add(circle.clone())
-    let clip = svg.clip().add(circle)
-    draw(eyePos, eyeDir, eyeRight, eyeUp, [winW / 4, winH / 2], minWH / 2, clip)
+    if (numPortals === 2) {
+      let circle = svg.circle(minWH).center(winW / 4, winH / 2).stroke('blue')
+      svg.add(circle.clone())
+      let clip = svg.clip().add(circle)
+      draw(eyePos, eyeDir, eyeRight, eyeUp, [winW / 4, winH / 2], minWH / 2, clip)
 
-    let circle2 = svg.circle(minWH).center(3 * winW / 4, winH / 2).stroke('blue')
-    svg.add(circle2.clone())
-    let clip2 = svg.clip().add(circle2)
-    draw(eyePos, times(-1, eyeDir), times(-1, eyeRight), eyeUp,
-      [3 * winW / 4, winH / 2], minWH / 2, clip2)
-
+      let circle2 = svg.circle(minWH).center(3 * winW / 4, winH / 2).stroke('blue')
+      svg.add(circle2.clone())
+      let clip2 = svg.clip().add(circle2)
+      draw(eyePos, times(-1, eyeDir), times(-1, eyeRight), eyeUp,
+        [3 * winW / 4, winH / 2], minWH / 2, clip2)
+    }
+    else {
+      draw(eyePos, eyeDir, eyeRight, eyeUp, [winW / 2, winH / 2], minWH / 2, false)
+    }
     writeInstructions()
   }
   prevView = newView
