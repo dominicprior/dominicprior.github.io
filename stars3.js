@@ -14,6 +14,7 @@
 
 const winW = window.innerWidth
 const winH = window.innerHeight
+const minWH = Math.min(winW, winH)
 let div = document.createElement('div')
 document.body.append(div)
 let svg = SVG().addTo('body').size(winW, winH)
@@ -156,27 +157,24 @@ createRandomCube()
 // createLongLat()
 // createGrid()
 
-function draw(eyePos, eyeDir, eyeRight, eyeUp, clip) {
+function draw(eyePos, eyeDir, eyeRight, eyeUp, scrPos, scale, clip) {
   let group = svg.group()
 
-  stars.sort((a, b) => distSq(b, eyePos) - distSq(a, eyePos))
   for (let star of stars) {
     const pos = minus(star, eyePos)
     let z = dot(pos, eyeDir)
     const y = dot(pos, eyeUp)
     const x = dot(pos, eyeRight)
     if (z < boxSize) {
-      let tanFov = 4
-      z += 1.0 * Math.sqrt(x*x + y*y + z*z) ; tanFov /= 2
+      z += 1.0 * Math.sqrt(x*x + y*y + z*z)
       if (z > starDiam) {
-        const scale = Math.min(winW, winH) / tanFov
         group.circle(starDiam * scale / z).center(
-          x / z * scale + winW / 2,
-          - y / z * scale + winH / 2).fill(star[3])
+          x / z * scale + scrPos[0],
+          - y / z * scale + scrPos[1]).fill(star[3])
       }
     }
   }
-  // group.clipWith(clip)
+  group.clipWith(clip)
 }
 
 function writeInstructions() {
@@ -218,9 +216,19 @@ function step(timestamp) {
   let newView = _.cloneDeep([eyePos, eyeDir, eyeRight, eyeUp, warpFactor])
   if (! _.isEqual(newView, prevView)) {
     svg.clear()
-    let circle = svg.circle(Math.min(winW, winH)).center(winW/2, winH/2)
+    stars.sort((a, b) => distSq(b, eyePos) - distSq(a, eyePos))
+
+    let circle = svg.circle(minWH).center(winW / 4, winH / 2).stroke('blue')
+    svg.add(circle.clone())
     let clip = svg.clip().add(circle)
-    draw(eyePos, eyeDir, eyeRight, eyeUp, clip)
+    draw(eyePos, eyeDir, eyeRight, eyeUp, [winW / 4, winH / 2], minWH / 2, clip)
+
+    let circle2 = svg.circle(minWH).center(3 * winW / 4, winH / 2).stroke('blue')
+    svg.add(circle2.clone())
+    let clip2 = svg.clip().add(circle2)
+    draw(eyePos, times(-1, eyeDir), times(-1, eyeRight), eyeUp,
+      [3 * winW / 4, winH / 2], minWH / 2, clip2)
+
     writeInstructions()
   }
   prevView = newView
