@@ -153,6 +153,8 @@ function createLongLat() {
 
 createRandomCube()
 
+let fishEye = true
+
 function draw(eyePos, eyeDir, eyeRight, eyeUp, scrPos, scale, clip) {
   let group = svg.group()
 
@@ -162,11 +164,13 @@ function draw(eyePos, eyeDir, eyeRight, eyeUp, scrPos, scale, clip) {
     const y = dot(pos, eyeUp)
     const x = dot(pos, eyeRight)
     if (z < boxSize) {
-      z += 1.0 * Math.sqrt(x*x + y*y + z*z)
+      if (fishEye) {
+        z += 1.0 * Math.sqrt(x*x + y*y + z*z)
+      }
       if (z > starDiam) {
-        group.circle(starDiam * scale / z).center(
-          x / z * scale + scrPos[0],
-          - y / z * scale + scrPos[1]).fill(star[3])
+        group.circle(starDiam * scale / 2 / z).center(
+          x / z * scale / 2 + scrPos[0],
+          - y / z * scale / 2 + scrPos[1]).fill(star[3])
       }
     }
   }
@@ -183,11 +187,14 @@ pitch: Y, H
 forward and back: W, S, up, down
 faster and slower (warp: ${warpFactor}): N, M
 one viewport or two: 1, 2
-different stars: 7, 8, 9`).
+different stars: 7, 8, 9
+fisheye, not fisheye: 5, 6
+zoom in and out: 3, 4`).
   font({size: 20, fill: '#ffddcc'})
 }
 
 let numPortals = 1
+let scale = minWH  // the amount of screen that subtends 90 degrees at the eye pos.
 
 let prevT = 0
 let prevView = 'no view yet'
@@ -217,6 +224,10 @@ function step(timestamp) {
   if (pressed.m) { warpFactor--; strafeDist = baseSpeed * 1.04 ** warpFactor  }
   if (pressed['1']) { numPortals = 1 }
   if (pressed['2']) { numPortals = 2 }
+  if (pressed['3']) { eyePos[0] += 1e-6; scale *= 1.05  }
+  if (pressed['4']) { eyePos[0] += 1e-6; scale /= 1.05  }
+  if (pressed['5']) { eyePos[0] += 1e-6; fishEye = true  }
+  if (pressed['6']) { eyePos[0] += 1e-6; fishEye = false }
   if (pressed['7']) { stars = []; eyePos[0] += 1e-6; createRandomCube()    }
   if (pressed['8']) { stars = []; eyePos[0] += 1e-6; createLongLat() }
   if (pressed['9']) { stars = []; eyePos[0] += 1e-6; createGrid() }
@@ -230,16 +241,16 @@ function step(timestamp) {
       let circle = svg.circle(minWH).center(winW / 4, winH / 2).stroke('blue')
       svg.add(circle.clone())
       let clip = svg.clip().add(circle)
-      draw(eyePos, eyeDir, eyeRight, eyeUp, [winW / 4, winH / 2], minWH / 2, clip)
+      draw(eyePos, eyeDir, eyeRight, eyeUp, [winW / 4, winH / 2], scale, clip)
 
       let circle2 = svg.circle(minWH).center(3 * winW / 4, winH / 2).stroke('blue')
       svg.add(circle2.clone())
       let clip2 = svg.clip().add(circle2)
       draw(eyePos, times(-1, eyeDir), times(-1, eyeRight), eyeUp,
-        [3 * winW / 4, winH / 2], minWH / 2, clip2)
+        [3 * winW / 4, winH / 2], scale, clip2)
     }
     else {
-      draw(eyePos, eyeDir, eyeRight, eyeUp, [winW / 2, winH / 2], minWH / 2, false)
+      draw(eyePos, eyeDir, eyeRight, eyeUp, [winW / 2, winH / 2], scale, false)
     }
     writeInstructions()
   }
