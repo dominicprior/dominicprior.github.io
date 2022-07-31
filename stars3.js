@@ -178,50 +178,20 @@ function step(timestamp) {
   let deltaT = t - prevT
   prevT = t
   eyePos = plus(eyePos, times(deltaT * speed, eyeDir))
-  if (pressed.ArrowLeft || pressed.a) {
-    updateDirs(eyeDir, eyeRight, 0.01)
-  }
-  if (pressed.ArrowRight || pressed.d) {
-    updateDirs(eyeDir, eyeRight, -0.01)
-  }
-  if (pressed.y) {
-    updateDirs(eyeDir, eyeUp, -0.01)
-  }
-  if (pressed.h) {
-    updateDirs(eyeDir, eyeUp, 0.01)
-  }
-  if (pressed.o) {
-    updateDirs(eyeRight, eyeUp, 0.01)
-  }
-  if (pressed.p) {
-    updateDirs(eyeRight, eyeUp, -0.01)
-  }
-  if (pressed.q) {
-    eyePos = plus(eyePos, times(-strafeDist, eyeRight))
-  }
-  if (pressed.e) {
-    eyePos = plus(eyePos, times(strafeDist, eyeRight))
-  }
-  if (pressed.t) {
-    eyePos = plus(eyePos, times(strafeDist, eyeUp))
-  }
-  if (pressed.g) {
-    eyePos = plus(eyePos, times(-strafeDist, eyeUp))
-  }
-  if (pressed.ArrowUp || pressed.w) {
-    eyePos = plus(eyePos, times(strafeDist, eyeDir))
-  }
-  if (pressed.ArrowDown || pressed.s) {
-    eyePos = plus(eyePos, times(-strafeDist, eyeDir))
-  }
-  if (pressed.n) {
-    warpFactor++
-    strafeDist = baseSpeed * 1.04 ** warpFactor
-  }
-  if (pressed.m) {
-    warpFactor--
-    strafeDist = baseSpeed * 1.04 ** warpFactor
-  }
+  if (pressed.ArrowLeft || pressed.a) {  updateDirs(eyeDir, eyeRight, 0.01)  }
+  if (pressed.ArrowRight || pressed.d) { updateDirs(eyeDir, eyeRight, -0.01) }
+  if (pressed.y) { updateDirs(eyeDir, eyeUp, -0.01) }
+  if (pressed.h) { updateDirs(eyeDir, eyeUp, 0.01)  }
+  if (pressed.o) { updateDirs(eyeRight, eyeUp, 0.01) }
+  if (pressed.p) { updateDirs(eyeRight, eyeUp, -0.01) }
+  if (pressed.q) { eyePos = plus(eyePos, times(-strafeDist, eyeRight)) }
+  if (pressed.e) { eyePos = plus(eyePos, times(strafeDist, eyeRight))  }
+  if (pressed.t) { eyePos = plus(eyePos, times(strafeDist, eyeUp))  }
+  if (pressed.g) { eyePos = plus(eyePos, times(-strafeDist, eyeUp)) }
+  if (pressed.ArrowUp || pressed.w) { eyePos = plus(eyePos, times(strafeDist, eyeDir)) }
+  if (pressed.ArrowDown || pressed.s) { eyePos = plus(eyePos, times(-strafeDist, eyeDir)) }
+  if (pressed.n) { warpFactor++; strafeDist = baseSpeed * 1.04 ** warpFactor  }
+  if (pressed.m) { warpFactor--; strafeDist = baseSpeed * 1.04 ** warpFactor  }
   if (t > 60) {
     // return
   }
