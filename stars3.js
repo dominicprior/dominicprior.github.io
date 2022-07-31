@@ -17,7 +17,6 @@ const winH = window.innerHeight
 let div = document.createElement('div')
 document.body.append(div)
 let svg = SVG().addTo('body').size(winW, winH)
-let group = svg.group()
 
 const starDiam = 0.2
 const boxSize = 1000
@@ -157,12 +156,8 @@ createRandomCube()
 // createLongLat()
 // createGrid()
 
-function draw() {
-  svg.clear()
-  let circle = svg.circle(Math.min(winW, winH)).center(winW/2, winH/2)
-  let clip = svg.clip().add(circle)
-  group.clear()
-  group = svg.group()
+function draw(eyePos, eyeDir, eyeRight, eyeUp, clip) {
+  let group = svg.group()
 
   stars.sort((a, b) => distSq(b, eyePos) - distSq(a, eyePos))
   for (let star of stars) {
@@ -182,6 +177,9 @@ function draw() {
     }
   }
   // group.clipWith(clip)
+}
+
+function writeInstructions() {
   svg.text(`strafe: Q, E, T, G
 roll: O, P
 yaw: A, D, left, right
@@ -219,7 +217,11 @@ function step(timestamp) {
 
   let newView = _.cloneDeep([eyePos, eyeDir, eyeRight, eyeUp, warpFactor])
   if (! _.isEqual(newView, prevView)) {
-    draw()
+    svg.clear()
+    let circle = svg.circle(Math.min(winW, winH)).center(winW/2, winH/2)
+    let clip = svg.clip().add(circle)
+    draw(eyePos, eyeDir, eyeRight, eyeUp, clip)
+    writeInstructions()
   }
   prevView = newView
   window.requestAnimationFrame(step)
