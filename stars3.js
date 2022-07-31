@@ -171,6 +171,7 @@ faster and slower (warp: ${warpFactor}): N, M`).font({size: 20, fill: '#ffddcc'}
 }
 
 let prevT = 0
+let prevView = 'no view yet'
 
 // Update the SVG model.
 // For simplicity, we throw away the current SVG model and
@@ -195,13 +196,13 @@ function step(timestamp) {
   if (pressed.ArrowDown || pressed.s) { eyePos = plus(eyePos, times(-strafeDist, eyeDir)) }
   if (pressed.n) { warpFactor++; strafeDist = baseSpeed * 1.04 ** warpFactor  }
   if (pressed.m) { warpFactor--; strafeDist = baseSpeed * 1.04 ** warpFactor  }
-  if (t > 60) {
-    // return
+
+  let newView = _.cloneDeep([eyePos, eyeDir, eyeRight, eyeUp, warpFactor])
+  if (! _.isEqual(newView, prevView)) {
+    draw()
   }
-  draw()
+  prevView = newView
   window.requestAnimationFrame(step)
 }
 
 window.requestAnimationFrame(step)
-
-// draw()
