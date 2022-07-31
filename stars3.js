@@ -121,21 +121,41 @@ function assign(u, v) {
 }
 
 stars = []
-/*
-for (let j=6; j >= -6; j--) {
-  for (let i=2; i >= -2; i--) {
-    stars.push([2*j, 4, 2*i, rndColor()])
+
+function createGrid() {
+  for (let j=6; j >= -6; j--) {
+    for (let i=2; i >= -2; i--) {
+      stars.push([2*j, 4, 2*i, rndColor()])
+    }
   }
 }
-*/
-const h = 5
-for (let i=0; i < 200; i++) {
-  stars.push([rnd(-h, h), rnd(0, 2 * h),
-    rnd(-h, h),
-    rndColor()])
+
+function createRandomCube() {
+  const h = 5
+  for (let i=0; i < 200; i++) {
+    stars.push([rnd(-h, h), rnd(0, 2 * h),
+      rnd(-h, h),
+      rndColor()])
+  }
 }
 
+function createLongLat() {
+  for (let lat = -6; lat <= 6; lat++) {
+    const a = Math.PI / 12 * lat
+    for (let long = 0; long < 12; long++) {
+      const b = Math.PI / 6 * long
+      stars.push([
+        2 * Math.cos(a) * Math.cos(b),
+        2 * Math.sin(a),
+        2 * Math.cos(a) * Math.sin(b),
+        rndColor()])
+    }
+  }
+}
 
+createRandomCube()
+// createLongLat()
+// createGrid()
 
 function draw() {
   svg.clear()
