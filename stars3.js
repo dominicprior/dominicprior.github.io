@@ -17,6 +17,7 @@ const winH = window.innerHeight
 let div = document.createElement('div')
 document.body.append(div)
 let svg = SVG().addTo('body').size(winW, winH)
+let group = svg.group()
 
 const starDiam = 0.2
 const boxSize = 1000
@@ -134,9 +135,12 @@ for (let i=0; i < 200; i++) {
     rndColor()])
 }
 
+let circle = svg.circle(Math.min(winW, winH)).center(winW/2, winH/2)
+let clip = svg.clip().add(circle)
+
 
 function draw() {
-  svg.clear()
+  group.clear()
   stars.sort((a, b) => distSq(b, eyePos) - distSq(a, eyePos))
   for (let star of stars) {
     const pos = minus(star, eyePos)
@@ -148,12 +152,13 @@ function draw() {
       z += 1.0 * Math.sqrt(x*x + y*y + z*z) ; tanFov /= 2
       if (z > starDiam) {
         const scale = Math.min(winW, winH) / tanFov
-        svg.circle(starDiam * scale / z).center(
+        group.circle(starDiam * scale / z).center(
           x / z * scale + winW / 2,
           - y / z * scale + winH / 2).fill(star[3])
       }
     }
   }
+  // group.clipWith(clip)
   svg.text(`strafe: Q, E, T, G
 roll: O, P
 yaw: A, D, left, right
