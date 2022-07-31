@@ -26,7 +26,7 @@ let baseSpeed = 0.04
 let warpFactor = 0
 let strafeDist = baseSpeed
 
-let eyePos   = [0, -6, 0]
+let eyePos   = [0, 0, 0]
 let eyeDir   = [0, 1, 0]   // facing North
 let eyeRight = [1, 0, 0]   // screen x dir
 let eyeUp    = [0, 0, 1]
