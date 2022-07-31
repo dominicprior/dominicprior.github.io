@@ -151,7 +151,7 @@ function draw() {
     const y = dot(pos, eyeUp)
     const x = dot(pos, eyeRight)
     if (z < boxSize) {
-      let tanFov = 1.5
+      let tanFov = 4
       z += 1.0 * Math.sqrt(x*x + y*y + z*z) ; tanFov /= 2
       if (z > starDiam) {
         const scale = Math.min(winW, winH) / tanFov
