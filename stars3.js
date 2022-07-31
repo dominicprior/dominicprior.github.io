@@ -120,8 +120,6 @@ function assign(u, v) {
   u[2] = v[2]
 }
 
-stars = []
-
 function createGrid() {
   for (let j=6; j >= -6; j--) {
     for (let i=2; i >= -2; i--) {
@@ -154,8 +152,6 @@ function createLongLat() {
 }
 
 createRandomCube()
-// createLongLat()
-// createGrid()
 
 function draw(eyePos, eyeDir, eyeRight, eyeUp, scrPos, scale, clip) {
   let group = svg.group()
@@ -186,7 +182,8 @@ yaw: A, D, left, right
 pitch: Y, H
 forward and back: W, S, up, down
 faster and slower (warp: ${warpFactor}): N, M
-one viewport or two: 1, 2`).
+one viewport or two: 1, 2
+different stars: 7, 8, 9`).
   font({size: 20, fill: '#ffddcc'})
 }
 
@@ -220,6 +217,9 @@ function step(timestamp) {
   if (pressed.m) { warpFactor--; strafeDist = baseSpeed * 1.04 ** warpFactor  }
   if (pressed['1']) { numPortals = 1 }
   if (pressed['2']) { numPortals = 2 }
+  if (pressed['7']) { stars = []; eyePos[0] += 1e-6; createRandomCube()    }
+  if (pressed['8']) { stars = []; eyePos[0] += 1e-6; createLongLat() }
+  if (pressed['9']) { stars = []; eyePos[0] += 1e-6; createGrid() }
 
   let newView = _.cloneDeep([eyePos, eyeDir, eyeRight, eyeUp, warpFactor, numPortals])
   if (! _.isEqual(newView, prevView)) {
