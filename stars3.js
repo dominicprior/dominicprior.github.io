@@ -135,12 +135,15 @@ for (let i=0; i < 200; i++) {
     rndColor()])
 }
 
-let circle = svg.circle(Math.min(winW, winH)).center(winW/2, winH/2)
-let clip = svg.clip().add(circle)
 
 
 function draw() {
+  svg.clear()
+  let circle = svg.circle(Math.min(winW, winH)).center(winW/2, winH/2)
+  let clip = svg.clip().add(circle)
   group.clear()
+  group = svg.group()
+
   stars.sort((a, b) => distSq(b, eyePos) - distSq(a, eyePos))
   for (let star of stars) {
     const pos = minus(star, eyePos)
