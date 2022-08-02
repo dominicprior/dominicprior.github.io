@@ -94,6 +94,18 @@ function hypotSq(a) {
   return dot(a, a)
 }
 
+function normalize(u) {
+  return times(1 / Math.sqrt(hypotSq(u)), u)
+}
+
+function cross(u, v) {
+  return [
+    u[1] * v[2] - u[2] * v[1],
+    u[2] * v[0] - u[0] * v[2],
+    u[0] * v[1] - u[1] * v[0]
+  ]
+}
+
 function plus(u, v) {
   return [u[0] + v[0], u[1] + v[1], u[2] + v[2]]
 }
