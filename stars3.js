@@ -276,6 +276,22 @@ function step(timestamp) {
         [3 * winW / 4, winH / 2], scale, circle2)
     }
     else if (numPortals === 5) {
+      /*
+      1. Calculate where the red and cyan stars will land.
+      2. Move and scale so the cyan star matches in both portals
+         and the red star is the same height as the blue star.
+      3. Calculate the radius of the three arcs.
+      4. Create the path with the three arcs and use it as the clip.
+      */
+      /*
+      let path = svg.path(['M', 50, 60,
+    'A', 70,50,  // semi radii
+    0,  // rotation
+    0,  // large arc
+    0,
+    190, 60,
+    'z']).stroke('red').fill('blue')
+*/
       let cx = winW * 0.5
       let cy = winH * 0.0895
       let k = 0.49
