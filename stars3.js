@@ -177,7 +177,10 @@ createRandomCube()
 
 let fishEye = true
 
-function draw(eyePos, eyeDir, eyeRight, eyeUp, scrPos, scale, clip) {
+function draw(eyePos, eyeDir, eyeRight, eyeUp, scrPos, scale, clipShape) {
+  if (clipShape) {
+    svg.add(clipShape.clone())
+  }
   eyeDir   = normalize(eyeDir)
   eyeRight = normalize(eyeRight)
   eyeUp    = normalize(eyeUp)
@@ -199,7 +202,8 @@ function draw(eyePos, eyeDir, eyeRight, eyeUp, scrPos, scale, clip) {
       }
     }
   }
-  if (clip) {
+  if (clipShape) {
+    let clip = svg.clip().add(clipShape)
     group.clipWith(clip)
   }
 }
@@ -264,15 +268,11 @@ function step(timestamp) {
 
     if (numPortals === 2) {
       let circle = svg.circle(minWH).center(winW / 4, winH / 2).stroke('blue')
-      svg.add(circle.clone())
-      let clip = svg.clip().add(circle)
-      draw(eyePos, eyeDir, eyeRight, eyeUp, [winW / 4, winH / 2], scale, clip)
+      draw(eyePos, eyeDir, eyeRight, eyeUp, [winW / 4, winH / 2], scale, circle)
 
       let circle2 = svg.circle(minWH).center(3 * winW / 4, winH / 2).stroke('blue')
-      svg.add(circle2.clone())
-      let clip2 = svg.clip().add(circle2)
       draw(eyePos, times(-1, eyeDir), times(-1, eyeRight), eyeUp,
-        [3 * winW / 4, winH / 2], scale, clip2)
+        [3 * winW / 4, winH / 2], scale, circle2)
     }
     else if (numPortals === 5) {
       const upRight = plus(eyeUp, eyeRight)
