@@ -163,6 +163,16 @@ function createLongLat() {
   }
 }
 
+function createOctant() {
+  stars.push([2, -2, 2, 'white'])
+  stars.push([0, -2, 0, 'red'])
+  stars.push([2, -2, 0, 'yellow'])
+  stars.push([2, 0, 0, 'green'])
+  stars.push([2, 0, 2, 'cyan'])
+  stars.push([0, 0, 2, 'blue'])
+  stars.push([0, -2, 2, 'magenta'])
+}
+
 createRandomCube()
 
 let fishEye = true
