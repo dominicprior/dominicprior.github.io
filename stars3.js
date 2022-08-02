@@ -274,7 +274,7 @@ function step(timestamp) {
       draw(eyePos, times(-1, eyeDir), times(-1, eyeRight), eyeUp,
         [3 * winW / 4, winH / 2], scale, clip2)
     }
-    if (numPortals === 5) {
+    else if (numPortals === 5) {
       const upRight = plus(eyeUp, eyeRight)
       const newEyeDir = normalize(minus(upRight, eyeDir))
       const newEyeUp  = normalize(times(-1, plus(upRight, times(2, eyeDir))))
