@@ -168,6 +168,9 @@ createRandomCube()
 let fishEye = true
 
 function draw(eyePos, eyeDir, eyeRight, eyeUp, scrPos, scale, clip) {
+  eyeDir   = normalize(eyeDir)
+  eyeRight = normalize(eyeRight)
+  eyeUp    = normalize(eyeUp)
   let group = svg.group()
 
   for (let star of stars) {
