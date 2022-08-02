@@ -276,12 +276,19 @@ function step(timestamp) {
         [3 * winW / 4, winH / 2], scale, circle2)
     }
     else if (numPortals === 5) {
+      let circle = svg.circle(minWH).center(winW / 4, winH / 2).stroke('blue')
+      draw(eyePos, eyeDir, eyeRight, eyeUp, [winW / 4, winH / 2], scale, circle)
+
+      let cx = winW * 0.55
+      let cy = winH * 0.089
+      let k = 0.49
+      let circle2 = svg.circle(minWH * 0.52 * k).center(cx, cy).stroke('blue')
       const upRight = plus(eyeUp, eyeRight)
       const newEyeDir = normalize(minus(upRight, eyeDir))
       const newEyeUp  = normalize(times(-1, plus(upRight, times(2, eyeDir))))
       const newEyeRight = cross(newEyeDir, newEyeUp)
       draw(eyePos, newEyeDir, plus(newEyeRight, newEyeUp), minus(newEyeUp, newEyeRight),
-        [winW / 2, winH / 2], scale, false)
+        [cx, cy], scale * k, circle2)
     }
     else {
       draw(eyePos, eyeDir, eyeRight, eyeUp, [winW / 2, winH / 2], scale, false)
