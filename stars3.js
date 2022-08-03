@@ -15,9 +15,12 @@
 const winW = window.innerWidth
 const winH = window.innerHeight
 const minWH = Math.min(winW, winH)
+const midX = winW / 2
+const midY = winH / 2
 let div = document.createElement('div')
 document.body.append(div)
 let svg = SVG().addTo('body').size(winW, winH)
+const sqrt = Math.sqrt
 
 const starDiam = 0.2
 const boxSize = 1000
@@ -95,7 +98,7 @@ function hypotSq(a) {
 }
 
 function normalize(u) {
-  return times(1 / Math.sqrt(hypotSq(u)), u)
+  return times(1 / sqrt(hypotSq(u)), u)
 }
 
 function cross(u, v) {
@@ -193,7 +196,7 @@ function draw(eyePos, eyeDir, eyeRight, eyeUp, scrPos, scale, clipShape) {
     const x = dot(pos, eyeRight)
     if (z < boxSize) {
       if (fishEye) {
-        z += 1.0 * Math.sqrt(x*x + y*y + z*z)
+        z += 1.0 * sqrt(x*x + y*y + z*z)
       }
       if (z > starDiam) {
         group.circle(starDiam * scale / 2 / z).center(
@@ -277,7 +280,7 @@ function step(timestamp) {
     }
     else if (numPortals === 5) {
       /*
-      1. Calculate where the red and cyan stars will land.
+      1. Calculate where the red [0, -2, 0] and cyan [2, 0, 2] stars will land.
       2. Move and scale so the cyan star matches in both portals
          and the red star is the same height as the blue star.
       3. Calculate the radius of the three arcs.
@@ -292,19 +295,37 @@ function step(timestamp) {
     190, 60,
     'z']).stroke('red').fill('blue')
 */
-      let cx = winW * 0.5
-      let cy = winH * 0.0895
-      let k = 0.49
-      let circle2 = svg.circle(minWH * 0.52 * k).center(cx, cy).stroke('blue')
+      let denom = 1 / (1 + sqrt(3)) + 1 / (2 + sqrt(6))   // red x minus cyan x in pre-screen-scaling units
+      let numer = minWH * (2 - sqrt(2)) / 4   // red x minus cyan x in pixels.  The portal has to tuck in the corner.
+      let q = numer / denom    // new name for the scale for converting from pre-scaling to pixels.
+      let redMinusCentre = q / (1 + sqrt(3))   // in pixels
+      let cx = midX + minWH / 2 - redMinusCentre     // for a right-hand portal
+      let cy = midY - minWH / 2 + redMinusCentre     // for a top portal.  y-coord downwards.
+
+      let red = 1 / (1 + sqrt(3)) * q
+      let redX =  cx + red   // should be midX + minWH / 2
+      let redY =  cy - red   // should be midY - minWH / 2
+      svg.circle(50).center(redX, redY).stroke('magenta').opacity(0.5)
+
+      let cyan = -1 / (2 + sqrt(6)) * q
+      let cyanX =  cx + cyan
+      let cyanY =  cy - cyan
+      svg.circle(50).center(cyanX, cyanY).stroke('magenta').opacity(0.5)   // should be on the edge of the main portal
+
+      svg.circle(50).center(cx, cy).stroke('magenta').opacity(0.5)
+
+      // let circle2 = svg.circle(minWH * 0.52 * k).center(cx, cy).stroke('blue')
       const upRight = plus(eyeUp, eyeRight)
       const newEyeDir = normalize(minus(upRight, eyeDir))
       const newEyeUp  = normalize(times(-1, plus(upRight, times(2, eyeDir))))
       const newEyeRight = cross(newEyeDir, newEyeUp)
+      // draw currently uses its scale param divided by 2.
+      // We are ignoring the user scale value.
       draw(eyePos, newEyeDir, plus(newEyeRight, newEyeUp), minus(newEyeUp, newEyeRight),
-        [cx, cy], scale * k, circle2)
+        [cx, cy], q * 2, false)
 
-      let circle = svg.circle(minWH).center(winW / 4, winH / 2).stroke('blue')
-      draw(eyePos, eyeDir, eyeRight, eyeUp, [winW / 4, winH / 2], scale, circle)
+      let circle = svg.circle(minWH).center(winW / 2, winH / 2).stroke('blue')
+      draw(eyePos, eyeDir, eyeRight, eyeUp, [winW / 2, winH / 2], scale, circle)
     }
     else {
       draw(eyePos, eyeDir, eyeRight, eyeUp, [winW / 2, winH / 2], scale, false)
