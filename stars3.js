@@ -199,9 +199,9 @@ function draw(eyePos, eyeDir, eyeRight, eyeUp, scrPos, scale, clipShape) {
         z += 1.0 * sqrt(x*x + y*y + z*z)
       }
       if (z > starDiam) {
-        group.circle(starDiam * scale / 2 / z).center(
-          x / z * scale / 2 + scrPos[0],
-          - y / z * scale / 2 + scrPos[1]).fill(star[3])
+        group.circle(starDiam * scale / z).center(
+            x / z * scale + scrPos[0],
+          - y / z * scale + scrPos[1]).fill(star[3])
       }
     }
   }
@@ -226,7 +226,11 @@ zoom in and out: 3, 4`).
 }
 
 let numPortals = 1
-let scale = minWH  // the amount of screen that subtends 90 degrees at the eye pos.
+
+// The zoom factor compared to the default scaling where a value of 1
+// (after the fish-eye adjustment) corresponds to half the portal width.
+// i.e. where a portal has a hemi-sphere view.
+let zoomFactor = 1
 
 let prevT = 0
 let prevView = 'no view yet'
@@ -257,8 +261,8 @@ function step(timestamp) {
   if (pressed['1']) { numPortals = 1 }
   if (pressed['2']) { numPortals = 2 }
   if (pressed['0']) { numPortals = 5 }
-  if (pressed['3']) { eyePos[0] += 1e-6; scale *= 1.05  }
-  if (pressed['4']) { eyePos[0] += 1e-6; scale /= 1.05  }
+  if (pressed['3']) { eyePos[0] += 1e-6; zoomFactor *= 1.05  }
+  if (pressed['4']) { eyePos[0] += 1e-6; zoomFactor /= 1.05  }
   if (pressed['5']) { eyePos[0] += 1e-6; fishEye = true  }
   if (pressed['6']) { eyePos[0] += 1e-6; fishEye = false }
   if (pressed['7']) { stars = []; eyePos[0] += 1e-6; createRandomCube()    }
@@ -272,11 +276,12 @@ function step(timestamp) {
 
     if (numPortals === 2) {
       let circle = svg.circle(minWH).center(winW / 4, winH / 2).stroke('blue')
-      draw(eyePos, eyeDir, eyeRight, eyeUp, [winW / 4, winH / 2], scale, circle)
+      draw(eyePos, eyeDir, eyeRight, eyeUp, [winW / 4, winH / 2],
+        zoomFactor * minWH / 2, circle)
 
       let circle2 = svg.circle(minWH).center(3 * winW / 4, winH / 2).stroke('blue')
-      draw(eyePos, times(-1, eyeDir), times(-1, eyeRight), eyeUp,
-        [3 * winW / 4, winH / 2], scale, circle2)
+      draw(eyePos, times(-1, eyeDir), times(-1, eyeRight), eyeUp, [3 * winW / 4, winH / 2],
+        zoomFactor * minWH / 2, circle2)
     }
     else if (numPortals === 5) {
       /*
@@ -297,7 +302,7 @@ function step(timestamp) {
 */
       let denom = 1 / (1 + sqrt(3)) + 1 / (2 + sqrt(6))   // red x minus cyan x in pre-screen-scaling units
       let numer = minWH * (2 - sqrt(2)) / 4   // red x minus cyan x in pixels.  The portal has to tuck in the corner.
-      let q = numer / denom    // new name for the scale for converting from pre-scaling to pixels.
+      let q = numer / denom    // new name for the scale factor for converting the small portals to pixels.
       let redMinusCentre = q / (1 + sqrt(3))   // in pixels
       let cx = midX + minWH / 2 - redMinusCentre     // for a right-hand portal
       let cy = midY - minWH / 2 + redMinusCentre     // for a top portal.  y-coord downwards.
@@ -322,13 +327,15 @@ function step(timestamp) {
       // draw currently uses its scale param divided by 2.
       // We are ignoring the user scale value.
       draw(eyePos, newEyeDir, plus(newEyeRight, newEyeUp), minus(newEyeUp, newEyeRight),
-        [cx, cy], q * 2, false)
+        [cx, cy], zoomFactor * q, false)
 
       let circle = svg.circle(minWH).center(winW / 2, winH / 2).stroke('blue')
-      draw(eyePos, eyeDir, eyeRight, eyeUp, [winW / 2, winH / 2], scale, circle)
+      draw(eyePos, eyeDir, eyeRight, eyeUp, [winW / 2, winH / 2],
+        zoomFactor * minWH / 2, circle)
     }
     else {
-      draw(eyePos, eyeDir, eyeRight, eyeUp, [winW / 2, winH / 2], scale, false)
+      draw(eyePos, eyeDir, eyeRight, eyeUp, [winW / 2, winH / 2],
+        zoomFactor * minWH / 2, false)
     }
     writeInstructions()
   }
