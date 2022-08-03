@@ -268,6 +268,7 @@ function step(timestamp) {
   if (pressed['7']) { stars = []; eyePos[0] += 1e-6; createRandomCube()    }
   if (pressed['8']) { stars = []; eyePos[0] += 1e-6; createLongLat() }
   if (pressed['9']) { stars = []; eyePos[0] += 1e-6; createGrid() }
+  if (pressed['-']) { stars = []; eyePos[0] += 1e-6; createOctant() }
 
   let newView = _.cloneDeep([eyePos, eyeDir, eyeRight, eyeUp, warpFactor, numPortals])
   if (! _.isEqual(newView, prevView)) {
