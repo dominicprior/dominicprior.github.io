@@ -129,6 +129,21 @@ function times(k, u) {
   return [k * u[0], k * u[1], k * u[2]]
 }
 
+function mmult(a, b) {
+  let result = []
+  for (let i = 0; i < a.length; i++) {
+      result[i] = []
+      for (let j = 0; j < b[0].length; j++) {
+          let sum = 0
+          for (let k = 0; k < a[0].length; k++) {
+              sum += a[i][k] * b[k][j]
+          }
+          result[i][j] = sum
+      }
+  }
+  return result
+}
+
 function assign(u, v) {
   u[0] = v[0]
   u[1] = v[1]
