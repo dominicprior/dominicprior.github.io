@@ -311,14 +311,48 @@ function step(timestamp) {
       let red = 1 / (1 + sqrt(3)) * q
       let redX =  cx + red   // should be midX + minWH / 2
       let redY =  cy - red   // should be midY - minWH / 2
-      svg.circle(50).center(redX, redY).stroke('magenta').opacity(0.5)
+      //svg.circle(50).center(redX, redY).stroke('magenta').opacity(0.5)
 
       let cyan = -1 / (2 + sqrt(6)) * q
       let cyanX =  cx + cyan
       let cyanY =  cy - cyan
-      svg.circle(50).center(cyanX, cyanY).stroke('magenta').opacity(0.5)   // should be on the edge of the main portal
+      //svg.circle(50).center(cyanX, cyanY).stroke('magenta').opacity(0.5)   // should be on the edge of the main portal
 
-      svg.circle(50).center(cx, cy).stroke('magenta').opacity(0.5)
+      //svg.circle(50).center(cx, cy).stroke('magenta').opacity(0.5)
+
+      let hg = sqrt(3) / 2 / (1 + sqrt(3))
+      let wc = 1 / (2 + sqrt(6))
+      let wh = 0.5 / (1 + sqrt(3))
+      let hc = wc - wh
+      let alpha = 2 * Math.atan(hg / hc)
+      let arcRad = hg / Math.sin(alpha) * q * sqrt(2)
+      let redDist = red * sqrt(2)
+      let sin15 = redDist * Math.sin(Math.PI / 12)
+      let cos15 = redDist * Math.cos(Math.PI / 12)
+      let bluePos  = [cx - cos15, cy - sin15]
+      let greenPos = [cx + sin15, cy + cos15]
+      //svg.circle(50).center(bluePos[0], bluePos[1]).stroke('magenta').opacity(0.5)
+      //svg.circle(50).center(greenPos[0], greenPos[1]).stroke('magenta').opacity(0.5)
+
+      // svg.circle(- cyan * 2 * sqrt(2)).center(cx, cy).stroke('magenta').opacity(0.5)
+
+      let triangle = svg.path(['M', bluePos[0], bluePos[1],
+        'A', arcRad, arcRad,  // semi radii
+        0,  // rotation
+        0,  // large arc
+        0,
+        greenPos[0], greenPos[1],
+        'A', arcRad, arcRad,  // semi radii
+        0,  // rotation
+        0,  // large arc
+        0,
+        redX, redY,
+        'A', arcRad, arcRad,  // semi radii
+        0,  // rotation
+        0,  // large arc
+        0,
+        bluePos[0], bluePos[1]
+        ]).stroke('blue')
 
       // let circle2 = svg.circle(minWH * 0.52 * k).center(cx, cy).stroke('blue')
       const upRight = plus(eyeUp, eyeRight)
@@ -327,7 +361,7 @@ function step(timestamp) {
       const newEyeRight = cross(newEyeDir, newEyeUp)
 
       draw(eyePos, newEyeDir, plus(newEyeRight, newEyeUp), minus(newEyeUp, newEyeRight),
-        [cx, cy], zoomFactor * q, false)
+        [cx, cy], zoomFactor * q, triangle)
 
       let circle = svg.circle(minWH).center(winW / 2, winH / 2).stroke('blue')
       draw(eyePos, eyeDir, eyeRight, eyeUp, [winW / 2, winH / 2],
