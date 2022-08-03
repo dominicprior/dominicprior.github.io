@@ -325,8 +325,7 @@ function step(timestamp) {
       const newEyeDir = normalize(minus(upRight, eyeDir))
       const newEyeUp  = normalize(times(-1, plus(upRight, times(2, eyeDir))))
       const newEyeRight = cross(newEyeDir, newEyeUp)
-      // draw currently uses its scale param divided by 2.
-      // We are ignoring the user scale value.
+
       draw(eyePos, newEyeDir, plus(newEyeRight, newEyeUp), minus(newEyeUp, newEyeRight),
         [cx, cy], zoomFactor * q, false)
 
