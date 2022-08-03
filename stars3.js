@@ -292,15 +292,7 @@ function step(timestamp) {
       3. Calculate the radius of the three arcs.
       4. Create the path with the three arcs and use it as the clip.
       */
-      /*
-      let path = svg.path(['M', 50, 60,
-    'A', 70,50,  // semi radii
-    0,  // rotation
-    0,  // large arc
-    0,
-    190, 60,
-    'z']).stroke('red').fill('blue')
-*/
+
       let denom = 1 / (1 + sqrt(3)) + 1 / (2 + sqrt(6))   // red x minus cyan x in pre-screen-scaling units
       let numer = minWH * (2 - sqrt(2)) / 4   // red x minus cyan x in pixels.  The portal has to tuck in the corner.
       let q = numer / denom    // new name for the scale factor for converting the small portals to pixels.
@@ -311,14 +303,8 @@ function step(timestamp) {
       let red = 1 / (1 + sqrt(3)) * q
       let redX =  cx + red   // should be midX + minWH / 2
       let redY =  cy - red   // should be midY - minWH / 2
-      //svg.circle(50).center(redX, redY).stroke('magenta').opacity(0.5)
 
       let cyan = -1 / (2 + sqrt(6)) * q
-      let cyanX =  cx + cyan
-      let cyanY =  cy - cyan
-      //svg.circle(50).center(cyanX, cyanY).stroke('magenta').opacity(0.5)   // should be on the edge of the main portal
-
-      //svg.circle(50).center(cx, cy).stroke('magenta').opacity(0.5)
 
       let hg = sqrt(3) / 2 / (1 + sqrt(3))
       let wc = 1 / (2 + sqrt(6))
@@ -331,30 +317,19 @@ function step(timestamp) {
       let cos15 = redDist * Math.cos(Math.PI / 12)
       let bluePos  = [cx - cos15, cy - sin15]
       let greenPos = [cx + sin15, cy + cos15]
-      //svg.circle(50).center(bluePos[0], bluePos[1]).stroke('magenta').opacity(0.5)
-      //svg.circle(50).center(greenPos[0], greenPos[1]).stroke('magenta').opacity(0.5)
-
-      // svg.circle(- cyan * 2 * sqrt(2)).center(cx, cy).stroke('magenta').opacity(0.5)
 
       let triangle = svg.path(['M', bluePos[0], bluePos[1],
-        'A', arcRad, arcRad,  // semi radii
-        0,  // rotation
-        0,  // large arc
-        0,
+        'A', arcRad, arcRad,  // radii
+        0, 0, 0,  // rotation and flags
         greenPos[0], greenPos[1],
-        'A', arcRad, arcRad,  // semi radii
-        0,  // rotation
-        0,  // large arc
-        0,
+        'A', arcRad, arcRad,  // radii
+        0, 0, 0,  // rotation and flags
         redX, redY,
-        'A', arcRad, arcRad,  // semi radii
-        0,  // rotation
-        0,  // large arc
-        0,
+        'A', arcRad, arcRad,  // radii
+        0, 0, 0,  // rotation and flags
         bluePos[0], bluePos[1]
         ]).stroke('blue')
 
-      // let circle2 = svg.circle(minWH * 0.52 * k).center(cx, cy).stroke('blue')
       const upRight = plus(eyeUp, eyeRight)
       const newEyeDir = normalize(minus(upRight, eyeDir))
       const newEyeUp  = normalize(times(-1, plus(upRight, times(2, eyeDir))))
