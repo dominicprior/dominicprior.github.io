@@ -235,6 +235,14 @@ let zoomFactor = 1
 let prevT = 0
 let prevView = 'no view yet'
 
+function trianglePath(u, v, w, rad) {
+  return svg.path(['M', u,
+  'A', rad, rad, 0, 0, 0, v,
+  'A', rad, rad, 0, 0, 0, w,
+  'A', rad, rad, 0, 0, 0, u
+  ]).stroke('blue')
+}
+
 // Update the SVG model.
 // For simplicity, we throw away the current SVG model and
 // regenerates it from the stars array.
@@ -304,7 +312,6 @@ function step(timestamp) {
       let topY   = midY - p     // for a top portal.  y-coord downwards.
       let botY   = midY + p     // for a bottom portal.  y-coord downwards.
 
-      let red = 1 / (1 + sqrt(3)) * q
       let redPos = [rightX + k, topY - k]
 
       let hg = sqrt(3) / 2 / (1 + sqrt(3))
@@ -313,17 +320,13 @@ function step(timestamp) {
       let hc = wc - wh
       let alpha = 2 * Math.atan(hg / hc)
       let arcRad = hg / Math.sin(alpha) * q * sqrt(2)
-      let redDist = red * sqrt(2)
+      let redDist = k * sqrt(2)  // in pixels from the centre of the portal
       let sin15 = redDist * Math.sin(Math.PI / 12)
       let cos15 = redDist * Math.cos(Math.PI / 12)
+
       let bluePos  = [rightX - cos15, topY - sin15]
       let greenPos = [rightX + sin15, topY + cos15]
-
-      let triangle = svg.path(['M', bluePos,
-        'A', arcRad, arcRad, 0, 0, 0, greenPos,
-        'A', arcRad, arcRad, 0, 0, 0, redPos,
-        'A', arcRad, arcRad, 0, 0, 0, bluePos
-        ]).stroke('blue')
+      let triangle = trianglePath(bluePos, greenPos, redPos, arcRad)
 
       const upRight = plus(eyeUp, eyeRight)
       const newEyeDir = normalize(minus(upRight, eyeDir))
@@ -333,12 +336,12 @@ function step(timestamp) {
       draw(eyePos, newEyeDir, plus(newEyeRight, newEyeUp), minus(newEyeUp, newEyeRight),
         [rightX, topY], zoomFactor * q, triangle)
 
-      let circle = svg.circle(minWH).center(winW / 2, winH / 2).stroke('blue')
-      draw(eyePos, eyeDir, eyeRight, eyeUp, [winW / 2, winH / 2],
+      let circle = svg.circle(minWH).center(midX, midY).stroke('blue')
+      draw(eyePos, eyeDir, eyeRight, eyeUp, [midX, midY],
         zoomFactor * minWH / 2, circle)
     }
     else {
-      draw(eyePos, eyeDir, eyeRight, eyeUp, [winW / 2, winH / 2],
+      draw(eyePos, eyeDir, eyeRight, eyeUp, [midX, midY],
         zoomFactor * minWH / 2, false)
     }
     writeInstructions()
