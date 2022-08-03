@@ -219,7 +219,7 @@ pitch: Y, H
 forward and back: W, S, up, down
 faster and slower (warp: ${warpFactor}): N, M
 one viewport or two or five: 1, 2, 0
-different stars: 7, 8, 9
+different stars: 7, 8, 9, -
 fisheye, not fisheye: 5, 6
 zoom in and out: 3, 4`).
   font({size: 20, fill: '#ffddcc'})
