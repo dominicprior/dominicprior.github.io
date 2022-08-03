@@ -297,15 +297,15 @@ function step(timestamp) {
       let denom = 1 / (1 + sqrt(3)) + 1 / (2 + sqrt(6))   // red x minus cyan x in pre-screen-scaling units
       let numer = minWH * (2 - sqrt(2)) / 4   // red x minus cyan x in pixels.  The portal has to tuck in the corner.
       let q = numer / denom    // new name for the scale factor for converting the small portals to pixels.
-      let redMinusCentre = q / (1 + sqrt(3))   // in pixels
-      let cx = midX + minWH / 2 - redMinusCentre     // for a right-hand portal
-      let cy = midY - minWH / 2 + redMinusCentre     // for a top portal.  y-coord downwards.
+      let k = q / (1 + sqrt(3))   // the difference in x (or y) in pixels between a portal centre and a portal extreme such as the red star.
+      let p = minWH / 2 - k       // the difference in x (or y) in pixels between the centre of the screen and the centre of the portal.
+      let leftX  = midX - p     // for a left-hand portal
+      let rightX = midX + p     // for a right-hand portal
+      let topY   = midY - p     // for a top portal.  y-coord downwards.
+      let botY   = midY + p     // for a bottom portal.  y-coord downwards.
 
       let red = 1 / (1 + sqrt(3)) * q
-      let redX =  cx + red   // should be midX + minWH / 2
-      let redY =  cy - red   // should be midY - minWH / 2
-
-      let cyan = -1 / (2 + sqrt(6)) * q
+      let redPos = [rightX + k, topY - k]
 
       let hg = sqrt(3) / 2 / (1 + sqrt(3))
       let wc = 1 / (2 + sqrt(6))
@@ -316,19 +316,13 @@ function step(timestamp) {
       let redDist = red * sqrt(2)
       let sin15 = redDist * Math.sin(Math.PI / 12)
       let cos15 = redDist * Math.cos(Math.PI / 12)
-      let bluePos  = [cx - cos15, cy - sin15]
-      let greenPos = [cx + sin15, cy + cos15]
+      let bluePos  = [rightX - cos15, topY - sin15]
+      let greenPos = [rightX + sin15, topY + cos15]
 
-      let triangle = svg.path(['M', bluePos[0], bluePos[1],
-        'A', arcRad, arcRad,  // radii
-        0, 0, 0,  // rotation and flags
-        greenPos[0], greenPos[1],
-        'A', arcRad, arcRad,  // radii
-        0, 0, 0,  // rotation and flags
-        redX, redY,
-        'A', arcRad, arcRad,  // radii
-        0, 0, 0,  // rotation and flags
-        bluePos[0], bluePos[1]
+      let triangle = svg.path(['M', bluePos,
+        'A', arcRad, arcRad, 0, 0, 0, greenPos,
+        'A', arcRad, arcRad, 0, 0, 0, redPos,
+        'A', arcRad, arcRad, 0, 0, 0, bluePos
         ]).stroke('blue')
 
       const upRight = plus(eyeUp, eyeRight)
@@ -337,7 +331,7 @@ function step(timestamp) {
       const newEyeRight = cross(newEyeDir, newEyeUp)
 
       draw(eyePos, newEyeDir, plus(newEyeRight, newEyeUp), minus(newEyeUp, newEyeRight),
-        [cx, cy], zoomFactor * q, triangle)
+        [rightX, topY], zoomFactor * q, triangle)
 
       let circle = svg.circle(minWH).center(winW / 2, winH / 2).stroke('blue')
       draw(eyePos, eyeDir, eyeRight, eyeUp, [winW / 2, winH / 2],
