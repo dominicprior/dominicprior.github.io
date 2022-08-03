@@ -180,20 +180,17 @@ createRandomCube()
 
 let fishEye = true
 
-function draw(eyePos, eyeDir, eyeRight, eyeUp, scrPos, scale, clipShape) {
+function draw(eyePos, directions, scrPos, scale, clipShape) {
   if (clipShape) {
     svg.add(clipShape.clone())
   }
-  eyeDir   = normalize(eyeDir)
-  eyeRight = normalize(eyeRight)
-  eyeUp    = normalize(eyeUp)
   let group = svg.group()
 
   for (let star of stars) {
     const pos = minus(star, eyePos)
-    let z = dot(pos, eyeDir)
-    const y = dot(pos, eyeUp)
-    const x = dot(pos, eyeRight)
+    let z = dot(pos, normalize(directions[0]))
+    const y = dot(pos, normalize(directions[2]))
+    const x = dot(pos, normalize(directions[1]))
     if (z < boxSize) {
       if (fishEye) {
         z += 1.0 * sqrt(x*x + y*y + z*z)
@@ -286,11 +283,11 @@ function step(timestamp) {
     if (numPortals === 2) {
       let scale = midX > 2 * midY ? midY : midX / 2
       let circle = svg.circle(2 * scale).center(midX - scale, midY).stroke('blue')
-      draw(eyePos, eyeDir, eyeRight, eyeUp, [midX - scale, midY],
+      draw(eyePos, [eyeDir, eyeRight, eyeUp], [midX - scale, midY],
         zoomFactor * scale, circle)
 
       let circle2 = svg.circle(2 * scale).center(midX + scale, midY).stroke('blue')
-      draw(eyePos, times(-1, eyeDir), times(-1, eyeRight), eyeUp, [midX + scale, midY],
+      draw(eyePos, [times(-1, eyeDir), times(-1, eyeRight), eyeUp], [midX + scale, midY],
         zoomFactor * scale, circle2)
     }
     else if (numPortals === 5) {
@@ -333,15 +330,15 @@ function step(timestamp) {
       const newEyeUp  = normalize(times(-1, plus(upRight, times(2, eyeDir))))
       const newEyeRight = cross(newEyeDir, newEyeUp)
 
-      draw(eyePos, newEyeDir, plus(newEyeRight, newEyeUp), minus(newEyeUp, newEyeRight),
+      draw(eyePos, [newEyeDir, plus(newEyeRight, newEyeUp), minus(newEyeUp, newEyeRight)],
         [rightX, topY], zoomFactor * q, triangle)
 
       let circle = svg.circle(minWH).center(midX, midY).stroke('blue')
-      draw(eyePos, eyeDir, eyeRight, eyeUp, [midX, midY],
+      draw(eyePos, [eyeDir, eyeRight, eyeUp], [midX, midY],
         zoomFactor * minWH / 2, circle)
     }
     else {
-      draw(eyePos, eyeDir, eyeRight, eyeUp, [midX, midY],
+      draw(eyePos, [eyeDir, eyeRight, eyeUp], [midX, midY],
         zoomFactor * minWH / 2, false)
     }
     writeInstructions()
