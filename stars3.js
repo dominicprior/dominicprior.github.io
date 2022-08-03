@@ -275,13 +275,14 @@ function step(timestamp) {
     stars.sort((a, b) => distSq(b, eyePos) - distSq(a, eyePos))
 
     if (numPortals === 2) {
-      let circle = svg.circle(minWH).center(winW / 4, winH / 2).stroke('blue')
-      draw(eyePos, eyeDir, eyeRight, eyeUp, [winW / 4, winH / 2],
-        zoomFactor * minWH / 2, circle)
+      let scale = midX > 2 * midY ? midY : midX / 2
+      let circle = svg.circle(2 * scale).center(midX - scale, midY).stroke('blue')
+      draw(eyePos, eyeDir, eyeRight, eyeUp, [midX - scale, midY],
+        zoomFactor * scale, circle)
 
-      let circle2 = svg.circle(minWH).center(3 * winW / 4, winH / 2).stroke('blue')
-      draw(eyePos, times(-1, eyeDir), times(-1, eyeRight), eyeUp, [3 * winW / 4, winH / 2],
-        zoomFactor * minWH / 2, circle2)
+      let circle2 = svg.circle(2 * scale).center(midX + scale, midY).stroke('blue')
+      draw(eyePos, times(-1, eyeDir), times(-1, eyeRight), eyeUp, [midX + scale, midY],
+        zoomFactor * scale, circle2)
     }
     else if (numPortals === 5) {
       /*
