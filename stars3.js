@@ -368,7 +368,7 @@ function step(timestamp) {
       let r3 = [midX - halfWH, midY + halfWH]
       let t3 = trianglePath(b3, g3, r3, arcRad)
       let a3 = mmult([[1,0,-1], [-1,-1,-1], [1,-2,1]], dirs)
-      let d3 = mmult([[-1,0,-1], [0,1,0], [1,0,-1]], a3)
+      let d3 = mmult([[1,0,-1], [0,1,0], [-1,0,-1]], a3)
       draw(eyePos, d3, [leftX, botY], zoomFactor * q, t3)
 
       let b4 = [leftX - sin15, topY + cos15]
