@@ -350,6 +350,12 @@ function step(timestamp) {
       let newDirs = mmult([[1,0,1], [0,1,0], [-1,0,1]], a)
       draw(eyePos, newDirs, [rightX, topY], zoomFactor * q, triangle)
 
+      let b2 = [rightX + sin15, botY - cos15]
+      let g2 = [rightX - cos15, botY + sin15]
+      let r2 = [midX + halfWH, midY + halfWH]
+      let t2 = trianglePath(b2, g2, r2, arcRad)
+      draw(eyePos, newDirs, [rightX, botY], zoomFactor * q, t2)
+
       let circle = svg.circle(minWH).center(midX, midY).stroke('blue')
       draw(eyePos, dirs, [midX, midY], zoomFactor * halfWH, circle)
     }
