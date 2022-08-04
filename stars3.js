@@ -186,12 +186,14 @@ function createLongLat() {
 
 function createOctant() {
   stars.push([2, -2, 2, 'white'])
+  stars.push([2, -2, -2, 'orange'])
   stars.push([0, -2, 0, 'red'])
   stars.push([2, -2, 0, 'yellow'])
   stars.push([2, 0, 0, 'green'])
   stars.push([2, 0, 2, 'cyan'])
   stars.push([0, 0, 2, 'blue'])
   stars.push([0, -2, 2, 'magenta'])
+  stars.push([2, 0, -2, 'pink'])
 }
 
 createRandomCube()
@@ -354,7 +356,9 @@ function step(timestamp) {
       let g2 = [rightX - cos15, botY + sin15]
       let r2 = [midX + halfWH, midY + halfWH]
       let t2 = trianglePath(b2, g2, r2, arcRad)
-      draw(eyePos, newDirs, [rightX, botY], zoomFactor * q, t2)
+      let a2 = mmult([[-1,0,-1], [1,-1,-1], [-1,-2,1]], dirs)
+      let d2 = mmult([[-1,0,1], [0,1,0], [-1,0,-1]], a2)
+      draw(eyePos, d2, [rightX, botY], zoomFactor * q, t2)
 
       let circle = svg.circle(minWH).center(midX, midY).stroke('blue')
       draw(eyePos, dirs, [midX, midY], zoomFactor * halfWH, circle)
