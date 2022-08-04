@@ -246,7 +246,7 @@ zoom in and out: 3, 4`).
   font({size: 20, fill: '#ffddcc'})
 }
 
-let numPortals = 1
+let numPortals = 5
 
 // The zoom factor compared to the default scaling where a value of 1
 // (after the fish-eye adjustment) corresponds to half the portal width.
