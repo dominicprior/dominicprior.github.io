@@ -343,20 +343,12 @@ function step(timestamp) {
       let sin15 = redDist * Math.sin(Math.PI / 12)
       let cos15 = redDist * Math.cos(Math.PI / 12)
 
-
       let bluePos  = [rightX - cos15, topY - sin15]
       let greenPos = [rightX + sin15, topY + cos15]
       let triangle = trianglePath(bluePos, greenPos, redPos, arcRad)
-
-      const upRight = plus(eyeUp, eyeRight)
-      const newEyeDir = normalize(minus(upRight, eyeDir))
-      const newEyeUp  = normalize(times(-1, plus(upRight, times(2, eyeDir))))
-      const newEyeRight = cross(newEyeDir, newEyeUp)
-
       let a = mmult([[1,0,-1], [1,-1,1], [-1,-2,-1]], dirs)
       let newDirs = mmult([[1,0,1], [0,1,0], [-1,0,1]], a)
       draw(eyePos, newDirs, [rightX, topY], zoomFactor * q, triangle)
-
 
       let circle = svg.circle(minWH).center(midX, midY).stroke('blue')
       draw(eyePos, dirs, [midX, midY], zoomFactor * halfWH, circle)
