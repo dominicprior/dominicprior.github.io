@@ -29,6 +29,7 @@ let speed = 0
 let baseSpeed = 2   // per second
 let warpFactor = 0
 let strafeSpeed = baseSpeed   // for forward, back and strafe
+let rotateSpeed = 0.5   // radians per second
 
 let eyePos   = [0, 0, 0]
 let eyeRight = [1, 0, 0]   // screen x dir
@@ -272,15 +273,15 @@ function step(timestamp) {
   let t = timestamp / 1000
   let deltaT = t - prevT
   let strafeDist = deltaT * strafeSpeed
-  console.log(deltaT)
+  let rotateAmount = deltaT * rotateSpeed
   prevT = t
   eyePos = plus(eyePos, times(deltaT * speed, eyeDir))
-  if (pressed.ArrowLeft || pressed.a) {  updateDirs(eyeDir, eyeRight, 0.01)  }
-  if (pressed.ArrowRight || pressed.d) { updateDirs(eyeDir, eyeRight, -0.01) }
-  if (pressed.y) { updateDirs(eyeDir, eyeUp, -0.01) }
-  if (pressed.h) { updateDirs(eyeDir, eyeUp, 0.01)  }
-  if (pressed.o) { updateDirs(eyeRight, eyeUp, 0.01) }
-  if (pressed.p) { updateDirs(eyeRight, eyeUp, -0.01) }
+  if (pressed.ArrowLeft || pressed.a) {  updateDirs(eyeDir, eyeRight, rotateAmount)  }
+  if (pressed.ArrowRight || pressed.d) { updateDirs(eyeDir, eyeRight, -rotateAmount) }
+  if (pressed.y) { updateDirs(eyeDir, eyeUp, -rotateAmount) }
+  if (pressed.h) { updateDirs(eyeDir, eyeUp, rotateAmount)  }
+  if (pressed.o) { updateDirs(eyeRight, eyeUp, rotateAmount) }
+  if (pressed.p) { updateDirs(eyeRight, eyeUp, -rotateAmount) }
   if (pressed.q) { eyePos = plus(eyePos, times(-strafeDist, eyeRight)) }
   if (pressed.e) { eyePos = plus(eyePos, times(strafeDist, eyeRight))  }
   if (pressed.t) { eyePos = plus(eyePos, times(strafeDist, eyeUp))  }
