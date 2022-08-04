@@ -261,7 +261,7 @@ function trianglePath(u, v, w, rad) {
   'A', rad, rad, 0, 0, 0, v,
   'A', rad, rad, 0, 0, 0, w,
   'A', rad, rad, 0, 0, 0, u
-  ]).stroke('blue')
+  ]).stroke('#77d')
 }
 
 // Update the SVG model.
@@ -379,7 +379,7 @@ function step(timestamp) {
       let d4 = mmult([[1,0,-1], [0,1,0], [1,0,1]], a4)
       draw(eyePos, d4, [leftX, topY], zoomFactor * q, t4)
 
-      let circle = svg.circle(minWH).center(midX, midY).stroke('blue')
+      let circle = svg.circle(minWH).center(midX, midY).stroke('#77d')
       draw(eyePos, dirs, [midX, midY], zoomFactor * halfWH, circle)
     }
     else {
