@@ -383,6 +383,11 @@ function step(timestamp) {
       draw(eyePos, dirs, [midX, midY], zoomFactor * halfWH, circle)
     }
     else {
+      const amplitude = 0.08
+      const omega = 2
+      let oscillatingPos = plus(plus(eyePos,
+        times(amplitude * Math.sin(omega * t), eyeRight)),
+        times(amplitude * Math.cos(omega * t), eyeUp))
       draw(eyePos, dirs, [midX, midY], zoomFactor * halfWH, false)
     }
     writeInstructions()
