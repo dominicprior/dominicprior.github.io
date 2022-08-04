@@ -15,6 +15,7 @@
 const winW = window.innerWidth
 const winH = window.innerHeight
 const minWH = Math.min(winW, winH)
+const halfWH = minWH / 2
 const midX = winW / 2
 const midY = winH / 2
 let div = document.createElement('div')
@@ -30,9 +31,10 @@ let warpFactor = 0
 let strafeDist = baseSpeed
 
 let eyePos   = [0, 0, 0]
-let eyeDir   = [0, 1, 0]   // facing North
 let eyeRight = [1, 0, 0]   // screen x dir
+let eyeDir   = [0, 1, 0]   // facing North
 let eyeUp    = [0, 0, 1]
+let dirs = [eyeRight, eyeDir, eyeUp]   // identity matrix initially
 
 let prevMousePos = false
 
@@ -129,7 +131,8 @@ function times(k, u) {
   return [k * u[0], k * u[1], k * u[2]]
 }
 
-function mmult(a, b) {
+function mmult(aa, b) {
+  let a = _.map(aa, normalize)
   let result = []
   for (let i = 0; i < a.length; i++) {
       result[i] = []
@@ -196,6 +199,7 @@ createRandomCube()
 let fishEye = true
 
 function draw(eyePos, directions, scrPos, scale, clipShape) {
+  // the directions are right,dir,up
   if (clipShape) {
     svg.add(clipShape.clone())
   }
@@ -203,9 +207,9 @@ function draw(eyePos, directions, scrPos, scale, clipShape) {
 
   for (let star of stars) {
     const pos = minus(star, eyePos)
-    let z = dot(pos, normalize(directions[0]))
+    const x = dot(pos, normalize(directions[0]))
+    let z   = dot(pos, normalize(directions[1]))
     const y = dot(pos, normalize(directions[2]))
-    const x = dot(pos, normalize(directions[1]))
     if (z < boxSize) {
       if (fishEye) {
         z += 1.0 * sqrt(x*x + y*y + z*z)
@@ -294,15 +298,18 @@ function step(timestamp) {
   if (! _.isEqual(newView, prevView)) {
     svg.clear()
     stars.sort((a, b) => distSq(b, eyePos) - distSq(a, eyePos))
+    dirs = [eyeRight, eyeDir, eyeUp]
 
     if (numPortals === 2) {
       let scale = midX > 2 * midY ? midY : midX / 2
       let circle = svg.circle(2 * scale).center(midX - scale, midY).stroke('blue')
-      draw(eyePos, [eyeDir, eyeRight, eyeUp], [midX - scale, midY],
+      draw(eyePos, dirs, [midX - scale, midY],
         zoomFactor * scale, circle)
 
       let circle2 = svg.circle(2 * scale).center(midX + scale, midY).stroke('blue')
-      draw(eyePos, [times(-1, eyeDir), times(-1, eyeRight), eyeUp], [midX + scale, midY],
+      draw(eyePos,
+        mmult([[-1,0,0], [0,-1,0], [0,0,1]], dirs),
+        [midX + scale, midY],
         zoomFactor * scale, circle2)
     }
     else if (numPortals === 5) {
@@ -318,7 +325,7 @@ function step(timestamp) {
       let numer = minWH * (2 - sqrt(2)) / 4   // red x minus cyan x in pixels.  The portal has to tuck in the corner.
       let q = numer / denom    // new name for the scale factor for converting the small portals to pixels.
       let k = q / (1 + sqrt(3))   // the difference in x (or y) in pixels between a portal centre and a portal extreme such as the red star.
-      let p = minWH / 2 - k       // the difference in x (or y) in pixels between the centre of the screen and the centre of the portal.
+      let p = halfWH - k       // the difference in x (or y) in pixels between the centre of the screen and the centre of the portal.
       let leftX  = midX - p     // for a left-hand portal
       let rightX = midX + p     // for a right-hand portal
       let topY   = midY - p     // for a top portal.  y-coord downwards.
@@ -336,6 +343,7 @@ function step(timestamp) {
       let sin15 = redDist * Math.sin(Math.PI / 12)
       let cos15 = redDist * Math.cos(Math.PI / 12)
 
+
       let bluePos  = [rightX - cos15, topY - sin15]
       let greenPos = [rightX + sin15, topY + cos15]
       let triangle = trianglePath(bluePos, greenPos, redPos, arcRad)
@@ -345,16 +353,16 @@ function step(timestamp) {
       const newEyeUp  = normalize(times(-1, plus(upRight, times(2, eyeDir))))
       const newEyeRight = cross(newEyeDir, newEyeUp)
 
-      draw(eyePos, [newEyeDir, plus(newEyeRight, newEyeUp), minus(newEyeUp, newEyeRight)],
-        [rightX, topY], zoomFactor * q, triangle)
+      let a = mmult([[1,0,-1], [1,-1,1], [-1,-2,-1]], dirs)
+      let newDirs = mmult([[1,0,1], [0,1,0], [-1,0,1]], a)
+      draw(eyePos, newDirs, [rightX, topY], zoomFactor * q, triangle)
+
 
       let circle = svg.circle(minWH).center(midX, midY).stroke('blue')
-      draw(eyePos, [eyeDir, eyeRight, eyeUp], [midX, midY],
-        zoomFactor * minWH / 2, circle)
+      draw(eyePos, dirs, [midX, midY], zoomFactor * halfWH, circle)
     }
     else {
-      draw(eyePos, [eyeDir, eyeRight, eyeUp], [midX, midY],
-        zoomFactor * minWH / 2, false)
+      draw(eyePos, dirs, [midX, midY], zoomFactor * halfWH, false)
     }
     writeInstructions()
   }
