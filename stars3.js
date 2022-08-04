@@ -26,9 +26,9 @@ const sqrt = Math.sqrt
 const starDiam = 0.2
 const boxSize = 1000
 let speed = 0
-let baseSpeed = 0.04
+let baseSpeed = 2   // per second
 let warpFactor = 0
-let strafeDist = baseSpeed
+let strafeSpeed = baseSpeed   // for forward, back and strafe
 
 let eyePos   = [0, 0, 0]
 let eyeRight = [1, 0, 0]   // screen x dir
@@ -271,6 +271,8 @@ function trianglePath(u, v, w, rad) {
 function step(timestamp) {
   let t = timestamp / 1000
   let deltaT = t - prevT
+  let strafeDist = deltaT * strafeSpeed
+  console.log(deltaT)
   prevT = t
   eyePos = plus(eyePos, times(deltaT * speed, eyeDir))
   if (pressed.ArrowLeft || pressed.a) {  updateDirs(eyeDir, eyeRight, 0.01)  }
@@ -285,8 +287,8 @@ function step(timestamp) {
   if (pressed.g) { eyePos = plus(eyePos, times(-strafeDist, eyeUp)) }
   if (pressed.ArrowUp || pressed.w) { eyePos = plus(eyePos, times(strafeDist, eyeDir)) }
   if (pressed.ArrowDown || pressed.s) { eyePos = plus(eyePos, times(-strafeDist, eyeDir)) }
-  if (pressed.n) { warpFactor++; strafeDist = baseSpeed * 1.04 ** warpFactor  }
-  if (pressed.m) { warpFactor--; strafeDist = baseSpeed * 1.04 ** warpFactor  }
+  if (pressed.n) { warpFactor++; strafeSpeed = baseSpeed * 1.04 ** warpFactor  }
+  if (pressed.m) { warpFactor--; strafeSpeed = baseSpeed * 1.04 ** warpFactor  }
   if (pressed['1']) { numPortals = 1 }
   if (pressed['2']) { numPortals = 2 }
   if (pressed['0']) { numPortals = 5 }
