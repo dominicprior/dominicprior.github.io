@@ -196,6 +196,7 @@ function createOctant() {
   stars.push([2, 0, -2, 'pink'])
   stars.push([-2, 0, -2, 'purple'])
   stars.push([-2, -2, -2, 'brown'])
+  stars.push([-2, -2, 2, 'bisque'])
 }
 
 createRandomCube()
@@ -369,6 +370,14 @@ function step(timestamp) {
       let a3 = mmult([[1,0,-1], [-1,-1,-1], [1,-2,1]], dirs)
       let d3 = mmult([[-1,0,-1], [0,1,0], [1,0,-1]], a3)
       draw(eyePos, d3, [leftX, botY], zoomFactor * q, t3)
+
+      let b4 = [leftX - sin15, topY + cos15]
+      let g4 = [leftX + cos15, topY - sin15]
+      let r4 = [midX - halfWH, midY - halfWH]
+      let t4 = trianglePath(b4, g4, r4, arcRad)
+      let a4 = mmult([[1,0,1], [-1,-1,1], [1,-2,-1]], dirs)
+      let d4 = mmult([[1,0,-1], [0,1,0], [1,0,1]], a4)
+      draw(eyePos, d4, [leftX, topY], zoomFactor * q, t4)
 
       let circle = svg.circle(minWH).center(midX, midY).stroke('blue')
       draw(eyePos, dirs, [midX, midY], zoomFactor * halfWH, circle)
