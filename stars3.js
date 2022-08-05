@@ -164,7 +164,7 @@ function createGrid() {
 
 function createRandomCube() {
   const h = 5
-  for (let i=0; i < 200; i++) {
+  for (let i=0; i < 80; i++) {
     stars.push([rnd(-h, h), rnd(0, 2 * h),
       rnd(-h, h),
       rndColor()])
