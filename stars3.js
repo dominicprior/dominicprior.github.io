@@ -393,7 +393,7 @@ function step(timestamp) {
         times(amplitude * Math.cos(omega * t), eyeUp))
       draw(eyePos, dirs, [midX, midY], zoomFactor * halfWH, false)
     }
-    writeInstructions()
+    //writeInstructions()
   }
   prevView = newView
   window.requestAnimationFrame(step)
