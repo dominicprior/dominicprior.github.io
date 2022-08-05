@@ -24,7 +24,7 @@ let svg = SVG().addTo('body').size(winW, winH)
 const sqrt = Math.sqrt
 
 const starDiam = 0.2
-const boxSize = 1000
+const starRad = starDiam / 2
 let speed = 0
 let baseSpeed = 2   // per second
 let warpFactor = 0
@@ -216,7 +216,7 @@ function draw(eyePos, directions, scrPos, scale, clipShape) {
     const x = dot(pos, normalize(directions[0]))
     let z   = dot(pos, normalize(directions[1]))
     const y = dot(pos, normalize(directions[2]))
-    if (z < boxSize) {
+    if (z + starRad > 0) {
       if (fishEye) {
         z += 1.0 * sqrt(x*x + y*y + z*z)
       }
