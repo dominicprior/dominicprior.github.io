@@ -204,7 +204,28 @@ createRandomCube()
 
 let fishEye = true
 
-function draw(eyePos, directions, scrPos, scale, clipShape) {
+function isVisible(pos, visibilityData) {
+  if (! visibilityData) {
+    return true
+  }
+  let x = dot(visibilityData[0][0], pos)
+  let z = dot(visibilityData[0][1], pos)   // z !!
+  let y = dot(visibilityData[0][2], pos)
+  let leftRight = visibilityData[1]
+  let upperLower = visibilityData[2]
+  if (z > starRad) {
+    return false   // because the star is completely in the front hemisphere
+  }
+  if (x > starRad && leftRight === 'left' || x + starRad < 0 && leftRight === 'right') {
+    return false
+  }
+  if (y > starRad && upperLower === 'lower' || y + starRad < 0 && upperLower === 'upper') {
+    return false
+  }
+  return true
+}
+
+function draw(eyePos, directions, scrPos, scale, clipShape, visibilityData) {
   // the directions are right,dir,up
   if (clipShape) {
     svg.add(clipShape.clone())
@@ -215,8 +236,8 @@ function draw(eyePos, directions, scrPos, scale, clipShape) {
     const pos = minus(star, eyePos)
     const x = dot(pos, normalize(directions[0]))
     let z   = dot(pos, normalize(directions[1]))
-    const y = dot(pos, normalize(directions[2]))
-    if (z + starRad > 0) {
+    const y = dot(pos, normalize(directions[2]))   // up the screen
+    if (visibilityData ? isVisible(pos, visibilityData) : z + starRad > 0) {
       if (fishEye) {
         z += 1.0 * sqrt(x*x + y*y + z*z)
       }
@@ -312,13 +333,13 @@ function step(timestamp) {
       let scale = midX > 2 * midY ? midY : midX / 2
       let circle = svg.circle(2 * scale).center(midX - scale, midY).stroke('blue')
       draw(eyePos, dirs, [midX - scale, midY],
-        zoomFactor * scale, circle)
+        zoomFactor * scale, circle, false)
 
       let circle2 = svg.circle(2 * scale).center(midX + scale, midY).stroke('blue')
       draw(eyePos,
         mmult([[-1,0,0], [0,-1,0], [0,0,1]], dirs),
         [midX + scale, midY],
-        zoomFactor * scale, circle2)
+        zoomFactor * scale, circle2, false)
     }
     else if (numPortals === 5) {
       /*
@@ -356,7 +377,7 @@ function step(timestamp) {
       let triangle = trianglePath(bluePos, greenPos, redPos, arcRad)
       let a = mmult([[1,0,-1], [1,-1,1], [-1,-2,-1]], dirs)
       let newDirs = mmult([[1,0,1], [0,1,0], [-1,0,1]], a)
-      draw(eyePos, newDirs, [rightX, topY], zoomFactor * q, triangle)
+      draw(eyePos, newDirs, [rightX, topY], zoomFactor * q, triangle, [dirs, 'right', 'upper'])
 
       let b2 = [rightX + sin15, botY - cos15]
       let g2 = [rightX - cos15, botY + sin15]
@@ -364,7 +385,7 @@ function step(timestamp) {
       let t2 = trianglePath(b2, g2, r2, arcRad)
       let a2 = mmult([[-1,0,-1], [1,-1,-1], [-1,-2,1]], dirs)
       let d2 = mmult([[-1,0,1], [0,1,0], [-1,0,-1]], a2)
-      draw(eyePos, d2, [rightX, botY], zoomFactor * q, t2)
+      draw(eyePos, d2, [rightX, botY], zoomFactor * q, t2, [dirs, 'right', 'lower'])
 
       let b3 = [leftX + cos15, botY + sin15]
       let g3 = [leftX - sin15, botY - cos15]
@@ -372,7 +393,7 @@ function step(timestamp) {
       let t3 = trianglePath(b3, g3, r3, arcRad)
       let a3 = mmult([[1,0,-1], [-1,-1,-1], [1,-2,1]], dirs)
       let d3 = mmult([[1,0,-1], [0,1,0], [-1,0,-1]], a3)
-      draw(eyePos, d3, [leftX, botY], zoomFactor * q, t3)
+      draw(eyePos, d3, [leftX, botY], zoomFactor * q, t3, [dirs, 'left', 'lower'])
 
       let b4 = [leftX - sin15, topY + cos15]
       let g4 = [leftX + cos15, topY - sin15]
@@ -380,10 +401,10 @@ function step(timestamp) {
       let t4 = trianglePath(b4, g4, r4, arcRad)
       let a4 = mmult([[1,0,1], [-1,-1,1], [1,-2,-1]], dirs)
       let d4 = mmult([[1,0,-1], [0,1,0], [1,0,1]], a4)
-      draw(eyePos, d4, [leftX, topY], zoomFactor * q, t4)
+      draw(eyePos, d4, [leftX, topY], zoomFactor * q, t4, [dirs, 'left', 'upper'])
 
       let circle = svg.circle(minWH).center(midX, midY).stroke('#77d')
-      draw(eyePos, dirs, [midX, midY], zoomFactor * halfWH, circle)
+      draw(eyePos, dirs, [midX, midY], zoomFactor * halfWH, circle, false)
     }
     else {
       const amplitude = 0.08
@@ -391,7 +412,7 @@ function step(timestamp) {
       let oscillatingPos = plus(plus(eyePos,
         times(amplitude * Math.sin(omega * t), eyeRight)),
         times(amplitude * Math.cos(omega * t), eyeUp))
-      draw(eyePos, dirs, [midX, midY], zoomFactor * halfWH, false)
+      draw(eyePos, dirs, [midX, midY], zoomFactor * halfWH, false, false)
     }
     //writeInstructions()
   }
