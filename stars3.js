@@ -202,8 +202,6 @@ function createOctant() {
 
 createRandomCube()
 
-let fishEye = true
-
 function isVisible(pos, visibilityData) {
   if (! visibilityData) {
     return true
@@ -238,9 +236,7 @@ function draw(eyePos, directions, scrPos, scale, clipShape, visibilityData) {
     let z   = dot(pos, normalize(directions[1]))
     const y = dot(pos, normalize(directions[2]))   // up the screen
     if (visibilityData ? isVisible(pos, visibilityData) : z + starRad > 0) {
-      if (fishEye) {
-        z += 1.0 * sqrt(x*x + y*y + z*z)
-      }
+      z += 1.0 * sqrt(x*x + y*y + z*z)
       if (z > starDiam) {
         group.circle(starDiam * scale / z).center(
             x / z * scale + scrPos[0],
@@ -261,9 +257,8 @@ yaw: A, D, left, right
 pitch: Y, H
 forward and back: W, S, up, down
 faster and slower (warp: ${warpFactor}): N, M
-one viewport or two or five: 1, 2, 0
+one viewport or two or five: 1, 2, 5
 different stars: 7, 8, 9, -
-fisheye, not fisheye: 5, 6
 zoom in and out: 3, 4`).
   font({size: 20, fill: '#ffddcc'})
 }
@@ -313,11 +308,9 @@ function step(timestamp) {
   if (pressed.m) { warpFactor--; strafeSpeed = baseSpeed * 1.04 ** warpFactor  }
   if (pressed['1']) { numPortals = 1 }
   if (pressed['2']) { numPortals = 2 }
-  if (pressed['0']) { numPortals = 5 }
+  if (pressed['5']) { numPortals = 5 }
   if (pressed['3']) { eyePos[0] += 1e-6; zoomFactor *= 1.05  }
   if (pressed['4']) { eyePos[0] += 1e-6; zoomFactor /= 1.05  }
-  if (pressed['5']) { eyePos[0] += 1e-6; fishEye = true  }
-  if (pressed['6']) { eyePos[0] += 1e-6; fishEye = false }
   if (pressed['7']) { stars = []; eyePos[0] += 1e-6; createRandomCube()    }
   if (pressed['8']) { stars = []; eyePos[0] += 1e-6; createLongLat() }
   if (pressed['9']) { stars = []; eyePos[0] += 1e-6; createGrid() }
