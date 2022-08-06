@@ -223,6 +223,10 @@ function isVisible(pos, visibilityData) {
   return true
 }
 
+function fish(x, z) {
+  return x / (z + sqrt(x*x + z*z))
+}
+
 function draw(eyePos, directions, scrPos, scale, clipShape, visibilityData) {
   // the directions are right,dir,up
   if (clipShape) {
@@ -235,13 +239,17 @@ function draw(eyePos, directions, scrPos, scale, clipShape, visibilityData) {
     const x = dot(pos, normalize(directions[0]))
     let z   = dot(pos, normalize(directions[1]))
     const y = dot(pos, normalize(directions[2]))   // up the screen
+    let r = starRad
     if (visibilityData ? isVisible(pos, visibilityData) : z + starRad > 0) {
-      z += 1.0 * sqrt(x*x + y*y + z*z)
-      if (z > starDiam) {
-        group.circle(starDiam * scale / z).center(
-            x / z * scale + scrPos[0],
-          - y / z * scale + scrPos[1]).fill(star[3])
-      }
+      let u = sqrt(x*x + y*y)
+      let d = sqrt(x*x + y*y + z*z - r * r)
+      let near = fish(u * d - z * r, z * d + u * r)
+      let far  = fish(u * d + z * r, z * d - u * r)
+      let mid = (near + far) / 2
+      let diam = far - near
+      group.circle(diam * scale).center(
+          (u == 0 ? 0 : mid * scale * x / u) + scrPos[0],
+        - (u == 0 ? 0 : mid * scale * y / u) + scrPos[1]).fill(star[3])
     }
   }
   if (clipShape) {
