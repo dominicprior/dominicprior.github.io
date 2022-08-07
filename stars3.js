@@ -247,9 +247,19 @@ function draw(eyePos, directions, scrPos, scale, clipShape, visibilityData) {
       let far  = fish(u * d + z * r, z * d - u * r)
       let mid = (near + far) / 2
       let diam = far - near
-      group.circle(diam * scale).center(
-          (u == 0 ? 0 : mid * scale * x / u) + scrPos[0],
-        - (u == 0 ? 0 : mid * scale * y / u) + scrPos[1]).fill(star[3])
+      let cx =   (u == 0 ? 0 : mid * scale * x / u) + scrPos[0]
+      let cy = - (u == 0 ? 0 : mid * scale * y / u) + scrPos[1]
+      if (diam > 0) {
+        group.circle(diam * scale).center(cx, cy).fill(star[3])
+      }
+      else {
+        let portal = clipShape.clone().fill(star[3])
+        let black = clipShape.clone().fill('#fff')
+        let bite = svg.circle(- diam * scale).center(cx, cy).fill('#000')
+        let mask = svg.mask().add(black).add(bite)
+        portal.maskWith(mask)
+        group.add(portal)
+      }
     }
   }
   if (clipShape) {
