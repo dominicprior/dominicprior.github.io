@@ -241,24 +241,29 @@ function draw(eyePos, directions, scrPos, scale, clipShape, visibilityData) {
     const y = dot(pos, normalize(directions[2]))   // up the screen
     let r = starRad
     if (visibilityData ? isVisible(pos, visibilityData) : z + starRad > 0) {
-      let u = sqrt(x*x + y*y)
-      let d = sqrt(x*x + y*y + z*z - r * r)
-      let near = fish(u * d - z * r, z * d + u * r)
-      let far  = fish(u * d + z * r, z * d - u * r)
-      let mid = (near + far) / 2
-      let diam = far - near
-      let cx =   (u == 0 ? 0 : mid * scale * x / u) + scrPos[0]
-      let cy = - (u == 0 ? 0 : mid * scale * y / u) + scrPos[1]
-      if (diam > 0) {
-        group.circle(diam * scale).center(cx, cy).fill(star[3])
+      if (x*x + y*y + z*z < r*r) {
+        group.add(clipShape.clone().fill(star[3]).opacity(0.9))
       }
       else {
-        let portal = clipShape.clone().fill(star[3])
-        let black = clipShape.clone().fill('#fff')
-        let bite = svg.circle(- diam * scale).center(cx, cy).fill('#000')
-        let mask = svg.mask().add(black).add(bite)
-        portal.maskWith(mask)
-        group.add(portal)
+        let u = sqrt(x*x + y*y)
+        let d = sqrt(x*x + y*y + z*z - r * r)
+        let near = fish(u * d - z * r, z * d + u * r)
+        let far  = fish(u * d + z * r, z * d - u * r)
+        let mid = (near + far) / 2
+        let diam = far - near
+        let cx =   (u == 0 ? 0 : mid * scale * x / u) + scrPos[0]
+        let cy = - (u == 0 ? 0 : mid * scale * y / u) + scrPos[1]
+        if (diam > 0) {
+          group.circle(diam * scale).center(cx, cy).fill(star[3])
+        }
+        else {
+          let portal = clipShape.clone().fill(star[3])
+          let black = clipShape.clone().fill('#fff')
+          let bite = svg.circle(- diam * scale).center(cx, cy).fill('#000')
+          let mask = svg.mask().add(black).add(bite)
+          portal.maskWith(mask)
+          group.add(portal)
+        }
       }
     }
   }
