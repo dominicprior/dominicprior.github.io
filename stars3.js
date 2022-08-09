@@ -54,8 +54,10 @@ window.addEventListener('keyup', (event) => {
   return false
 })
 
+let prevDir = 'no dir yet'
+
 svg.node.onpointerdown = (event) => {
-  prevMousePos = [event.x, event.y]
+  prevDir = scr2dir([event.x, event.y])
   return false
 }
 
@@ -66,16 +68,25 @@ svg.node.onpointerdown = (event) => {
 function scr2dir(scrPos) {
   const X = (scrPos[0] - midX) / halfWH
   const Y = (midY - scrPos[1]) / halfWH
-  return [2*X, 1 - X*X - Y*Y, 2*Y]
+  return normalize([2*X, 1 - X*X - Y*Y, 2*Y])
 }
 
-// Rotate the global dirs.
+// Rotate the global dirs so that the prevDir changes to the newDir
+// without any extra twist.
 
 svg.node.onpointermove = (event) => {
   if (event.buttons === 1) {
     let newDir = scr2dir([event.x, event.y])
+    if (prevDir === 'no dir yet' || _.isEqual(newDir, prevDir)) {
+      return
+    }
+    let axis = normalize(cross(prevDir, newDir))
+    let newRot  = [axis, newDir,  cross(axis, newDir)]
+    let prevRot = [axis, prevDir, cross(axis, prevDir)]
+    let prev2new = mmult(transpose(newRot), prevRot)
+    dirs = mmult(prev2new, dirs)
+    prevDir = _.cloneDeep(newDir)
   }
-  // prevMousePos = [event.x, event.y]
   return false
 }
 
@@ -144,10 +155,9 @@ function mmult(aa, b) {
   return result
 }
 
-function assign(u, v) {
-  u[0] = v[0]
-  u[1] = v[1]
-  u[2] = v[2]
+function transpose(a) {
+    let [row] = a
+    return row.map((value, column) => a.map(row => row[column]))
 }
 
 function createGrid() {
