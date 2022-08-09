@@ -32,10 +32,10 @@ let strafeSpeed = baseSpeed   // for forward, back and strafe
 let rotateSpeed = 0.5   // radians per second
 
 let eyePos   = [0, 0, 0]
-let eyeRight = [1, 0, 0]   // screen x dir
-let eyeDir   = [0, 1, 0]   // facing North
-let eyeUp    = [0, 0, 1]
-let dirs = [eyeRight, eyeDir, eyeUp]   // identity matrix initially
+
+// Our orientation compared to the world coordinates.
+// The rows are right, forwards and up.
+let dirs = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
 
 let prevMousePos = false
 
@@ -77,15 +77,6 @@ svg.node.onpointermove = (event) => {
   }
   // prevMousePos = [event.x, event.y]
   return false
-}
-
-function updateDirs(u, v, angle) {
-  const c = Math.cos(angle)
-  const s = Math.sin(angle)
-  const uu = minus(times(c,u), times(s,v))
-  const vv = plus (times(s,u), times(c,v))
-  assign(u, uu)
-  assign(v, vv)
 }
 
 function rnd(a, b) {
@@ -319,19 +310,21 @@ function step(timestamp) {
   let strafeDist = deltaT * strafeSpeed
   let rotateAmount = deltaT * rotateSpeed
   prevT = t
-  eyePos = plus(eyePos, times(deltaT * speed, eyeDir))
-  if (pressed.ArrowLeft || pressed.a) {  updateDirs(eyeDir, eyeRight, rotateAmount)  }
-  if (pressed.ArrowRight || pressed.d) { updateDirs(eyeDir, eyeRight, -rotateAmount) }
-  if (pressed.y) { updateDirs(eyeDir, eyeUp, -rotateAmount) }
-  if (pressed.h) { updateDirs(eyeDir, eyeUp, rotateAmount)  }
-  if (pressed.o) { updateDirs(eyeRight, eyeUp, rotateAmount) }
-  if (pressed.p) { updateDirs(eyeRight, eyeUp, -rotateAmount) }
-  if (pressed.q) { eyePos = plus(eyePos, times(-strafeDist, eyeRight)) }
-  if (pressed.e) { eyePos = plus(eyePos, times(strafeDist, eyeRight))  }
-  if (pressed.t) { eyePos = plus(eyePos, times(strafeDist, eyeUp))  }
-  if (pressed.g) { eyePos = plus(eyePos, times(-strafeDist, eyeUp)) }
-  if (pressed.ArrowUp || pressed.w) { eyePos = plus(eyePos, times(strafeDist, eyeDir)) }
-  if (pressed.ArrowDown || pressed.s) { eyePos = plus(eyePos, times(-strafeDist, eyeDir)) }
+  eyePos = plus(eyePos, times(deltaT * speed, dirs[0]))
+  let c = Math.cos(rotateAmount)
+  let s = Math.sin(rotateAmount)
+  if (pressed.ArrowLeft || pressed.a)  { dirs = mmult([[c, s,0], [-s,c,0], [0,0,1]], dirs) }
+  if (pressed.ArrowRight || pressed.d) { dirs = mmult([[c,-s,0], [ s,c,0], [0,0,1]], dirs) }
+  if (pressed.y) { dirs = mmult([[1,0,0], [0,c, s], [0,-s,c]], dirs) }
+  if (pressed.h) { dirs = mmult([[1,0,0], [0,c,-s], [0, s,c]], dirs) }
+  if (pressed.o) { dirs = mmult([[c,0,-s], [0,1,0], [ s,0,c]], dirs) }
+  if (pressed.p) { dirs = mmult([[c,0, s], [0,1,0], [-s,0,c]], dirs) }
+  if (pressed.q) { eyePos = plus(eyePos, times(-strafeDist, dirs[0])) }
+  if (pressed.e) { eyePos = plus(eyePos, times( strafeDist, dirs[0])) }
+  if (pressed.t) { eyePos = plus(eyePos, times( strafeDist, dirs[2])) }
+  if (pressed.g) { eyePos = plus(eyePos, times(-strafeDist, dirs[2])) }
+  if (pressed.ArrowUp   || pressed.w) { eyePos = plus(eyePos, times( strafeDist, dirs[1])) }
+  if (pressed.ArrowDown || pressed.s) { eyePos = plus(eyePos, times(-strafeDist, dirs[1])) }
   if (pressed.n) { warpFactor++; strafeSpeed = baseSpeed * 1.04 ** warpFactor  }
   if (pressed.m) { warpFactor--; strafeSpeed = baseSpeed * 1.04 ** warpFactor  }
   if (pressed['1']) { numPortals = 1 }
@@ -344,11 +337,10 @@ function step(timestamp) {
   if (pressed['9']) { stars = []; eyePos[0] += 1e-6; createGrid() }
   if (pressed['-']) { stars = []; eyePos[0] += 1e-6; createOctant() }
 
-  let newView = _.cloneDeep([eyePos, eyeDir, eyeRight, eyeUp, warpFactor, numPortals])
+  let newView = _.cloneDeep([eyePos, dirs, warpFactor, numPortals])
   if (! _.isEqual(newView, prevView)) {
     svg.clear()
     stars.sort((a, b) => distSq(b, eyePos) - distSq(a, eyePos))
-    dirs = [eyeRight, eyeDir, eyeUp]
 
     if (numPortals === 2) {
       let scale = midX > 2 * midY ? midY : midX / 2
@@ -431,8 +423,8 @@ function step(timestamp) {
       const amplitude = 0.08
       const omega = 2
       let oscillatingPos = plus(plus(eyePos,
-        times(amplitude * Math.sin(omega * t), eyeRight)),
-        times(amplitude * Math.cos(omega * t), eyeUp))
+        times(amplitude * Math.sin(omega * t), dirs[0])),
+        times(amplitude * Math.cos(omega * t), dirs[2]))
       draw(eyePos, dirs, [midX, midY], zoomFactor * halfWH, false, false)
     }
     //writeInstructions()
