@@ -59,18 +59,23 @@ svg.node.onpointerdown = (event) => {
   return false
 }
 
+// Return xyz direction corresponding to the y-downwards screen pos.
+// The xyz direction is in the world frame where y is forwards and
+// z is up.
+
+function scr2dir(scrPos) {
+  const X = (scrPos[0] - midX) / halfWH
+  const Y = (midY - scrPos[1]) / halfWH
+  return [2*X, 1 - X*X - Y*Y, 2*Y]
+}
+
+// Rotate the global dirs.
+
 svg.node.onpointermove = (event) => {
-  if (event.buttons === 2) {
-    const dx = event.x - prevMousePos[0]
-    const dy = event.y - prevMousePos[1]
-    if (dx) {
-      updateDirs(eyeDir, eyeRight, -dx/400)
-    }
-    if (dy) {
-      updateDirs(eyeDir, eyeUp, dy/400)
-    }
+  if (event.buttons === 1) {
+    let newDir = scr2dir([event.x, event.y])
   }
-  prevMousePos = [event.x, event.y]
+  // prevMousePos = [event.x, event.y]
   return false
 }
 
