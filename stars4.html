@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Stars</title>
+  <style>
+    body {
+      margin:0px;
+      overflow: hidden;
+      background-color: rgb(33, 33, 53);
+    }
+    #instructions {
+      background-color: indigo;
+      color: white;
+      position: absolute;
+      font-size: 150%;
+      font-family: Arial, Helvetica, sans-serif;
+      top: 0px;
+      left: 10px;
+      padding: 10px;
+    }
+    #gameover {
+      background-color:cadetblue;
+      color: white;
+      position: absolute;
+      font-size: 250%;
+      font-family: Arial, Helvetica, sans-serif;
+      top: 400px;
+      left: 10px;
+      padding: 10px;
+      visibility: hidden;
+    }
+    #numvisited {
+      background-color:darkorange;
+      color: white;
+      position: absolute;
+      font-size: 250%;
+      font-family: Arial, Helvetica, sans-serif;
+      top: 300px;
+      left: 10px;
+      padding: 10px;
+    }
+    #success {
+      color: pink;
+      position: absolute;
+      font-size: 650%;
+      font-family: Arial, Helvetica, sans-serif;
+      top: 300px;
+      left: 800px;
+      padding: 10px;
+      visibility: hidden;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3.0/dist/svg.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+</head>
+<body>
+  <p id="instructions">Strafe: q, e, t, g <br>
+    Roll: o, p, mouse <br>
+    Yaw: a, d, arrows, mouse <br>
+    Pitch: y, h, mouse <br>
+    Forward and back: w, s, arrows, space <br>
+    <br>
+    Faster and slower: n, m <br>
+    One viewport or two or five: 1, 2, 5 <br>
+    Different stars: 7, 8, 9, -</p>
+  <p id="gameover">
+    *** Game Over ***
+    <br><br>
+    Continue exploring, <br>
+    or refresh page <br>
+    to start again
+  </p>
+  <p id="numvisited">
+    0/10
+  </p>
+  <p id="success">
+    Yay!
+  </p>
+  <script src="stars4.js"></script>
+</body>
+<noscript>This page needs JavaScript</noscript>
+</html>
