@@ -19,7 +19,7 @@ svg.setAttribute('width', winW)
 svg.setAttribute('height', winH)
 div.appendChild(svg)
 
-const numStars = 400
+const numStars = 2000
 const starDiam = 2
 const boxSize = 1000
 let furthestStars = 0
