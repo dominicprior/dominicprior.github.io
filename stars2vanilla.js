@@ -9,17 +9,21 @@
 
 'use strict'
 
+let ns = 'http://www.w3.org/2000/svg'
 const winW = window.innerWidth
 const winH = window.innerHeight
 let div = document.createElement('div')
 document.body.append(div)
-let draw = SVG().addTo('body').size(winW, winH)
+let svg = document.createElementNS(ns, 'svg')
+svg.setAttribute('width', winW)
+svg.setAttribute('height', winH)
+div.appendChild(svg)
 
-const numStars = 240
-const starDiam = 15
+const numStars = 400
+const starDiam = 2
 const boxSize = 1000
 let furthestStars = 0
-let speed = 15
+let speed = 5
 
 let eyeZ = 0
 
@@ -28,9 +32,8 @@ function rnd(a, b) {
 }
 
 function rndColor() {
-  return new SVG.Color({ r: rnd(100, 255),
-                         g: rnd(100, 255),
-                         b: rnd(100, 255) })
+  // return rgb(214, 122, 127)
+  return 'rgb(' + rnd(100, 255) + ', ' + rnd(100, 255) + ', ' + rnd(100, 255) + ')'
 }
 
 let stars = []
@@ -44,47 +47,75 @@ function addNewStars() {
   stars = stars.filter(star => star[2] > 0)
   while (furthestStars < eyeZ + boxSize) {
     const h = boxSize / 2
+
     for (let i=0; i < numStars / 2; i++) {
+      let circle = document.createElementNS(ns, 'circle')
+      circle.setAttribute('fill', rndColor())
+      svg.appendChild(circle)
+
       const star = [rnd(-h, h), rnd(-h, h),
                     rnd(furthestStars, furthestStars + h),
-                    rndColor()]
+                    circle]
       stars.push(star)
     }
     furthestStars += h
   }
-  stars.sort((a, b) => hypotSq(b) - hypotSq(a))
+  stars.sort((a, b) => hypotSq(a) - hypotSq(b))
+
 }
 
 function hypotSq(a) {
   return a[0] * a[0] + a[1] * a[1] + a[2] * a[2]
 }
 
-draw.circle(200).center(200,100).fill('yellow').attr('foo', 6)
+let circle2 = document.createElementNS(ns, 'circle')
+circle2.setAttribute('cx', 40)
+circle2.setAttribute('cy', 40)
+circle2.setAttribute('r', 40)
+circle2.setAttribute('fill', 'blue')
+svg.appendChild(circle2)
 
-// Update the SVG model (in response to requestAnimationFrame).
-// For simplicity, it throws away the current SVG model and
-// regenerates it from the circles array.
+// update the circle attributes
+
+let n = 0
+let numStepCalls = 0
+let stepDuration = 0
+let prevTime = 0
 
 function step(timestamp) {
+  numStepCalls++
+  const t0 = performance.now()
   let t = timestamp / 1000
-  if (t > 60) {
+  if (t > 20) {
     return
   }
   eyeZ = speed * t
-  addNewStars()
-  draw.clear()
   for (let star of stars) {
     const z = star[2] - eyeZ
     if (z > 0 && z < boxSize) {
-      const k = 1 - z / boxSize
-      const opacity = k < 0.2 ? 5 * k : 1
       const scale = Math.min(winW, winH) / 10
-      draw.circle(starDiam * scale / z).center(
-        star[0] / z * scale + winW / 2,
-        star[1] / z * scale + winH / 2).fill(star[3]).opacity(opacity)
+      
+      let circle = star[3]
+      circle.setAttribute('cx', star[0] / z * scale + winW / 2)
+      circle.setAttribute('cy', star[1] / z * scale + winH / 2)
+      circle.setAttribute('r', starDiam * scale / z)
+      n++
     }
+  }
+
+  const t1 = performance.now()
+  stepDuration += t1 - t0
+  if (numStepCalls % 60 === 0) {
+    const fps = (60 * 1000 / (t1 - prevTime)).toFixed() + ' fps'
+    prevTime = t1
+    const ms = (stepDuration / 60).toFixed(1) + 'ms'
+    stepDuration = 0
+    document.querySelector('#fps').innerHTML = ms + '<br>' + fps
+    console.log(ms + '   ' + fps)
   }
   window.requestAnimationFrame(step)
 }
+
+addNewStars()
 
 window.requestAnimationFrame(step)

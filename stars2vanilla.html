@@ -1,17 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Stars 2</title>
+  <title>Stars 2 vanilla</title>
   <style>
     body {
       margin:0px;
       overflow: hidden;
       background-color: black;
     }
-  </style>
-  <script src="https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3.0/dist/svg.min.js"></script>
+    #fps {
+      background-color:blue;
+      color: white;
+      position: absolute;
+      font-size: 150%;
+      font-family: Arial, Helvetica, sans-serif;
+      top: 500px;
+      left: 10px;
+      padding: 10px;
+      z-index: 1;
+    }  </style>
 </head>
 <body>
+  <p id="fps">
+    *** Game Over ***
+  </p>
 </body>
 <script src="stars2vanilla.js"></script>
 <noscript>This page needs JavaScript</noscript>
