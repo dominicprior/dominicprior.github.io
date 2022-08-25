@@ -21,6 +21,13 @@ Its job is to determine the color of that pixel by figuring out which
 texel and lighting to apply.  The color is returned by storing it in
 the special variable gl_FragColor.
 
+WebGL objects are built using sets of vertices, each of which has a
+position and a color.
+
+By default, all other pixels' colors (and all its other attributes,
+including position) are computed using interpolation.
+
+
 This is based on:
 https://github.com/mdn/dom-examples/blob/master/webgl-examples/tutorial/sample2/webgl-demo.js
 and
@@ -74,13 +81,13 @@ alert('Unable to initialize WebGL. Your browser or machine may not support it.')
 // Vertex shader program
 
 const vsSource = `
-attribute vec4 aVertexPosition;
+attribute vec4 aVerPos;
 
 uniform mat4 uModelViewMatrix;
 uniform mat4 uProjectionMatrix;
 
 void main() {
-    gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
+    gl_Position = uProjectionMatrix * uModelViewMatrix * aVerPos;
 }
 `
 
@@ -101,12 +108,7 @@ drawScene(gl)
 function initBuffers(gl) {
   const positionBuffer = gl.createBuffer()
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
-  const positions = [
-     1.0,  1.0,
-    -1.0,  1.0,
-     1.0, -1.0,
-    -1.0, -1.0,
-  ]
+  const positions = [ 1.0,  1.0,  -1.0,  1.0,  1.0, -1.0,  -1.0, -1.0 ]
   gl.bufferData(gl.ARRAY_BUFFER,
                 new Float32Array(positions),
                 gl.STATIC_DRAW)
@@ -160,7 +162,7 @@ function drawScene(gl) {
     const normalize = false
     const stride = 0
     const offset = 0
-    const aVerPos = gl.getAttribLocation(prog, 'aVertexPosition')
+    const aVerPos = gl.getAttribLocation(prog, 'aVerPos')
     gl.vertexAttribPointer(
         aVerPos,
         numComponents,
