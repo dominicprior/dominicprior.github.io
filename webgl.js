@@ -27,14 +27,27 @@ position and a color.
 By default, all other pixels' colors (and all its other attributes,
 including position) are computed using interpolation.
 
+Uniforms are values passed to the shader that stay the same for all
+vertices in a draw call.
 
-This is based on:
+A uniform is a constant global that can be used by a shader.
+
+The clip space is a 2 unit wide cube centred at (0,0,0).
+
+Modern OpenGL and WebGL are just rasterization APIs. You write shaders,
+which are small functions that run on the GPU. You provide those shaders
+with data through attributes (per iteration data), uniforms (global
+variables), textures (2d/3d arrays), varyings (data passed from vertex
+shaders to fragment shaders).
+
+
+This program is based on:
 https://github.com/mdn/dom-examples/blob/master/webgl-examples/tutorial/sample2/webgl-demo.js
 and
 https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial/Adding_2D_content_to_a_WebGL_context
 Note that the tutorial webpage lags behind the dom-examples.
 
-Here are the API calls.
+Here are the API calls it uses.
 
 shader = createShader(type)
 shaderSource(shader, sourceStr)
@@ -64,7 +77,7 @@ enableVertexAttribArray
 
 useProgram(prog)
 
-uniformMatrix4fv
+uniformMatrix4fv   // set the value of a uniform
 getUniformLocation
 
 drawArrays(gl.TRIANGLE_STRIP, offset, vertexCount)
@@ -94,6 +107,7 @@ void main() {
 // Fragment shader program
 
 const fsSource = `
+precision mediump float;
 void main() {
     gl_FragColor = vec4(1.0, 0.5, 1.0, 1.0);
 }
