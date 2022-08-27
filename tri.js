@@ -1,7 +1,7 @@
 'use strict'
 
 let gl = document.querySelector('canvas').getContext('webgl')
-gl.clearColor(0.0, 0.0, 0.3, 1.0)  // Clear to black, fully opaque
+gl.clearColor(0.0, 0.0, 0.3, 1.0)
 gl.clear(gl.COLOR_BUFFER_BIT)
 
 const vs = `
@@ -25,12 +25,14 @@ let arrays = {
     position: { numComponents: 2, data: [ 0, 0,    0, 0.9,   0.9, 0,], },
     offset:   { numComponents: 2, data: [ 0.2, 0,  0,0,      0,0,   ], },
   }
-let bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays)
+let bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays)  // creates stuff on the GPU
 
-twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo)
 let uniforms = { scale: 0.5, }
 twgl.setUniforms(programInfo, uniforms)
-twgl.drawBufferInfo(gl, bufferInfo)
+twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo)
+twgl.drawBufferInfo(gl, bufferInfo)  // actually draw
+
+deleteBufferInfo(gl, bufferInfo)
 
 arrays.position.data[0] = 0.4
 bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays)
@@ -39,3 +41,14 @@ uniforms.scale = -1
 
 twgl.setUniforms(programInfo, uniforms)
 twgl.drawBufferInfo(gl, bufferInfo)
+
+function deleteBufferInfo(gl, bufferInfo) {
+// https://github.com/greggman/twgl.js/issues/169#issuecomment-654530521
+for (const attrib of Object.values(bufferInfo.attribs)) {
+    gl.deleteBuffer(attrib.buffer)  // call deleteBuffer on the WebGLBuffer object.
+  // (The WebGLBuffer is an opaque object storing data such as vertices or colors).
+  }
+  if (bufferInfo.indices) {
+    gl.deleteBuffer(indices)
+  }
+}
