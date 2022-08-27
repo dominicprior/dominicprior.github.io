@@ -19,18 +19,16 @@ void main() {
 }`
 
 const programInfo = twgl.createProgramInfo(gl, [vs, fs])
+gl.useProgram(programInfo.program)
+
 let arrays = {
     position: { numComponents: 2, data: [ 0, 0,    0, 0.9,   0.9, 0,], },
     offset:   { numComponents: 2, data: [ 0.2, 0,  0,0,      0,0,   ], },
   }
 let bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays)
 
-gl.useProgram(programInfo.program)
 twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo)
-
-let uniforms = {
-    scale: 0.5,
-}
+let uniforms = { scale: 0.5, }
 twgl.setUniforms(programInfo, uniforms)
 twgl.drawBufferInfo(gl, bufferInfo)
 
