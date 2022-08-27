@@ -9,7 +9,7 @@ attribute vec2 position;
 attribute vec2 offset;
 uniform float scale;
 void main() {
-  gl_Position = vec4(position + offset, 0, 1);
+  gl_Position = vec4(scale * (position + offset), 0, 1);
 }`
 
 const fs = `
@@ -25,11 +25,17 @@ const arrays = {
   }
 const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays)
 
+gl.useProgram(programInfo.program)
+twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo)
+
 const uniforms = {
     scale: 0.5,
 }
-
-gl.useProgram(programInfo.program)
-twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo)
 twgl.setUniforms(programInfo, uniforms)
+twgl.drawBufferInfo(gl, bufferInfo)
+
+const uniforms2 = {
+    scale: -0.5,
+}
+twgl.setUniforms(programInfo, uniforms2)
 twgl.drawBufferInfo(gl, bufferInfo)
