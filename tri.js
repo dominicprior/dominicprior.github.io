@@ -4,8 +4,9 @@ let gl = document.querySelector('canvas').getContext('webgl')
 
 const vs = `
 attribute vec2 position;
+uniform float scale;
 void main() {
-  gl_Position = vec4(position, 0, 1);
+  gl_Position = vec4(scale * position, 0, 1);
 }`
 
 const fs = `
@@ -21,7 +22,7 @@ const arrays = {
 const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays)
 
 const uniforms = {
-    time: 1.0,
+    scale: 0.5,
 }
 
 gl.useProgram(programInfo.program)
