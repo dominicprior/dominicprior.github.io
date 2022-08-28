@@ -1,4 +1,4 @@
-// An animation of some stars coming towards us.
+// An animation of some triangles coming towards us.
 
 // The viewpoint moves along the z-axis towards the stars.
 
@@ -44,7 +44,7 @@ twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo)
 
 function step(t) {
   t /= 1000
-  if (t > 1) { return }
+  if (t > 6) { return }
   eyeZ = speed * t
   let uniforms = { eyeZ: eyeZ, }
   twgl.setUniforms(programInfo, uniforms)
@@ -56,14 +56,14 @@ window.requestAnimationFrame(step)
 
 
 function addNewStars() {
-  stars = [ 0, 0, 2, 1,   0, 0.9, 2, 1,   0.9, 0, 2, 1,]
-  return
   const h = boxSize / 2
   for (let i=0; i < numStars; i++) {
-    stars.push(rnd(-h, h),
-               rnd(-h, h),
-               rnd(0, 2 * h),
-               1)
+    const x = rnd(-h, h)
+    const y = rnd(-h, h)
+    const z = rnd(0, 2*h)
+    stars.push(x, y, z, 1)
+    stars.push(x + starDiam, y, z, 1)
+    stars.push(x, y + starDiam, z, 1)
   }
 }
 
