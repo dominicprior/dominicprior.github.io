@@ -1,3 +1,7 @@
+// This is an example of using TWGL, including having two attributes
+// and a uniform, and then setting the attributes and uniform again
+// for another drawing call.
+
 'use strict'
 
 let gl = document.querySelector('canvas').getContext('webgl')
@@ -30,7 +34,8 @@ let bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays)  // creates stuff o
 let uniforms = { scale: 0.5, }
 twgl.setUniforms(programInfo, uniforms)
 twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo)
-twgl.drawBufferInfo(gl, bufferInfo)  // actually draw
+twgl.drawBufferInfo(gl, bufferInfo)  // actually draw (using the current program)
+// In this case it is the same as gl.drawArrays(gl.TRIANGLES, 0, 3)
 
 deleteBufferInfo(gl, bufferInfo)
 
