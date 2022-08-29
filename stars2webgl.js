@@ -4,7 +4,7 @@
 
 'use strict'
 
-const numStars = 24
+const numStars = 50
 const starDiam = 15
 const boxSize = 1000
 let speed = 15
@@ -15,11 +15,12 @@ gl.clearColor(0.0, 0.0, 0.3, 1.0)
 gl.clear(gl.COLOR_BUFFER_BIT)
 
 const vs = `#version 300 es
-in vec4 pos;
+in vec3 pos;
+in vec2 offset;
 uniform float eyeZ;
 void main() {
   float z = pos.z - eyeZ;
-  gl_Position = vec4(pos.x / z, pos.y / z, 0, 1);
+  gl_Position = vec4(pos.x / z + offset.x, pos.y / z + offset.y, 0, 1);
 }`
 
 const fs = `#version 300 es
@@ -36,20 +37,32 @@ let stars = []
 
 addNewStars()
 
+let offsets = []
+const numInstances = 100
+for (let i=0; i < numInstances / 20; i++) {
+  for (let j=0; j < 20; j++) {
+    offsets.push(j / 200, i / 200)
+  }
+}
+
 let arrays = {
-  pos: { numComponents: 4, data: stars, },
+  pos: { numComponents: 3, data: stars, },
+  offset: { numComponents: 2, data: offsets, },
 }
 let bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays)
 twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo)
 
+const loc = gl.getAttribLocation(programInfo.program, 'offset')
+gl.vertexAttribDivisor(loc, 1)
 
 function step(t) {
   t /= 1000
-  if (t > 1) { return }
+  if (t > 6) { return }
   eyeZ = speed * t
   let uniforms = { eyeZ: eyeZ, }
   twgl.setUniforms(programInfo, uniforms)
-  twgl.drawBufferInfo(gl, bufferInfo)
+  twgl.drawBufferInfo(gl, bufferInfo, gl.TRIANGLES,
+    numStars * 3, 0, numInstances)
   window.requestAnimationFrame(step)
 }
 
@@ -61,10 +74,10 @@ function addNewStars() {
   for (let i=0; i < numStars; i++) {
     const x = rnd(-h, h)
     const y = rnd(-h, h)
-    const z = rnd(0, 2*h)
-    stars.push(x, y, z, 1)
-    stars.push(x + starDiam, y, z, 1)
-    stars.push(x, y + starDiam, z, 1)
+    const z = rnd(2*h, 3*h)
+    stars.push(x, y, z)
+    stars.push(x + starDiam, y, z)
+    stars.push(x, y + starDiam, z)
   }
 }
 
