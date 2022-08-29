@@ -2,24 +2,24 @@
 // Derived from https://stackoverflow.com/questions/46059914/what-does-instancing-do-in-webgl
 
 const vs = `#version 300 es
-in vec2 pos;
-in vec2 foo;
-out vec2 vTexCoord;
 uniform float scale;
+in vec4 a_position;
+in vec2 a_texcoord;
+out vec2 v_texCoord;
 void main() {
-  gl_PointSize = 70.0;
-  gl_Position = vec4(pos * scale, 0.0, 1.0);
-  vTexCoord = foo;
+  v_texCoord = a_texcoord;
+  gl_Position = a_position;
 }`;
 
 const fs = `#version 300 es
 precision mediump float;
-in vec2 vTexCoord;
+in vec2 v_texCoord;
 out vec4 finalColour;
-uniform sampler2D uSampler;
+uniform sampler2D u_diffuse;
 void main() {
-  finalColour = texture(uSampler, vTexCoord);
+  finalColour = texture(u_diffuse, v_texCoord);
 }`;
+twgl.setDefaults({attribPrefix: "a_"});
 
 let gl = document.querySelector('canvas').getContext('webgl2')
 gl.clearColor(1.0, 0.8, 1.0, 1.0)
@@ -29,19 +29,13 @@ const programInfo = twgl.createProgramInfo(gl, [vs, fs])
 gl.useProgram(programInfo.program)
 
 let arrays = {
-  pos:    { numComponents: 2, data:  [0, 0,      0.5, 0.5,  0, 0.9,   1.6, 0 ], },
-  indices: [0,1,2, 0,1,3]
+  pos:    { numComponents: 2, data:  [0, 0,  0.5, 0.5,  0, 0.9,   1.6, 0 ], },
 }
-let bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays)
-twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo)
 
-let uniforms = { scale: 1, }
-twgl.setUniforms(programInfo, uniforms)
+let cube = twgl.primitives.createCubeBufferInfo(gl, 0.8)
 
-// uniform uSampler ?
-
-twgl.createTextures(gl, {
-  foo: {
+const textures = twgl.createTextures(gl, {
+  checker: {
     mag: gl.NEAREST,
     min: gl.LINEAR,
     src: [
@@ -52,4 +46,18 @@ twgl.createTextures(gl, {
     ],    
  }})
 
-twgl.drawBufferInfo(gl, bufferInfo)
+let uniforms = { scale: 1,
+  u_diffuse: textures.checker
+}
+twgl.setUniforms(programInfo, uniforms)
+
+let drawObjects = [{
+  programInfo: programInfo,
+  bufferInfo: cube,
+  uniforms: uniforms,
+}];
+
+//twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo)
+
+twgl.drawObjectList(gl, drawObjects);
+//twgl.drawBufferInfo(gl, bufferInfo)
