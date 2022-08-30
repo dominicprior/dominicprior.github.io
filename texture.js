@@ -29,8 +29,7 @@ gl.useProgram(programInfo.program)
 
 let cube = twgl.primitives.createCubeBufferInfo(gl, 0.8)
 
-const textureszzz = twgl.createTextures(gl, {
-  checkerzzz: {
+twgl.createTexture(gl, {
     mag: gl.NEAREST,
     min: gl.LINEAR,
     src: [
@@ -40,7 +39,7 @@ const textureszzz = twgl.createTextures(gl, {
       0,255,255,255,
     ],
     width: 2
- }})
+})
 
 let drawObjects = [{
   programInfo: programInfo,  // { program: WebGLProgram, ...}
