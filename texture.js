@@ -27,8 +27,6 @@ const programInfo = twgl.createProgramInfo(gl, [vs, fs])
 gl.useProgram(programInfo.program)
 
 const bufferInfo = twgl.primitives.createPlaneBufferInfo(gl)
-//const arrays = twgl.primitives.createPlaneVertices(1);
-//const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
 
 twgl.createTexture(gl, {
     mag: gl.NEAREST,
@@ -43,10 +41,8 @@ twgl.createTexture(gl, {
 })
 
 let drawObjects = [{
-  programInfo: programInfo,  // { program: WebGLProgram, ...}
-  bufferInfo: bufferInfo,  // {attribs: {a_position: {...}, ...},
-                     //  indices: WebGLBuffer {},
-                     //  numElements: 36         }
+  programInfo: programInfo,
+  bufferInfo: bufferInfo,
 }];
 
 twgl.drawObjectList(gl, drawObjects);
