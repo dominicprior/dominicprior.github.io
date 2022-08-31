@@ -1,5 +1,4 @@
-// A minimal example of WebGL instancing.
-// Derived from https://stackoverflow.com/questions/46059914/what-does-instancing-do-in-webgl
+// A minimal example of TWGL textures.
 
 const vs = `#version 300 es
 in vec4 a_position;
@@ -7,7 +6,7 @@ in vec2 a_texcoord;
 out vec2 v_texCoord;
 void main() {
   v_texCoord = a_texcoord;
-  gl_Position = a_position;
+  gl_Position = a_position.zxyw;
 }`;
 
 const fs = `#version 300 es
@@ -27,7 +26,9 @@ gl.clear(gl.COLOR_BUFFER_BIT)
 const programInfo = twgl.createProgramInfo(gl, [vs, fs])
 gl.useProgram(programInfo.program)
 
-let cube = twgl.primitives.createCubeBufferInfo(gl, 0.8)
+const bufferInfo = twgl.primitives.createPlaneBufferInfo(gl)
+//const arrays = twgl.primitives.createPlaneVertices(1);
+//const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
 
 twgl.createTexture(gl, {
     mag: gl.NEAREST,
@@ -43,7 +44,7 @@ twgl.createTexture(gl, {
 
 let drawObjects = [{
   programInfo: programInfo,  // { program: WebGLProgram, ...}
-  bufferInfo: cube,  // {attribs: {a_position: {...}, ...},
+  bufferInfo: bufferInfo,  // {attribs: {a_position: {...}, ...},
                      //  indices: WebGLBuffer {},
                      //  numElements: 36         }
 }];
