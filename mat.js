@@ -44,6 +44,7 @@ mat4.perspective(proj, Math.PI / 2, 1,   // flips z
 let arrays = {
   pos: { numComponents: 3, data:  [ 0, 0, 0.5,   0.5, 0, 0.5,   0.5, 0, 0.6, ], },
 }
+// After going through the view transform, the first point is at:  0, 0, -0.5
 
 const uniforms = {view: view, proj: proj}
 
