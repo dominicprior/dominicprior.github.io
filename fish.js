@@ -7,6 +7,9 @@ gl.clear(gl.COLOR_BUFFER_BIT)
 
 const vs = `#version 300 es
 in vec3 pos;
+in float n;
+uniform float N;
+#define PI 3.141592653589793
 
 float fish(vec2 v) {
     float len = length(v);
@@ -14,7 +17,7 @@ float fish(vec2 v) {
 }
 
 void main() {
-    gl_PointSize = 40.0;
+    gl_PointSize = 5.0;
     float h2 = length(pos);
     float xz = length(pos.xz);
     float r = 0.4;
@@ -25,8 +28,17 @@ void main() {
     float bf = fish(b);
     float discRad = (af - bf) * 0.5;
     float q = (af + bf) * 0.5;
-    vec2 scrPos = vec2(q * pos.x / xz, q * pos.z / xz);
-    gl_Position = vec4(scrPos, 0, 1);
+    float x = q * pos.x / xz;
+    float y = q * pos.z / xz;
+    float i = float(int(n) / 3);
+    float j = float(int(n) % 3);
+    if (j != 2.0) {
+        float angle = 2.0 * PI * (n + j) / N;
+        x += discRad * cos(angle);
+        y += discRad * sin(angle);
+    }
+    vec2 centre = vec2(x, y);
+    gl_Position = vec4(centre, 0, 1);
 }`
 const fs = `#version 300 es
 precision mediump float;
@@ -35,11 +47,21 @@ void main() {
     finalCol = vec4(1,0,0,1);
 }`
 const pi = twgl.createProgramInfo(gl, [vs, fs])
+const N = 4
+const RESTART = 65535
 gl.useProgram(pi.program)
 let arrays = {
-    pos: { numComponents: 3, data:  [ 1, 0, 0, ], },  // due east
+    pos: { numComponents: 3, data:  [ 1, 1, 0, ], },
+    n: {numComponents: 1, data: [ ...Array(3 * N).keys()] },
 }
 
 const bi = twgl.createBufferInfoFromArrays(gl, arrays)
+
+const uniforms = { N: N, };
+
 twgl.setBuffersAndAttributes(gl, pi, bi)
-twgl.drawBufferInfo(gl, bi, gl.POINTS)
+
+const loc = gl.getAttribLocation(pi.program, 'n')
+gl.vertexAttribDivisor(loc, 1)
+
+twgl.drawBufferInfo(gl, bi, gl.POINTS, 1, 0, 3*N)
