@@ -1,23 +1,24 @@
 // A minimal example of TWGL textures.
 
 const vs = `#version 300 es
-in vec4 a_position;
-in vec2 a_texcoord;
+in vec4 position;  // These two names are chosen
+in vec2 texcoord;  // by the twgl primitives.
 out vec2 v_texCoord;
 void main() {
-  v_texCoord = a_texcoord;
-  gl_Position = a_position.zxyw;
+  v_texCoord = texcoord;
+  gl_Position = position.zxyw;
 }`;
 
 const fs = `#version 300 es
 precision mediump float;
 in vec2 v_texCoord;
 out vec4 finalColour;
-uniform sampler2D u_diffusez;
+uniform sampler2D s;  // A sampler2D is a thing for doing lookup in a standard texture image.
+                      // The value of a sampler2D variable is a reference to a texture unit.
+                      // It says which texture unit is being invoked.
 void main() {
-  finalColour = texture(u_diffusez, v_texCoord);
+  finalColour = texture(s, v_texCoord);  // texture is the modern function; texture2D is deprecated
 }`;
-twgl.setDefaults({attribPrefix: "a_"});
 
 let gl = document.querySelector('canvas').getContext('webgl2')
 gl.clearColor(1.0, 0.8, 1.0, 1.0)
