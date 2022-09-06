@@ -26,11 +26,46 @@ in vec2 pos;  // in canvas pixel coords
 in vec2 c;    // centre, in canvas pixel coords
 in vec3 fsCol;
 out vec4 finalCol;
+
+float f(float a, float b, float c) {
+  return c == a ? 0.0 : (b - a) / (c - a);
+}
+
 void main() {
-  if (length(pos - c) > r) {
+  vec2 d = abs(pos - c);
+  if (d.y > d.x)
+    d = d.yx;
+  vec2 near = d - 0.5;
+  vec2 far = d + 0.5;
+  float nearSq = dot(near, near);
+  float radSq = r * r;
+  if (radSq < nearSq) {
     discard;
+    return;
   }
-  finalCol = vec4(fsCol, 1);
+  float farSq = dot(far, far);
+  if (radSq > farSq) {
+    finalCol = vec4(fsCol, 1);
+    return;
+  }
+  vec2 topLeft = vec2(near.x, far.y);
+  float topLeftSq = dot(topLeft, topLeft);
+  vec2 botRight = vec2(near.y, far.x);
+  float botRightSq = dot(botRight, botRight);
+  float k = f(nearSq, radSq, botRightSq);
+  if (radSq < topLeftSq) {
+    float h = f(nearSq, radSq, topLeftSq);
+    finalCol = vec4(fsCol, pow((h * k * 0.5), 0.4545));
+    return;
+  }
+  float k2 = f(topLeftSq, radSq, farSq);
+  if (radSq < botRightSq) {
+    finalCol = vec4(fsCol, pow(((k + k2) * 0.5), 0.4545));
+    return;
+  }
+  float h2 = f(botRightSq, radSq, farSq);
+  float opacity = 1.0 - (1.0 - h2) * (1.0 - k2) * 0.5;
+  finalCol = vec4(fsCol, pow(opacity, 0.4545));
 }`;
 let canvas = document.querySelector('canvas')
 let gl = canvas.getContext('webgl2',
