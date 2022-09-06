@@ -1,6 +1,6 @@
 // Draws a red disc using the fragment shader.
 
-const vs = `#version 300 es
+let vs = `#version 300 es
 uniform float canvasSize;   // assuming square for now
 in float rad;  // in clip space
 in vec2 centre;   // in clip space
@@ -18,7 +18,7 @@ void main() {
   fsCol = col;
   gl_Position = vec4(fragPos, 0, 1);   // in clip space
 }`;
-const fs = `#version 300 es
+let fs = `#version 300 es
 precision mediump float;
 //uniform vec2 canvasSize;
 in float r;   // in canvas pixel coords
@@ -72,14 +72,15 @@ let gl = canvas.getContext('webgl2',
       { alpha: false,
         premultipliedAlpha: true,
        })
-gl.clearColor(0.8, 0.9, 1.0, 1.0)
+//gl.clearColor(0.8, 0.9, 1.0, 1.0)
+gl.clearColor(0,0,0, 1.0)
 gl.clear(gl.COLOR_BUFFER_BIT)
-const programInfo = twgl.createProgramInfo(gl, [vs, fs])
+let programInfo = twgl.createProgramInfo(gl, [vs, fs])
 gl.useProgram(programInfo.program)
 
-const arrays = {
-  centre: { size: 2, data: [ 0,0, ], divisor: 1},
-  rad:    { size: 1, data: [ 0.2, ], divisor: 1},
+let arrays = {
+  centre: { size: 2, data: [ -0.95, 0.95, ], divisor: 1},
+  rad:    { size: 1, data: [ 0.05, ], divisor: 1},
   col:    { size: 3, data: [ 1,0,0, ], divisor: 1},
   coord:  { size: 2, data: [ -1,-1, 1,-1, 1,1, -1,-1, 1,1, -1,1, ] },
 }
@@ -92,3 +93,44 @@ const uniforms = {
 twgl.setUniforms(programInfo, uniforms)
 
 twgl.drawBufferInfo(gl, bufferInfo, gl.TRIANGLES, 6, 0, 1)
+
+// ---------------
+
+let pixels = new Uint8Array(400)  // unrelated example of calling readPixels
+gl.readPixels(0, 190, 10, 10, gl.RGBA, gl.UNSIGNED_BYTE, pixels)
+
+vs = `#version 300 es
+in vec2 pos;
+in vec2 texcoord;
+out vec2 v_texCoord;
+void main() {
+  v_texCoord = texcoord;
+  gl_Position = vec4(pos, 0.0, 1.0);
+}`;
+fs = `#version 300 es
+precision mediump float;
+in vec2 v_texCoord;
+out vec4 finalColour;
+uniform sampler2D s;
+void main() {
+  finalColour = vec4(1.0, 1.0, 0.0, 1.0); //texture(s, v_texCoord);
+}`;
+
+programInfo = twgl.createProgramInfo(gl, [vs, fs])
+gl.useProgram(programInfo.program)
+
+arrays = {
+  pos:      { size: 2, data: [ -0.8,-0.8, 0.8,-0.8, 0.8,0.8, -0.8,-0.8, 0.8,0.8, -0.8,0.8, ] },
+  texcoord: { size: 2, data: [ 0,0, 1,0, 1,1, 0,0, 1,1, 0,1, ] },
+}
+bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays)
+twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo)
+/*
+twgl.createTexture(gl, {
+  mag: gl.NEAREST,
+  min: gl.LINEAR,
+  src: pixels,
+  width: 10
+})
+*/
+twgl.drawBufferInfo(gl, bufferInfo)
