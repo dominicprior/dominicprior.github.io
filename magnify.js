@@ -7,13 +7,14 @@ let gl = canvas.getContext('webgl2',
 gl.clearColor(0,0,0.4, 1.0)
 gl.clear(gl.COLOR_BUFFER_BIT)
 //------
-let vs = `#version 300 es
+/*
+vs = `#version 300 es
 in vec2 pos;
 uniform float foo;
 void main() {
   gl_Position = vec4(pos, 0, 1);
 }`
-let fs = `#version 300 es
+fs = `#version 300 es
 precision mediump float;
 out vec4 finalCol;
 void main() {
@@ -21,100 +22,38 @@ void main() {
 }`
 let pi = twgl.createProgramInfo(gl, [vs, fs])
 gl.useProgram(pi.program)
-let arrays = { pos: { size: 2, data: [ 0, 0,   0, 0.9,   0.9, 0,], },  }
-let bi = twgl.createBufferInfoFromArrays(gl, arrays)
+arrays = { pos: { size: 2, data: [ 0, 0,   0, 0.9,   0.9, 0,], },  }
+bi = twgl.createBufferInfoFromArrays(gl, arrays)
 twgl.setBuffersAndAttributes(gl, pi, bi)
 twgl.setUniforms(pi, {foo: 1})
 twgl.drawBufferInfo(gl, bi)
+*/
 //------
-/*
-let vs = `#version 300 es
-uniform float canvasSize;   // assuming square for now
-in float rad;  // in clip space
-in vec2 centre;   // in clip space
-in vec2 coord;  // in *disc* space (e.g. interpolation of things like (1,1) and (-1,1))
-in vec3 col;
-out float r;
-out vec2 pos;
-out vec2 c;   // centre, in canvas pixel coords
-out vec3 fsCol;
+vs = `#version 300 es
+in float rad;
+in vec2 centre;
+in vec2 coord;
 void main() {
-  r = rad * canvasSize * 0.5;
-  vec2 fragPos = centre + rad * coord;   // in clip space
-  pos = (fragPos + 1.0) * canvasSize * 0.5;  // in canvas pixel coords
-  c = (centre + 1.0) * canvasSize * 0.5;  // in canvas pixel coords
-  fsCol = col;
-  gl_Position = vec4(fragPos, 0, 1);   // in clip space
+  //gl_Position = vec4(coord, 0, 1);    // This line allows the downstream program to run,
+  vec2 fragPos = centre + rad * coord;  // but these two
+  gl_Position = vec4(fragPos, 0, 1);    // lines don't.
 }`;
-let fs = `#version 300 es
+fs = `#version 300 es
 precision mediump float;
-//uniform vec2 canvasSize;
-in float r;   // in canvas pixel coords
-in vec2 pos;  // in canvas pixel coords
-in vec2 c;    // centre, in canvas pixel coords
-in vec3 fsCol;
 out vec4 finalCol;
-
-float f(float a, float b, float c) {
-  return c == a ? 0.0 : (b - a) / (c - a);
-}
-
 void main() {
-  vec2 d = abs(pos - c);
-  if (d.y > d.x)
-    d = d.yx;
-  vec2 near = d - 0.5;
-  vec2 far = d + 0.5;
-  float nearSq = dot(near, near);
-  float radSq = r * r;
-  if (radSq < nearSq) {
-    discard;
-    return;
-  }
-  float farSq = dot(far, far);
-  if (radSq > farSq) {
-    finalCol = vec4(fsCol, 1);
-    return;
-  }
-  vec2 topLeft = vec2(near.x, far.y);
-  float topLeftSq = dot(topLeft, topLeft);
-  vec2 botRight = vec2(near.y, far.x);
-  float botRightSq = dot(botRight, botRight);
-  float k = f(nearSq, radSq, botRightSq);
-  if (radSq < topLeftSq) {
-    float h = f(nearSq, radSq, topLeftSq);
-    finalCol = vec4(fsCol, pow((h * k * 0.5), 0.4545));
-    return;
-  }
-  float k2 = f(topLeftSq, radSq, farSq);
-  if (radSq < botRightSq) {
-    finalCol = vec4(fsCol, pow(((k + k2) * 0.5), 0.4545));
-    return;
-  }
-  float h2 = f(botRightSq, radSq, farSq);
-  float opacity = 1.0 - (1.0 - h2) * (1.0 - k2) * 0.5;
-  finalCol = vec4(fsCol, pow(opacity, 0.4545));
+    finalCol = vec4(0,1,1, 1);
 }`;
-let programInfo = twgl.createProgramInfo(gl, [vs, fs])
+programInfo = twgl.createProgramInfo(gl, [vs, fs])
 gl.useProgram(programInfo.program)
-
-let arrays = {
+arrays = {
   centre: { size: 2, data: [ -0.95, 0.95, ], divisor: 1},
   rad:    { size: 1, data: [ 0.05, ], divisor: 1},
-  col:    { size: 3, data: [ 1,0,0, ], divisor: 1},
   coord:  { size: 2, data: [ -1,-1, 1,-1, 1,1, -1,-1, 1,1, -1,1, ] },
 }
-let bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays)
-
+bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays)
 twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo)
-
-const uniforms = {
-  canvasSize: canvas.width,
-}
-twgl.setUniforms(programInfo, uniforms)
-
 twgl.drawBufferInfo(gl, bufferInfo, gl.TRIANGLES, 6, 0, 1)
-*/
 //---------------
 /*
 let pixels = new Uint8Array(400)  // unrelated example of calling readPixels
