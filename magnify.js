@@ -1,5 +1,33 @@
 // Draws a red disc using the fragment shader.
-
+let canvas = document.querySelector('canvas')
+let gl = canvas.getContext('webgl2',
+      { alpha: false,
+        // premultipliedAlpha: true,
+       })
+gl.clearColor(0,0,0.4, 1.0)
+gl.clear(gl.COLOR_BUFFER_BIT)
+//------
+let vs = `#version 300 es
+in vec2 pos;
+uniform float foo;
+void main() {
+  gl_Position = vec4(pos, 0, 1);
+}`
+let fs = `#version 300 es
+precision mediump float;
+out vec4 finalCol;
+void main() {
+  finalCol = vec4(gl_FragCoord.x * 0.002, gl_FragCoord.y * 0.002, 0.5, 1);
+}`
+let pi = twgl.createProgramInfo(gl, [vs, fs])
+gl.useProgram(pi.program)
+let arrays = { pos: { size: 2, data: [ 0, 0,   0, 0.9,   0.9, 0,], },  }
+let bi = twgl.createBufferInfoFromArrays(gl, arrays)
+twgl.setBuffersAndAttributes(gl, pi, bi)
+twgl.setUniforms(pi, {foo: 1})
+twgl.drawBufferInfo(gl, bi)
+//------
+/*
 let vs = `#version 300 es
 uniform float canvasSize;   // assuming square for now
 in float rad;  // in clip space
@@ -67,14 +95,6 @@ void main() {
   float opacity = 1.0 - (1.0 - h2) * (1.0 - k2) * 0.5;
   finalCol = vec4(fsCol, pow(opacity, 0.4545));
 }`;
-let canvas = document.querySelector('canvas')
-let gl = canvas.getContext('webgl2',
-      { alpha: false,
-        premultipliedAlpha: true,
-       })
-//gl.clearColor(0.8, 0.9, 1.0, 1.0)
-gl.clearColor(0,0,0, 1.0)
-gl.clear(gl.COLOR_BUFFER_BIT)
 let programInfo = twgl.createProgramInfo(gl, [vs, fs])
 gl.useProgram(programInfo.program)
 
@@ -85,6 +105,7 @@ let arrays = {
   coord:  { size: 2, data: [ -1,-1, 1,-1, 1,1, -1,-1, 1,1, -1,1, ] },
 }
 let bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays)
+
 twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo)
 
 const uniforms = {
@@ -93,9 +114,9 @@ const uniforms = {
 twgl.setUniforms(programInfo, uniforms)
 
 twgl.drawBufferInfo(gl, bufferInfo, gl.TRIANGLES, 6, 0, 1)
-
-// ---------------
-
+*/
+//---------------
+/*
 let pixels = new Uint8Array(400)  // unrelated example of calling readPixels
 gl.readPixels(0, 190, 10, 10, gl.RGBA, gl.UNSIGNED_BYTE, pixels)
 
@@ -125,12 +146,33 @@ arrays = {
 }
 bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays)
 twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo)
-/*
-twgl.createTexture(gl, {
-  mag: gl.NEAREST,
-  min: gl.LINEAR,
-  src: pixels,
-  width: 10
-})
-*/
+
+//twgl.createTexture(gl, {
+//  mag: gl.NEAREST,
+//  min: gl.LINEAR,
+//  src: pixels,
+//  width: 10
+//})
+
 twgl.drawBufferInfo(gl, bufferInfo)
+*/
+//----------------
+vs = `#version 300 es
+in vec2 pos;
+uniform float bar;
+void main() {
+  gl_Position = vec4(pos, 0, 1);
+}`
+fs = `#version 300 es
+precision mediump float;
+out vec4 finalCol;
+void main() {
+  finalCol = vec4(1, gl_FragCoord.y * 0.002, 0.5, 1);
+}`
+pi = twgl.createProgramInfo(gl, [vs, fs])
+gl.useProgram(pi.program)
+arrays = { pos: { size: 2, data: [ 0, 0,   0, -1,   -1, 0,], },  }
+bi = twgl.createBufferInfoFromArrays(gl, arrays)
+twgl.setBuffersAndAttributes(gl, pi, bi)
+twgl.setUniforms(pi, {bar: 2})
+twgl.drawBufferInfo(gl, bi)
