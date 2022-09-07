@@ -30,13 +30,11 @@ twgl.drawBufferInfo(gl, bi)
 */
 //------
 vs = `#version 300 es
-in float rad;
-in vec2 centre;
-in vec2 coord;
+in float radz;
+in vec2 cordz;
 void main() {
-  //gl_Position = vec4(coord, 0, 1);    // This line allows the downstream program to run,
-  vec2 fragPos = centre + rad * coord;  // but these two
-  gl_Position = vec4(fragPos, 0, 1);    // lines don't.
+  gl_Position = vec4(cordz, 0, 1);           // This line allows the downstream program to run.
+  //gl_Position = vec4(radz * cordz, 0, 1);  // This line lines doesn't.
 }`;
 fs = `#version 300 es
 precision mediump float;
@@ -47,13 +45,12 @@ void main() {
 programInfo = twgl.createProgramInfo(gl, [vs, fs])
 gl.useProgram(programInfo.program)
 arrays = {
-  centre: { size: 2, data: [ -0.95, 0.95, ], divisor: 1},
-  rad:    { size: 1, data: [ 0.05, ], divisor: 1},
-  coord:  { size: 2, data: [ -1,-1, 1,-1, 1,1, -1,-1, 1,1, -1,1, ] },
+  radz:    { size: 1, data: [ 0.2, ], divisor: 1},
+  cordz:  { size: 2, data: [ -1,-1, 1,-1, 1,1, ] },
 }
 bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays)
 twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo)
-twgl.drawBufferInfo(gl, bufferInfo, gl.TRIANGLES, 6, 0, 1)
+twgl.drawBufferInfo(gl, bufferInfo, gl.TRIANGLES, 3, 0, 1)
 //---------------
 /*
 let pixels = new Uint8Array(400)  // unrelated example of calling readPixels
@@ -105,7 +102,7 @@ fs = `#version 300 es
 precision mediump float;
 out vec4 finalCol;
 void main() {
-  finalCol = vec4(1, gl_FragCoord.y * 0.002, 0.5, 1);
+  finalCol = vec4(1, 0.5, 0.5, 1);
 }`
 pi = twgl.createProgramInfo(gl, [vs, fs])
 gl.useProgram(pi.program)
