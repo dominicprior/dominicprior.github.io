@@ -39,7 +39,18 @@ void main() {
 }`
 pi = twgl.createProgramInfo(gl, [vs, fs])
 gl.useProgram(pi.program)
+
+gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+gl.bufferData(gl.ARRAY_BUFFER,
+      new Float32Array([ 0, 0, 0, -1, -1, 0, ]), gl.STATIC_DRAW);
+const loc = gl.getAttribLocation(pi.program, 'pos')
+gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+gl.enableVertexAttribArray(loc);
+gl.drawArrays(gl.TRIANGLES, 0, 3)
+
+/*
 arrays = { pos: { size: 2, data: [ 0, 0,   0, -1,   -1, 0,], },  }
 bi = twgl.createBufferInfoFromArrays(gl, arrays)
 twgl.setBuffersAndAttributes(gl, pi, bi)
 twgl.drawBufferInfo(gl, bi)
+*/
