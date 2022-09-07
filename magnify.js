@@ -98,7 +98,6 @@ twgl.drawBufferInfo(gl, bufferInfo)
 //----------------
 vs = `#version 300 es
 in vec2 pos;
-uniform float bar;
 void main() {
   gl_Position = vec4(pos, 0, 1);
 }`
@@ -113,5 +112,4 @@ gl.useProgram(pi.program)
 arrays = { pos: { size: 2, data: [ 0, 0,   0, -1,   -1, 0,], },  }
 bi = twgl.createBufferInfoFromArrays(gl, arrays)
 twgl.setBuffersAndAttributes(gl, pi, bi)
-twgl.setUniforms(pi, {bar: 2})
 twgl.drawBufferInfo(gl, bi)
