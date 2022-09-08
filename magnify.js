@@ -18,7 +18,7 @@ void main() {
 }`;
 pi = twgl.createProgramInfo(gl, [vs, fs])
 gl.useProgram(pi.program)
-
+/*
 gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
 gl.bufferData(gl.ARRAY_BUFFER,
       new Float32Array([ -1,-1, 1,-1, 1,1, ]), gl.STATIC_DRAW);
@@ -34,17 +34,17 @@ gl.vertexAttribPointer(loc, 1, gl.FLOAT, false, 0, 0)
 gl.enableVertexAttribArray(loc)
 gl.vertexAttribDivisor(loc, 1)
 
-//gl.drawArraysInstanced(gl.TRIANGLES, 0, 3, 1)  // mode, first, count, instanceCount
-gl.drawArrays(gl.TRIANGLES, 0, 3)  // mode, first, count, instanceCount
-/*
+gl.drawArraysInstanced(gl.TRIANGLES, 0, 3, 1)  // mode, first, count, instanceCount
+*/
+
 arrays = {
-  radz:    { size: 1, data: [ 0.5, ], divisor: 1},
-  cordz:  { size: 2, data: [ -1,-1, 1,-1, 1,1, ] },
+  r:  { size: 1, data: [ 0.5, ], divisor: 1},
+  c:  { size: 2, data: [ -1,-1, 1,-1, 1,1, ] },
 }
 bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays)
-twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo)
+twgl.setBuffersAndAttributes(gl, pi, bufferInfo)
 twgl.drawBufferInfo(gl, bufferInfo, gl.TRIANGLES, 3, 0, 1)
-*/
+
 //------
 vs = `#version 300 es
 in vec2 pos;
