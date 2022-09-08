@@ -96,7 +96,7 @@ twgl.drawBufferInfo(gl, bufferInfo, gl.TRIANGLES, 6, 0, 1)
 
 // ---------------
 
-let pixels = new Uint8Array(400)  // unrelated example of calling readPixels
+let pixels = new Uint8Array(400)
 gl.readPixels(0, 190, 10, 10, gl.RGBA, gl.UNSIGNED_BYTE, pixels)
 
 vs = `#version 300 es
@@ -113,7 +113,7 @@ in vec2 v_texCoord;
 out vec4 finalColour;
 uniform sampler2D s;
 void main() {
-  finalColour = vec4(1.0, 1.0, 0.0, 1.0); //texture(s, v_texCoord);
+  finalColour = texture(s, v_texCoord);
 }`;
 
 programInfo = twgl.createProgramInfo(gl, [vs, fs])
@@ -125,12 +125,12 @@ arrays = {
 }
 bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays)
 twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo)
-/*
+
 twgl.createTexture(gl, {
   mag: gl.NEAREST,
   min: gl.LINEAR,
   src: pixels,
   width: 10
 })
-*/
+
 twgl.drawBufferInfo(gl, bufferInfo)
