@@ -1,25 +1,22 @@
 'use strict'
 
-// Draws two anti-aliased discs along with magnified versions
-// of them.
+document.querySelector('p').innerHTML = `
 
-// The anti-aliasing calculates the proportion of each pixel
-// covered by the disk and sets the alpha value accordingly.
-// In other words, it doesn't do super-sampling.
+Anti-aliased discs. <p>
 
-// Nor does it use the more sophisticated anti-aliasing methods
-// in https://en.wikipedia.org/wiki/Spatial_anti-aliasing ,
-// which may explain why the discs look slightly square shaped.
+The anti-aliasing calculates (using the WebGL fragment shader)
+the proportion of each pixel covered by the disk and sets the
+alpha value accordingly. <p>
 
-// However, this simple approach should remove any jagged edges
-// and any sudden jumps when the discs move by a fraction of a pixel.
+In other words, it doesn't do super-sampling. Nor does it use 
+<a href="https://en.wikipedia.org/wiki/Spatial_anti-aliasing">
+the more sophisticated anti-aliasing methods</a>,
+which may explain the discs looking slightly square shaped. <p>
 
-// For gamma correction, the alpha values are simply
-// raised to the power of 1/2.2 (which is approximately 0.4545),
-// which may not be correct.  See:
-//   http://www.realtimerendering.com/blog/gpus-prefer-premultiplication/
-//   https://limnu.com/webgl-blending-youre-probably-wrong/
-//   http://renderwonk.com/blog/index.php/archive/adventures-with-gamma-correct-rendering/
+For gamma correction, the alpha values are simply raised to the power of 0.4545
+as we go along.  (It would have been more correct to do the gamma correction
+only after everything has been drawn).
+`
 
 let canvas = document.querySelector('canvas')
 let gl = canvas.getContext('webgl2',
