@@ -45,7 +45,7 @@ void main() {
   }
   float farSq = dot(far, far);
   if (radSq > farSq) {
-    finalCol = vec4(1,1,0, 1); // vec4(fsCol, 1);  // completely inside
+    finalCol = vec4(fsCol, 1);  // completely inside
     return;
   }
   vec2 topLeft = vec2(near.x, far.y);
@@ -55,33 +55,35 @@ void main() {
   float k = f(nearSq, radSq, botRightSq);
   if (radSq < topLeftSq) {
     float h = f(nearSq, radSq, topLeftSq);
-    finalCol = vec4(0,0,1, 1); // vec4(fsCol, pow((h * k * 0.5), 0.4545));
+    finalCol = vec4(fsCol, pow((h * k * 0.5), 0.4545));
     return;
   }
   float k2 = f(topLeftSq, radSq, farSq);
   if (radSq < botRightSq) {
-    finalCol = vec4(0,1,1, 1); // vec4(fsCol, pow(((k + k2) * 0.5), 0.4545));
+    finalCol = vec4(fsCol, pow(((k + k2) * 0.5), 0.4545));
     return;
   }
   float h2 = f(botRightSq, radSq, farSq);
   float opacity = 1.0 - (1.0 - h2) * (1.0 - k2) * 0.5;
-  finalCol = vec4(1,0,0, 1); // vec4(fsCol, pow(opacity, 0.4545));
+  finalCol = vec4(fsCol, pow(opacity, 0.4545));
 }`;
 let canvas = document.querySelector('canvas')
 let gl = canvas.getContext('webgl2',
-      { alpha: false,
-        premultipliedAlpha: true,
+      { //alpha: false,
+        //premultipliedAlpha: true,
        })
 //gl.clearColor(0.8, 0.9, 1.0, 1.0)
 gl.clearColor(0,0,0, 1.0)
 gl.clear(gl.COLOR_BUFFER_BIT)
+gl.enable(gl.BLEND)
+gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
 let programInfo = twgl.createProgramInfo(gl, [vs, fs])
 gl.useProgram(programInfo.program)
 
 let arrays = {
-  centre: { size: 2, data: [ -0.95, 0.95, ], divisor: 1},
-  rad:    { size: 1, data: [ 0.04, ], divisor: 1},
-  col:    { size: 3, data: [ 1,0,0, ], divisor: 1},
+  centre: { size: 2, data: [ -0.95, 0.95,  -0.91, 0.92, ], divisor: 1},
+  rad:    { size: 1, data: [ 0.0394,        0.038,      ], divisor: 1},
+  col:    { size: 3, data: [ 0,1,1,         1,1,0,      ], divisor: 1},
   coord:  { size: 2, data: [ -1,-1, 1,-1, 1,1, -1,-1, 1,1, -1,1, ] },
 }
 let bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays)
@@ -92,7 +94,7 @@ const uniforms = {
 }
 twgl.setUniforms(programInfo, uniforms)
 
-twgl.drawBufferInfo(gl, bufferInfo, gl.TRIANGLES, 6, 0, 1)
+twgl.drawBufferInfo(gl, bufferInfo, gl.TRIANGLES, 6, 0, 2)
 
 // ---------------
 
