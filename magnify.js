@@ -2,11 +2,8 @@
 
 document.querySelector('p').innerHTML = `
 
-Anti-aliased discs. <p>
-
-The anti-aliasing calculates (using the WebGL fragment shader)
-the proportion of each pixel covered by the disk and sets the
-alpha value accordingly. <p>
+Here is some anti-aliasing using the using the WebGL fragment shader to calculate
+how much of each pixel is inside each disk. <p>
 
 In other words, it doesn't do super-sampling. Nor does it use 
 <a href="https://en.wikipedia.org/wiki/Spatial_anti-aliasing">
@@ -14,8 +11,7 @@ the more sophisticated anti-aliasing methods</a>,
 which may explain the discs looking slightly square shaped. <p>
 
 For gamma correction, the alpha values are simply raised to the power of 0.4545
-as we go along.  (It would have been more correct to do the gamma correction
-only after everything has been drawn).
+(as opposed to the more rigorous approach of doing gamma at the end of the whole picture).
 `
 
 let canvas = document.querySelector('canvas')
