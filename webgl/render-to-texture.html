@@ -24,7 +24,7 @@ void main() {
 }`
 let pi = twgl.createProgramInfo(gl, [vs, fs])
 gl.useProgram(pi.program)
-const bi = twgl.primitives.createSphereBufferInfo(gl, 0.5, 4, 4)
+let bi = twgl.primitives.createSphereBufferInfo(gl, 0.5, 4, 4)
 twgl.setBuffersAndAttributes(gl, pi, bi)
 
 const targetTexture = twgl.createTexture(gl, {
@@ -59,27 +59,28 @@ fs = `#version 300 es
 precision mediump float;
 in vec2 v_texCoord;
 out vec4 finalColour;
-uniform sampler2D s;  // A sampler2D is a thing for doing lookup in a standard texture image.
-                      // The value of a sampler2D variable is a reference to a texture unit.
-                      // It says which texture unit is being invoked.
+uniform sampler2D s;
 void main() {
-  finalColour = texture(s, v_texCoord);  // texture is the modern function; texture2D is deprecated
+  finalColour = texture(s, v_texCoord);
 }`;
 
 gl.clearColor(1.0, 0.8, 0.7, 1.0)
 gl.clear(gl.COLOR_BUFFER_BIT)
 
-const programInfo = twgl.createProgramInfo(gl, [vs, fs])
-gl.useProgram(programInfo.program)
+pi = twgl.createProgramInfo(gl, [vs, fs])
+gl.useProgram(pi.program)
 
-const bufferInfo = twgl.primitives.createPlaneBufferInfo(gl)
+gl.bindTexture(gl.TEXTURE_2D, targetTexture);
+gl.viewport(0, 0, 200, 200);
 
-twgl.drawBufferInfo(gl, bufferInfo)
+bi = twgl.primitives.createPlaneBufferInfo(gl)
+
+// twgl.drawBufferInfo(gl, bi)  // doesn't work!  drawObjectList must be doing something extra!
 
 let drawObjects = [{
-  programInfo: programInfo,
-  bufferInfo: bufferInfo,
+  programInfo: pi,
+  bufferInfo: bi,
 }];
-
 twgl.drawObjectList(gl, drawObjects);
+
 </script>
