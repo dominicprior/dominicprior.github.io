@@ -91,4 +91,22 @@ let drawObjects = [{
 }];
 twgl.drawObjectList(gl, drawObjects);
 
+const pr = console.log
+
+function f() {
+  const params = 'VERTEX_ATTRIB_ARRAY_BUFFER_BINDING VERTEX_ATTRIB_ARRAY_ENABLED VERTEX_ATTRIB_ARRAY_SIZE VERTEX_ATTRIB_ARRAY_STRIDE VERTEX_ATTRIB_ARRAY_TYPE VERTEX_ATTRIB_ARRAY_NORMALIZED CURRENT_VERTEX_ATTRIB'.split(' ')
+  for (let i of [0,1]) {
+    pr(params.map(p => gl.getVertexAttrib(i, gl[p])))
+  }
+}
+
+f()
+// After drawObjectList:
+// [WebGLBuffer, true, 3, 0, 5126, false, Float32Array(4)]
+// [WebGLBuffer, true, 2, 0, 5126, false, Float32Array(4)]
+
+// After drawBufferInfo:
+// [WebGLBuffer, true, 3, 0, 5126, false, Float32Array(4)]
+// [null, false, 4, 0, 5126, false, Float32Array(4)]
+
 </script>
