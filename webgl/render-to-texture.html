@@ -75,15 +75,7 @@ gl.useProgram(pi.program)
 //gl.bindTexture(gl.TEXTURE_2D, targetTexture);
 //gl.viewport(0, 0, 200, 200);
 
-//////// this is what drawObjectList seemed to do (twice, one for each attribute) ///////////
-//gl.bindBuffer(ARRAY_BUFFER, b.buffer);
-//gl.enableVertexAttribArray(index);
-//gl.vertexAttribPointer(index, b.numComponents || b.size, b.type || FLOAT, b.normalize || false, b.stride || 0, b.offset || 0);
-////////
-
-//gl.bindBuffer(ELEMENT_ARRAY_BUFFER, buffers.indices);  // I'm not sure how drawObjectList works without this call
-
-//bi = twgl.primitives.createPlaneBufferInfo(gl)
+//gl.bindBuffer(ELEMENT_ARRAY_BUFFER, buffers.indices);  // I'm not sure how things work without this call
 
 let arrays = {
     position: { numComponents: 2, data: [ -.9,.9,  -.9,-.9,  .9,0, ], },
@@ -93,13 +85,7 @@ bi = twgl.createBufferInfoFromArrays(gl, arrays)
 
 twgl.setBuffersAndAttributes(gl, pi, bi)
 
-twgl.drawBufferInfo(gl, bi)  // doesn't work!  drawObjectList must be doing something extra!
-
-let drawObjects = [{
-  programInfo: pi,
-  bufferInfo: bi,
-}];
-//twgl.drawObjectList(gl, drawObjects);
+twgl.drawBufferInfo(gl, bi)
 
 
 function f() {
@@ -109,12 +95,7 @@ function f() {
 }
 
 f()
-// After drawObjectList:
-// [WebGLBuffer, true, 3, 0, 5126, false, Float32Array(4)]
 // [WebGLBuffer, true, 2, 0, 5126, false, Float32Array(4)]
-
-// After drawBufferInfo:
-// [WebGLBuffer, true, 3, 0, 5126, false, Float32Array(4)]
-// [null, false, 4, 0, 5126, false, Float32Array(4)]
+// [WebGLBuffer, true, 2, 0, 5126, false, Float32Array(4)]
 
 </script>
