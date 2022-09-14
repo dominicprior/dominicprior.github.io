@@ -26,7 +26,7 @@ void main() {
 }`
 let pi = twgl.createProgramInfo(gl, [vs, fs])
 gl.useProgram(pi.program)
-let bi = twgl.primitives.createSphereBufferInfo(gl, 0.5, 4, 4)
+let bi = twgl.primitives.createSphereBufferInfo(gl, 0.4, 4, 4)
 twgl.setBuffersAndAttributes(gl, pi, bi)
 
 const targetTexture = twgl.createTexture(gl, {
@@ -54,7 +54,7 @@ in vec2 texcoord;  // by the twgl primitives.
 out vec2 v_texCoord;
 void main() {
   v_texCoord = texcoord;
-  gl_Position = position.zxyw;
+  gl_Position = position;
 }`;
 
 fs = `#version 300 es
@@ -83,7 +83,14 @@ gl.useProgram(pi.program)
 
 //gl.bindBuffer(ELEMENT_ARRAY_BUFFER, buffers.indices);  // I'm not sure how drawObjectList works without this call
 
-bi = twgl.primitives.createPlaneBufferInfo(gl)
+//bi = twgl.primitives.createPlaneBufferInfo(gl)
+
+let arrays = {
+    position: { numComponents: 2, data: [ -.9,.9,  -.9,-.9,  .9,0, ], },
+    texcoord: { numComponents: 2, data: [ 0,1, 0,0, 1,0.5, ], },
+}
+bi = twgl.createBufferInfoFromArrays(gl, arrays)
+
 twgl.setBuffersAndAttributes(gl, pi, bi)
 
 twgl.drawBufferInfo(gl, bi)  // doesn't work!  drawObjectList must be doing something extra!
