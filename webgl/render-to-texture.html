@@ -7,6 +7,8 @@
 <script>
 // 
 'use strict'
+const params = 'VERTEX_ATTRIB_ARRAY_BUFFER_BINDING VERTEX_ATTRIB_ARRAY_ENABLED VERTEX_ATTRIB_ARRAY_SIZE VERTEX_ATTRIB_ARRAY_STRIDE VERTEX_ATTRIB_ARRAY_TYPE VERTEX_ATTRIB_ARRAY_NORMALIZED CURRENT_VERTEX_ATTRIB'.split(' ')
+const pr = console.log
 const gl = document.querySelector('canvas').getContext('webgl2')
 gl.clearColor(0.8, 0.9, 1, 1)
 gl.clear(gl.COLOR_BUFFER_BIT)
@@ -82,19 +84,18 @@ gl.useProgram(pi.program)
 //gl.bindBuffer(ELEMENT_ARRAY_BUFFER, buffers.indices);  // I'm not sure how drawObjectList works without this call
 
 bi = twgl.primitives.createPlaneBufferInfo(gl)
+twgl.setBuffersAndAttributes(gl, pi, bi)
 
-// twgl.drawBufferInfo(gl, bi)  // doesn't work!  drawObjectList must be doing something extra!
+twgl.drawBufferInfo(gl, bi)  // doesn't work!  drawObjectList must be doing something extra!
 
 let drawObjects = [{
   programInfo: pi,
   bufferInfo: bi,
 }];
-twgl.drawObjectList(gl, drawObjects);
+//twgl.drawObjectList(gl, drawObjects);
 
-const pr = console.log
 
 function f() {
-  const params = 'VERTEX_ATTRIB_ARRAY_BUFFER_BINDING VERTEX_ATTRIB_ARRAY_ENABLED VERTEX_ATTRIB_ARRAY_SIZE VERTEX_ATTRIB_ARRAY_STRIDE VERTEX_ATTRIB_ARRAY_TYPE VERTEX_ATTRIB_ARRAY_NORMALIZED CURRENT_VERTEX_ATTRIB'.split(' ')
   for (let i of [0,1]) {
     pr(params.map(p => gl.getVertexAttrib(i, gl[p])))
   }
