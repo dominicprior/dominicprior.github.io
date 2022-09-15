@@ -7,26 +7,19 @@
 <script>
 'use strict'
 
-// ------ Draw to a texture ------
+// ------ Draw a triangle to a texture ------
 
 let vs = `#version 300 es
 in vec4 aPosition;
-in vec4 col;
-out vec4 fragCol;
-out vec2 vTexCoord;
 void main() {
-  fragCol = col;
   gl_Position = aPosition;
 }`;
 
 let fs = `#version 300 es
 precision mediump float;
-in vec4 fragCol;
-in vec2 vTexCoord;
-uniform sampler2D uSampler;
 out vec4 finalCol;
 void main() {
-  finalCol = fragCol;
+  finalCol = vec4(0, 1, 0, 1);    // green triangle
 }`;
 
 let canvas = document.querySelector('canvas')
@@ -36,18 +29,16 @@ gl.useProgram(pi.program)
 gl.clearColor(1,1,1,1)
 gl.clear(gl.COLOR_BUFFER_BIT)
 const vertexBufferData = new Float32Array([
-  .5,-.5,  .7,.5,  -.8,.5,
-  -.5,-.3, .5,-.5, .5,.5,
+  .5,-.5,  .7,.5,  -.9,.5,
             ]);
-const colBufferData = new Float32Array([ 
+const colBufferData = new Float32Array([
   0,1,0, 0,1,0, 0,1,0,  // green
-  1,0,0, 1,0,0, 1,0,0,  // red
             ]);
-
 let arrays = {
     aPosition: { numComponents: 2, data: vertexBufferData, },
     col:       { numComponents: 3, data: colBufferData, },
 }
+//let bi = twgl.primitives.createSphereBufferInfo(gl, 0.6, 4, 4)  // doesn't work
 let bi = twgl.createBufferInfoFromArrays(gl, arrays)
 twgl.setBuffersAndAttributes(gl, pi, bi)
 
@@ -63,6 +54,8 @@ const fb = gl.createFramebuffer();
 gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
 gl.viewport(0, 0, 200, 200);
 gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, targetTexture, 0);
+gl.clearColor(1,0,0,1)  // red background on the texture
+gl.clear(gl.COLOR_BUFFER_BIT)
 twgl.drawBufferInfo(gl, bi)
 
 gl.bindFramebuffer(gl.FRAMEBUFFER, null);
