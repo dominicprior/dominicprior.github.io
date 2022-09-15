@@ -6,6 +6,8 @@
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
 'use strict'
+let canvas = document.querySelector('canvas')
+let gl = canvas.getContext('webgl2')
 
 // ------ Draw a triangle to a texture ------
 
@@ -14,26 +16,14 @@ in vec4 position;
 void main() {
   gl_Position = position;
 }`;
-
 let fs = `#version 300 es
 precision mediump float;
 out vec4 finalCol;
 void main() {
   finalCol = vec4(0, 1, 0, 1);    // green triangle
 }`;
-
-let canvas = document.querySelector('canvas')
-let gl = canvas.getContext('webgl2')
 let pi = twgl.createProgramInfo(gl, [vs, fs])
 gl.useProgram(pi.program)
-gl.clearColor(1,1,1,1)
-gl.clear(gl.COLOR_BUFFER_BIT)
-const vertexBufferData = new Float32Array([
-  .7,-.5,  .7,.5,  -.7,.5,
-            ]);
-let arrays = {
-    position: { numComponents: 2, data: vertexBufferData, },
-}
 let bi = twgl.primitives.createSphereBufferInfo(gl, 0.6, 4, 4)
 twgl.setBuffersAndAttributes(gl, pi, bi)
 
@@ -85,7 +75,7 @@ gl.clear(gl.COLOR_BUFFER_BIT)
 pi = twgl.createProgramInfo(gl, [vs, fs])
 gl.useProgram(pi.program)
 
-arrays = {
+let arrays = {
     position: { numComponents: 2, data: [ -1,-1, 1,-1, 1,1, -1,1 ], },
     texcoord: { numComponents: 2, data: [ 0,0, 1,0, 1,1, 0,1, ], },
 }
