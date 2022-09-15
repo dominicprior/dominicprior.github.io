@@ -34,8 +34,7 @@ const vertexBufferData = new Float32Array([
 let arrays = {
     position: { numComponents: 2, data: vertexBufferData, },
 }
-//let bi = twgl.primitives.createSphereBufferInfo(gl, 0.6, 4, 4)  // doesn't work
-let bi = twgl.createBufferInfoFromArrays(gl, arrays)
+let bi = twgl.primitives.createSphereBufferInfo(gl, 0.6, 4, 4)
 twgl.setBuffersAndAttributes(gl, pi, bi)
 
 const targetTexture = twgl.createTexture(gl, {
