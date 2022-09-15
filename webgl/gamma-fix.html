@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<title>gamma fix</title>
+<canvas width="200" height="200"></canvas>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twgl.js/4.23.2/twgl-full.js"
+    integrity="sha512-eCsXZZ3wMTH/GSekpKxoFQYBb9MAhxAvMRavPeuozqbHSysVhKOxqF+MjeVPkBX2cdHwHLqgSuTVMaF/LfGytQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+'use strict'
+
+// ------ Draw to a texture ------
+
+let vs = `#version 300 es
+in vec4 aPosition;
+in vec4 col;
+out vec4 fragCol;
+out vec2 vTexCoord;
+void main() {
+  fragCol = col;
+  gl_Position = aPosition;
+}`;
+
+let fs = `#version 300 es
+precision mediump float;
+in vec4 fragCol;
+in vec2 vTexCoord;
+uniform sampler2D uSampler;
+out vec4 finalCol;
+void main() {
+  finalCol = fragCol;
+}`;
+
+let canvas = document.querySelector('canvas')
+let gl = canvas.getContext('webgl2')
+let pi = twgl.createProgramInfo(gl, [vs, fs])
+gl.useProgram(pi.program)
+gl.clearColor(1,1,1,1)
+gl.clear(gl.COLOR_BUFFER_BIT)
+const vertexBufferData = new Float32Array([
+  .5,-.5,  .7,.5,  -.8,.5,
+  -.5,-.3, .5,-.5, .5,.5,
+            ]);
+const colBufferData = new Float32Array([ 
+  0,1,0, 0,1,0, 0,1,0,  // green
+  1,0,0, 1,0,0, 1,0,0,  // red
+            ]);
+
+let arrays = {
+    aPosition: { numComponents: 2, data: vertexBufferData, },
+    col:       { numComponents: 3, data: colBufferData, },
+}
+let bi = twgl.createBufferInfoFromArrays(gl, arrays)
+twgl.setBuffersAndAttributes(gl, pi, bi)
+
+const targetTexture = twgl.createTexture(gl, {
+  mag: gl.NEAREST,
+  min: gl.LINEAR,
+  src: null,
+  width: 200,
+  height: 200,
+  format: gl.RGBA,
+});
+const fb = gl.createFramebuffer();
+gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
+gl.viewport(0, 0, 200, 200);
+gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, targetTexture, 0);
+twgl.drawBufferInfo(gl, bi)
+
+gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+
+// ------ Send the texture to the screen ------
+
+vs = `#version 300 es
+in vec4 position;
+in vec2 texcoord;
+out vec2 v_texCoord;
+void main() {
+  v_texCoord = texcoord;
+  gl_Position = position;
+}`;
+
+fs = `#version 300 es
+precision mediump float;
+in vec2 v_texCoord;
+out vec4 finalColour;
+uniform sampler2D s;
+void main() {
+  finalColour = texture(s, v_texCoord);
+}`;
+
+gl.clearColor(1.0, 0.8, 0.7, 1.0)
+gl.clear(gl.COLOR_BUFFER_BIT)
+
+pi = twgl.createProgramInfo(gl, [vs, fs])
+gl.useProgram(pi.program)
+
+arrays = {
+    position: { numComponents: 2, data: [ -1,-1, 1,-1, 1,1, -1,1 ], },
+    texcoord: { numComponents: 2, data: [ 0,0, 1,0, 1,1, 0,1, ], },
+}
+bi = twgl.createBufferInfoFromArrays(gl, arrays)
+twgl.setBuffersAndAttributes(gl, pi, bi)
+twgl.drawBufferInfo(gl, bi, gl.TRIANGLE_FAN)
+
+</script>
