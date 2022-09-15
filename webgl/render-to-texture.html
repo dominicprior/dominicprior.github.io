@@ -10,8 +10,8 @@
 const params = 'VERTEX_ATTRIB_ARRAY_BUFFER_BINDING VERTEX_ATTRIB_ARRAY_ENABLED VERTEX_ATTRIB_ARRAY_SIZE VERTEX_ATTRIB_ARRAY_STRIDE VERTEX_ATTRIB_ARRAY_TYPE VERTEX_ATTRIB_ARRAY_NORMALIZED CURRENT_VERTEX_ATTRIB'.split(' ')
 const pr = console.log
 const gl = document.querySelector('canvas').getContext('webgl2')
-gl.clearColor(0.8, 0.9, 1, 1)
-gl.clear(gl.COLOR_BUFFER_BIT)
+
+// ------ Draw a sphere to a texture ------
 
 let vs = `#version 300 es
 in vec3 position;
@@ -22,11 +22,11 @@ let fs = `#version 300 es
 precision mediump float;
 out vec4 finalCol;
 void main() {
-    finalCol = vec4(1,0,0,1);
+    finalCol = vec4(0, 1, 0, 1);    // green sphere
 }`
 let pi = twgl.createProgramInfo(gl, [vs, fs])
 gl.useProgram(pi.program)
-let bi = twgl.primitives.createSphereBufferInfo(gl, 0.4, 4, 4)
+let bi = twgl.primitives.createSphereBufferInfo(gl, 0.6, 4, 4)
 twgl.setBuffersAndAttributes(gl, pi, bi)
 
 const targetTexture = twgl.createTexture(gl, {
@@ -41,12 +41,15 @@ const targetTexture = twgl.createTexture(gl, {
 const fb = gl.createFramebuffer();
 gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
 gl.viewport(0, 0, 200, 200);
+
 gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, targetTexture, 0);
+gl.clearColor(1, 0, 0, 1)  // red background for the texture
+gl.clear(gl.COLOR_BUFFER_BIT)
 twgl.drawBufferInfo(gl, bi)
 
 gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 
-// ------
+// ------ Draw a triangle that is textured by the picture of the sphere ------
 
 vs = `#version 300 es
 in vec4 position;  // These two names are chosen
@@ -62,11 +65,15 @@ precision mediump float;
 in vec2 v_texCoord;
 out vec4 finalColour;
 uniform sampler2D s;
+float f(float x) {
+  return pow(x, 0.4545);
+}
 void main() {
-  finalColour = texture(s, v_texCoord);
+  vec4 t = texture(s, v_texCoord);
+  finalColour = vec4(f(t.r), f(t.g), f(t.b), 1);
 }`;
 
-gl.clearColor(1.0, 0.8, 0.7, 1.0)
+gl.clearColor(1.0, 0.8, 0.7, 1.0)   // overall beige background
 gl.clear(gl.COLOR_BUFFER_BIT)
 
 pi = twgl.createProgramInfo(gl, [vs, fs])
