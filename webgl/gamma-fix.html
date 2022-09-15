@@ -20,7 +20,7 @@ let fs = `#version 300 es
 precision mediump float;
 out vec4 finalCol;
 void main() {
-  finalCol = vec4(0, 1, 0, 1);    // green triangle
+  finalCol = vec4(0, 1, 1, 1);    // green triangle
 }`;
 let pi = twgl.createProgramInfo(gl, [vs, fs])
 gl.useProgram(pi.program)
@@ -35,6 +35,7 @@ const targetTexture = twgl.createTexture(gl, {
   height: 200,
   format: gl.RGBA,
 });
+
 const fb = gl.createFramebuffer();
 gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
 gl.viewport(0, 0, 200, 200);
@@ -76,11 +77,11 @@ pi = twgl.createProgramInfo(gl, [vs, fs])
 gl.useProgram(pi.program)
 
 let arrays = {
-    position: { numComponents: 2, data: [ -1,-1, 1,-1, 1,1, -1,1 ], },
-    texcoord: { numComponents: 2, data: [ 0,0, 1,0, 1,1, 0,1, ], },
+    position: { size: 2, data: new Float32Array([ -.9,-1, 1.1,-1, 1.1,1, ]), },
+    texcoord: { size: 2, data: [ 0,0, 1,0, 1,1, ], },
 }
 bi = twgl.createBufferInfoFromArrays(gl, arrays)
 twgl.setBuffersAndAttributes(gl, pi, bi)
-twgl.drawBufferInfo(gl, bi, gl.TRIANGLE_FAN)
+twgl.drawBufferInfo(gl, bi, gl.TRIANGLES)
 
 </script>
