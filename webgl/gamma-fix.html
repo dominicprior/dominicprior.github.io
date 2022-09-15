@@ -10,9 +10,9 @@
 // ------ Draw a triangle to a texture ------
 
 let vs = `#version 300 es
-in vec4 aPosition;
+in vec4 position;
 void main() {
-  gl_Position = aPosition;
+  gl_Position = position;
 }`;
 
 let fs = `#version 300 es
@@ -29,14 +29,10 @@ gl.useProgram(pi.program)
 gl.clearColor(1,1,1,1)
 gl.clear(gl.COLOR_BUFFER_BIT)
 const vertexBufferData = new Float32Array([
-  .5,-.5,  .7,.5,  -.9,.5,
-            ]);
-const colBufferData = new Float32Array([
-  0,1,0, 0,1,0, 0,1,0,  // green
+  .7,-.5,  .7,.5,  -.7,.5,
             ]);
 let arrays = {
-    aPosition: { numComponents: 2, data: vertexBufferData, },
-    col:       { numComponents: 3, data: colBufferData, },
+    position: { numComponents: 2, data: vertexBufferData, },
 }
 //let bi = twgl.primitives.createSphereBufferInfo(gl, 0.6, 4, 4)  // doesn't work
 let bi = twgl.createBufferInfoFromArrays(gl, arrays)
