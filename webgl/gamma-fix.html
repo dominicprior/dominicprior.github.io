@@ -100,8 +100,8 @@ hist()
 function hist() {
   gl.flush()
   colors = {}
-  let pixels = new Float32Array(4 * canvas.width * canvas.height)
-  gl.readPixels(0, 0, canvas.width, canvas.height, gl.RGBA, gl.FLOAT, pixels)
+  let pixels = new Uint8Array(4 * canvas.width * canvas.height)
+  gl.readPixels(0, 0, canvas.width, canvas.height, gl.RGBA, gl.UNSIGNED_BYTE, pixels)
   for (let i=0; i < pixels.length; i +=4) {
     let color = ''
     for (let j=0; j < 4; j++) {
