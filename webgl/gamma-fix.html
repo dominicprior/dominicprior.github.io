@@ -7,7 +7,8 @@
 <script>
 'use strict'
 let canvas = document.querySelector('canvas')
-let gl = canvas.getContext('webgl2')
+let gl = canvas.getContext('webgl2', {
+  antialias: false,})
 let colors = {}
 const pr = console.log
 
