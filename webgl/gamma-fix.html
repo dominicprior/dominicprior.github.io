@@ -12,7 +12,7 @@ let gl = canvas.getContext('webgl2', {
 let colors = {}
 const pr = console.log
 
-// ------ Draw a triangle to a texture ------
+// ------ Draw a sphere to a texture ------
 
 let vs = `#version 300 es
 in vec4 position;
@@ -23,7 +23,7 @@ let fs = `#version 300 es
 precision mediump float;
 out vec4 finalCol;
 void main() {
-  finalCol = vec4(0, 1, 1, 1);    // green triangle
+  finalCol = vec4(0, 1, 1, 1);    // cyan sphere
 }`;
 let pi = twgl.createProgramInfo(gl, [vs, fs])
 gl.useProgram(pi.program)
