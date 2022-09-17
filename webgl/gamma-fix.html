@@ -83,7 +83,7 @@ void main() {
   finalColour = vec4(f(t.r), f(t.g), f(t.b), 1);
 }`;
 
-gl.clearColor(1.0, 0.8, 0.7, 1.0)
+gl.clearColor(0, 1, 0, 1.0)
 gl.clear(gl.COLOR_BUFFER_BIT)
 
 pi = twgl.createProgramInfo(gl, [vs, fs])
