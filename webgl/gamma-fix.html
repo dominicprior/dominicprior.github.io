@@ -102,9 +102,11 @@ function hist() {
   colors = {}
   let pixels = new Uint8Array(4 * canvas.width * canvas.height)
   gl.readPixels(0, 0, canvas.width, canvas.height, gl.RGBA, gl.UNSIGNED_BYTE, pixels)
+  let para = document.createElement('p');
+  document.body.appendChild(para)
   for (let i=0; i < pixels.length; i +=4) {
     let color = ''
-    for (let j=0; j < 4; j++) {
+    for (let j=0; j < 3; j++) {
       color += pixels[i+j] + ', '
     }
     if (colors[color]) {
@@ -115,7 +117,9 @@ function hist() {
     }
   }
   for (let c in colors) {
-    pr(c + '   ' + colors[c])
+    let msg = c + ' --- ' + colors[c]
+    pr(msg)
+    para.insertAdjacentHTML('beforeend', msg + '<br>')
   }
 }
 
