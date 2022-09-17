@@ -1,22 +1,21 @@
 <!DOCTYPE html>
+<!-- A simple WebGL translucent gradient on top of some html -->
 <title>toy</title>
 <style>
   canvas {
     position: absolute;
-top: 0px; left: 0px;
-z-index: 1;
+    top: 0px; left: 0px;
+    z-index: 1;
   }
 </style>
-<h1>hello world fooey</h1>
+<h1>hello world</h1>
 <canvas width="200" height="200"></canvas>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twgl.js/4.23.2/twgl-full.js"
     integrity="sha512-eCsXZZ3wMTH/GSekpKxoFQYBb9MAhxAvMRavPeuozqbHSysVhKOxqF+MjeVPkBX2cdHwHLqgSuTVMaF/LfGytQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-// An example of using the gl_FragCoord.
 'use strict'
 let gl = document.querySelector('canvas').getContext('webgl2')
-
 const vs = `#version 300 es
 in vec2 position;
 void main() {
@@ -26,19 +25,16 @@ const fs = `#version 300 es
 precision mediump float;
 out vec4 finalCol;
 void main() {
-  if (gl_FragCoord.x > 300.0)
+  if (gl_FragCoord.x > 160.0)
     discard;
   finalCol = vec4(gl_FragCoord.x * 0.004, gl_FragCoord.y * 0.005, 0.5, 0.8);
 }`
-
 const programInfo = twgl.createProgramInfo(gl, [vs, fs])
 gl.useProgram(programInfo.program)
-
 let arrays = {
-    position: { numComponents: 2, data: [ 0, 0,    0, 0.9,   0.9, 0,], },
+    position: { numComponents: 2, data: [ 0, 0,  0, 0.9,  0.9, 0, ], },
   }
 let bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays)
-
 twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo)
 twgl.drawBufferInfo(gl, bufferInfo)
 </script>
