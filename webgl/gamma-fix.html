@@ -66,14 +66,16 @@ void main() {
   v_texCoord = texcoord;
   gl_Position = position;
 }`;
-
+// Somehow this gamma correction doesn't remove the dark boundary
+// around the sphere.
 fs = `#version 300 es
-precision mediump float;
+precision mediump float;  // highp doesn't seem to help.
 in vec2 v_texCoord;
 out vec4 finalColour;
 uniform sampler2D s;
 float f(float x) {
-  return pow(x, 0.4545);
+  return pow(x, 0.4545);   // making the 0.4545 a lot smaller doesn't help.
+  //return sqrt(sqrt(x));  // sqrt doesn't help either.
 }
 void main() {
   vec4 t = texture(s, v_texCoord);
