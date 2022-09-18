@@ -5,7 +5,7 @@
     integrity="sha512-eCsXZZ3wMTH/GSekpKxoFQYBb9MAhxAvMRavPeuozqbHSysVhKOxqF+MjeVPkBX2cdHwHLqgSuTVMaF/LfGytQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-// A minimal example of TWGL textures.
+// A minimal example of an SRGB8_ALPHA8 TWGL texture.
 
 const vs = `#version 300 es
 in vec4 position;  // These two names are chosen
@@ -20,11 +20,9 @@ const fs = `#version 300 es
 precision mediump float;
 in vec2 v_texCoord;
 out vec4 finalColour;
-uniform sampler2D s;  // A sampler2D is a thing for doing lookup in a standard texture image.
-                      // The value of a sampler2D variable is a reference to a texture unit.
-                      // It says which texture unit is being invoked.
+uniform sampler2D s;
 void main() {
-  finalColour = texture(s, v_texCoord);  // texture is the modern function; texture2D is deprecated
+  finalColour = texture(s, v_texCoord);
 }`;
 
 let gl = document.querySelector('canvas').getContext('webgl2')
@@ -35,6 +33,7 @@ const programInfo = twgl.createProgramInfo(gl, [vs, fs])
 gl.useProgram(programInfo.program)
 
 const bufferInfo = twgl.primitives.createPlaneBufferInfo(gl)
+twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo)
 
 twgl.createTexture(gl, {
     mag: gl.NEAREST,
@@ -49,10 +48,5 @@ twgl.createTexture(gl, {
     internalFormat: gl.SRGB8_ALPHA8,
 })
 
-let drawObjects = [{
-  programInfo: programInfo,
-  bufferInfo: bufferInfo,
-}];
-
-twgl.drawObjectList(gl, drawObjects);
+twgl.drawBufferInfo(gl, bufferInfo)
 </script>
