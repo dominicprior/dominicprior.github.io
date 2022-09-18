@@ -39,7 +39,7 @@ void main() {
 
 let canvas = document.querySelector('canvas')
 let gl = canvas.getContext('webgl2',
-      { //alpha: false,
+      { //antialias: false,
         //premultipliedAlpha: true,
        })
 let programInfo = twgl.createProgramInfo(gl, [vs, fs])
