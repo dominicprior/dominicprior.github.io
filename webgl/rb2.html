@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!--
+  Draw to a render buffer with multi sampling
+-->
+<title>rb2</title>
+<canvas width="200" height="200"></canvas>
+<script src="3rd-party/twgl-full.js"></script>
+<script>
+'use strict'
+let colors = {}
+const pr = console.log
+let canvas = document.querySelector('canvas')
+let gl = canvas.getContext('webgl2', {antialias: false})
+let vs = `#version 300 es
+in vec4 pos;
+void main() {
+  gl_Position = pos;
+}`
+let fs = `#version 300 es
+precision mediump float;
+out vec4 finalCol;
+void main() {
+  finalCol = vec4(0, 0, 1, 1);    // cyan triangle
+}`
+let pi = twgl.createProgramInfo(gl, [vs, fs])
+gl.useProgram(pi.program)
+let arrays = {
+    pos: { size: 2, data: [ -0.2, -0.4,    0, 0.9,   0.9, -0.6,], },
+}
+let bi = twgl.createBufferInfoFromArrays(gl, arrays)
+twgl.setBuffersAndAttributes(gl, pi, bi)
+
+let fb = gl.createFramebuffer()
+const rb = gl.createRenderbuffer()
+gl.bindRenderbuffer(gl.RENDERBUFFER, rb)
+
+gl.renderbufferStorageMultisample(gl.RENDERBUFFER, gl.getParameter(gl.MAX_SAMPLES), gl.RGBA8, 200, 200)  // rb <=== multi sample
+
+gl.bindFramebuffer(gl.FRAMEBUFFER, fb)
+gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.RENDERBUFFER, rb)   // fb <---> rb
+
+twgl.drawBufferInfo(gl, bi)  // draw to the rb
+
+gl.bindFramebuffer(gl.READ_FRAMEBUFFER, fb)
+gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, null)
+gl.clearBufferfv(gl.COLOR, 0, [1.0, 1.0, 1.0, 1.0])
+gl.blitFramebuffer(0, 0, 200, 200,
+                        0, 0, 200, 200,
+                        gl.COLOR_BUFFER_BIT, gl.LINEAR)
+gl.bindFramebuffer(gl.READ_FRAMEBUFFER, null)
+
+hist()
+
+function hist() {
+  gl.flush()
+  colors = {}
+  let pixels = new Uint8Array(4 * canvas.width * canvas.height)
+  gl.readPixels(0, 0, canvas.width, canvas.height, gl.RGBA, gl.UNSIGNED_BYTE, pixels)
+  let para = document.createElement('p');
+  document.body.appendChild(para)
+  for (let i=0; i < pixels.length; i +=4) {
+    let color = ''
+    for (let j=0; j < 3; j++) {
+      color += pixels[i+j] + ', '
+    }
+    if (colors[color]) {
+      colors[color]++
+    }
+    else {
+      colors[color] = 1
+    }
+  }
+  for (let c in colors) {
+    let msg = c + ' --- ' + colors[c]
+    pr(msg)
+    para.insertAdjacentHTML('beforeend', msg + '<br>')
+  }
+}
+
+</script>
