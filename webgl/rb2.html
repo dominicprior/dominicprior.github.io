@@ -21,6 +21,11 @@ let gl = canvas.getContext('webgl2',
     //premultipliedAlpha: true,  // These two flags didn't
     //alpha: false,              //  help with SRGB8_ALPHA8.
    })
+
+// ------ Draw a blue triangle to the MSAA rb.
+// ------ Blit from the rb to the texture.
+// ------ Send the texture to the screen.
+
 let vs = `#version 300 es
 in vec4 pos;
 void main() {
@@ -30,7 +35,7 @@ let fs = `#version 300 es
 precision mediump float;
 out vec4 finalCol;
 void main() {
-  finalCol = vec4(0, 0, 1, 1);    // cyan triangle
+  finalCol = vec4(0, 0, 1, 1);    // blue triangle
 }`
 let pi = twgl.createProgramInfo(gl, [vs, fs])
 gl.useProgram(pi.program)
@@ -40,24 +45,67 @@ let arrays = {
 let bi = twgl.createBufferInfoFromArrays(gl, arrays)
 twgl.setBuffersAndAttributes(gl, pi, bi)
 
-let fb = gl.createFramebuffer()
+let fb_rb = gl.createFramebuffer()
 const rb = gl.createRenderbuffer()
 gl.bindRenderbuffer(gl.RENDERBUFFER, rb)
 
 gl.renderbufferStorageMultisample(gl.RENDERBUFFER, gl.getParameter(gl.MAX_SAMPLES), gl.RGBA8, 200, 200)  // rb <=== multi sample
 
-gl.bindFramebuffer(gl.FRAMEBUFFER, fb)
-gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.RENDERBUFFER, rb)   // fb <---> rb
+gl.bindFramebuffer(gl.FRAMEBUFFER, fb_rb)
+gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.RENDERBUFFER, rb)   // fb_rb <---> rb
 
 twgl.drawBufferInfo(gl, bi)  // draw to the rb
 
-gl.bindFramebuffer(gl.READ_FRAMEBUFFER, fb)
-gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, null)
+let fb_texture = gl.createFramebuffer()
+gl.bindFramebuffer(gl.FRAMEBUFFER, fb_texture)
+let texture = twgl.createTexture(gl, {
+  mag: gl.NEAREST,
+  min: gl.LINEAR,
+  src: null,
+  width: 200,  height: 200,
+})
+gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0)  // fb_texture <---> texture
+
+gl.bindFramebuffer(gl.READ_FRAMEBUFFER, fb_rb)
+gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, fb_texture)
 gl.clearBufferfv(gl.COLOR, 0, [1.0, 1.0, 1.0, 1.0])
 gl.blitFramebuffer(0, 0, 200, 200,
                         0, 0, 200, 200,
-                        gl.COLOR_BUFFER_BIT, gl.LINEAR)
-gl.bindFramebuffer(gl.READ_FRAMEBUFFER, null)
+                        gl.COLOR_BUFFER_BIT, gl.LINEAR)  // rb --> texture
+
+gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+
+// ------ send the texture to the screen ------
+
+vs = `#version 300 es
+in vec4 position;
+in vec2 texcoord;
+out vec2 v_texCoord;
+void main() {
+  v_texCoord = texcoord;
+  gl_Position = position;
+}`;
+fs = `#version 300 es
+precision mediump float;
+in vec2 v_texCoord;
+out vec4 finalColour;
+uniform sampler2D s;
+void main() {
+  finalColour = texture(s, v_texCoord);
+}`;
+gl.clearColor(0, 1, 0, 1.0)
+gl.clear(gl.COLOR_BUFFER_BIT)
+
+pi = twgl.createProgramInfo(gl, [vs, fs])
+gl.useProgram(pi.program)
+
+arrays = {
+    position: { size: 2, data: new Float32Array([ -1,-1, 1,-1, 1,1, ]), },
+    texcoord: { size: 2, data: [ 0,0, 1,0, 1,1, ], },
+}
+bi = twgl.createBufferInfoFromArrays(gl, arrays)
+twgl.setBuffersAndAttributes(gl, pi, bi)
+twgl.drawBufferInfo(gl, bi, gl.TRIANGLES)
 
 hist()
 
