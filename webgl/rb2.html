@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <!--
   Draw to a render buffer with multi sampling
+
+  I tried using an SRGB8_ALPHA8 internal format for the render buffer
+  but everything went blank.  See this:
+  https://github.com/KhronosGroup/WebGL/blob/main/conformance-suites/2.0.0/conformance2/rendering/blitframebuffer-test.html#L264
+  So maybe it is better do all the graphics in linear space and only
+  convert to sRGB space just before sending to the screen.
 -->
 <title>rb2</title>
 <canvas width="200" height="200"></canvas>
@@ -10,7 +16,11 @@
 let colors = {}
 const pr = console.log
 let canvas = document.querySelector('canvas')
-let gl = canvas.getContext('webgl2', {antialias: false})
+let gl = canvas.getContext('webgl2',
+    {antialias: false,
+    //premultipliedAlpha: true,  // These two flags didn't
+    //alpha: false,              //  help with SRGB8_ALPHA8.
+   })
 let vs = `#version 300 es
 in vec4 pos;
 void main() {
