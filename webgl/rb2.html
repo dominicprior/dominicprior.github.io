@@ -20,6 +20,10 @@ let gl = canvas.getContext('webgl2',
     //premultipliedAlpha: true,  // These two flags didn't
     //alpha: false,              //  help with SRGB8_ALPHA8.
    })
+if (!gl) {
+  document.body.innerText = "This browser doesn't have WebGL 2"
+  throw 'No WebGL 2'
+}
 
 // ------ Draw a green triangle to the MSAA rb ------
 
