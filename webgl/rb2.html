@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <!--
-  Draw to a render buffer with multi sampling
+  Draw a triangle to a multi-sampling render buffer, then blit to a texture
+  so we can then do some gamma correction.
 
   I tried using an SRGB8_ALPHA8 internal format for the render buffer
   but everything went blank.  See this:
   https://github.com/KhronosGroup/WebGL/blob/main/conformance-suites/2.0.0/conformance2/rendering/blitframebuffer-test.html#L264
-  So maybe it is better do all the graphics in linear space and only
-  convert to sRGB space just before sending to the screen.
 -->
 <title>rb2</title>
 <canvas width="200" height="200"></canvas>
@@ -22,9 +21,7 @@ let gl = canvas.getContext('webgl2',
     //alpha: false,              //  help with SRGB8_ALPHA8.
    })
 
-// ------ Draw a blue triangle to the MSAA rb.
-// ------ Blit from the rb to the texture.
-// ------ Send the texture to the screen.
+// ------ Draw a green triangle to the MSAA rb ------
 
 let vs = `#version 300 es
 in vec4 pos;
@@ -35,7 +32,7 @@ let fs = `#version 300 es
 precision mediump float;
 out vec4 finalCol;
 void main() {
-  finalCol = vec4(0, 0, 1, 1);    // blue triangle
+  finalCol = vec4(0, 1, 0, 1);  // green
 }`
 let pi = twgl.createProgramInfo(gl, [vs, fs])
 gl.useProgram(pi.program)
@@ -53,8 +50,11 @@ gl.renderbufferStorageMultisample(gl.RENDERBUFFER, gl.getParameter(gl.MAX_SAMPLE
 
 gl.bindFramebuffer(gl.FRAMEBUFFER, fb_rb)
 gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.RENDERBUFFER, rb)   // fb_rb <---> rb
+gl.clearBufferfv(gl.COLOR, 0, [1.0, 0, 0.0, 1.0])  // red
 
 twgl.drawBufferInfo(gl, bi)  // draw to the rb
+
+// ------ Create a blank texture ------
 
 let fb_texture = gl.createFramebuffer()
 gl.bindFramebuffer(gl.FRAMEBUFFER, fb_texture)
@@ -66,16 +66,17 @@ let texture = twgl.createTexture(gl, {
 })
 gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0)  // fb_texture <---> texture
 
+// ------ Blit from the rb to the texture ------
+
 gl.bindFramebuffer(gl.READ_FRAMEBUFFER, fb_rb)
 gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, fb_texture)
-gl.clearBufferfv(gl.COLOR, 0, [1.0, 1.0, 1.0, 1.0])
 gl.blitFramebuffer(0, 0, 200, 200,
                         0, 0, 200, 200,
                         gl.COLOR_BUFFER_BIT, gl.LINEAR)  // rb --> texture
 
 gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 
-// ------ send the texture to the screen with gamma correction ------
+// ------ Send the texture to the screen with gamma correction ------
 
 vs = `#version 300 es
 in vec4 position;
@@ -90,24 +91,26 @@ precision mediump float;
 in vec2 v_texCoord;
 out vec4 finalColour;
 uniform sampler2D s;
-float k = 0.4545;
 void main() {
   vec4 t = texture(s, v_texCoord);
+  float k = 0.4545;
   finalColour = pow(t, vec4(k,k,k,1));
 }`;
-gl.clearColor(0, 1, 0, 1.0)
+gl.clearColor(0.6, 0.8, 1, 1.0)
 gl.clear(gl.COLOR_BUFFER_BIT)
 
 pi = twgl.createProgramInfo(gl, [vs, fs])
 gl.useProgram(pi.program)
 
 arrays = {
-    position: { size: 2, data: new Float32Array([ -1,-1, 1,-1, 1,1, ]), },
-    texcoord: { size: 2, data: [ 0,0, 1,0, 1,1, ], },
+    position: { size: 2, data: new Float32Array([ -1,-1, 1,-1, 1,1, -1,1 ]), },
+    texcoord: { size: 2, data: [ 0,0, 1,0, 1,1, 0,1 ], },
 }
 bi = twgl.createBufferInfoFromArrays(gl, arrays)
 twgl.setBuffersAndAttributes(gl, pi, bi)
-twgl.drawBufferInfo(gl, bi, gl.TRIANGLES)
+twgl.drawBufferInfo(gl, bi, gl.TRIANGLE_FAN)
+
+// ------ Print a summary of the different colours ------
 
 hist()
 
