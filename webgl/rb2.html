@@ -1,14 +1,25 @@
 <!DOCTYPE html>
 <!--
-  Draw a triangle to a multi-sampling render buffer, then blit to a texture
-  so we can then do some gamma correction.
+  Draw a gamma-correct anti-aliased triangle.
 
-  I tried using an SRGB8_ALPHA8 internal format for the render buffer
-  but everything went blank.  See this:
+  Anti-aliasing involves blending colours, and so either the colours need
+  to be in linear space during the blending step or the blending step has
+  to be "gamma aware".
+
+  I tried to make the blending gamma aware by using the SRGB8_ALPHA8 internal
+  format for the render buffer but everything went blank, which may be related
+  to this comment:
+
   https://github.com/KhronosGroup/WebGL/blob/main/conformance-suites/2.0.0/conformance2/rendering/blitframebuffer-test.html#L264
+
+  So, instead, I did the anti-aliasing in linear space by drawing to a multi-sampling
+  render buffer, and then blitted to a texture so I could then do the gamma correction
+  at the end of the graphics pipeline.
+
+  Finally, for 
 -->
 <title>rb2</title>
-<canvas width="200" height="200"></canvas>
+<canvas></canvas>
 <script src="3rd-party/twgl-full.js"></script>
 <script>
 'use strict'
@@ -20,6 +31,16 @@ let gl = canvas.getContext('webgl2',
     //premultipliedAlpha: true,  // These two flags didn't
     //alpha: false,              //  help with SRGB8_ALPHA8.
    })
+
+canvas.style.width  = "100px"  // The real estate on the page
+canvas.style.height = "100px"  // measured in CSS pixels.
+
+let w = window.devicePixelRatio * canvas.clientWidth
+let h = window.devicePixelRatio * canvas.clientHeight
+canvas.width  = w   // The number of addressable
+canvas.height = h   // pixels in the canvas.
+gl.viewport(0, 0, w, h)
+
 if (!gl) {
   document.body.innerText = "This browser doesn't have WebGL 2"
   throw 'No WebGL 2'
@@ -50,10 +71,12 @@ let fb_rb = gl.createFramebuffer()
 const rb = gl.createRenderbuffer()
 gl.bindRenderbuffer(gl.RENDERBUFFER, rb)
 
-gl.renderbufferStorageMultisample(gl.RENDERBUFFER, gl.getParameter(gl.MAX_SAMPLES), gl.RGBA8, 200, 200)  // rb <=== multi sample
+gl.renderbufferStorageMultisample(gl.RENDERBUFFER,
+    gl.getParameter(gl.MAX_SAMPLES), gl.RGBA8, w, h)  // rb <=== multi sample
 
 gl.bindFramebuffer(gl.FRAMEBUFFER, fb_rb)
-gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.RENDERBUFFER, rb)   // fb_rb <---> rb
+gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0,
+        gl.RENDERBUFFER, rb)   // fb_rb <---> rb
 gl.clearBufferfv(gl.COLOR, 0, [1.0, 0, 0.0, 1.0])  // red
 
 twgl.drawBufferInfo(gl, bi)  // draw to the rb
@@ -66,19 +89,19 @@ let texture = twgl.createTexture(gl, {
   mag: gl.NEAREST,
   min: gl.LINEAR,
   src: null,
-  width: 200,  height: 200,
+  width: w,  height: h,
 })
-gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0)  // fb_texture <---> texture
+gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0,
+        gl.TEXTURE_2D, texture, 0)  // fb_texture <---> texture
 
 // ------ Blit from the rb to the texture ------
 
 gl.bindFramebuffer(gl.READ_FRAMEBUFFER, fb_rb)
 gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, fb_texture)
-gl.blitFramebuffer(0, 0, 200, 200,
-                        0, 0, 200, 200,
-                        gl.COLOR_BUFFER_BIT, gl.LINEAR)  // rb --> texture
+gl.blitFramebuffer(0, 0, w, h, 0, 0, w, h,
+                   gl.COLOR_BUFFER_BIT, gl.LINEAR)  // rb --> texture
 
-gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+gl.bindFramebuffer(gl.FRAMEBUFFER, null)
 
 // ------ Send the texture to the screen with gamma correction ------
 
@@ -123,7 +146,7 @@ function hist() {
   colors = {}
   let pixels = new Uint8Array(4 * canvas.width * canvas.height)
   gl.readPixels(0, 0, canvas.width, canvas.height, gl.RGBA, gl.UNSIGNED_BYTE, pixels)
-  let para = document.createElement('p');
+  let para = document.createElement('p')
   document.body.appendChild(para)
   for (let i=0; i < pixels.length; i +=4) {
     let color = ''
