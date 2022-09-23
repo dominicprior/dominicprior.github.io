@@ -1,12 +1,11 @@
 <!DOCTYPE html>
+<!--
+  Draws an SRGB8_ALPHA8 texture on a twgl plane.
+-->
 <title>texture</title>
 <canvas width="200" height="200"></canvas>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twgl.js/4.23.2/twgl-full.js"
-    integrity="sha512-eCsXZZ3wMTH/GSekpKxoFQYBb9MAhxAvMRavPeuozqbHSysVhKOxqF+MjeVPkBX2cdHwHLqgSuTVMaF/LfGytQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="3rd-party/twgl-full.js"></script>
 <script>
-// A minimal example of an SRGB8_ALPHA8 TWGL texture.
-
 const vs = `#version 300 es
 in vec4 position;  // These two names are chosen
 in vec2 texcoord;  // by the twgl primitives.
@@ -15,7 +14,6 @@ void main() {
   v_texCoord = texcoord;
   gl_Position = position.zxyw;
 }`;
-
 const fs = `#version 300 es
 precision mediump float;
 in vec2 v_texCoord;
