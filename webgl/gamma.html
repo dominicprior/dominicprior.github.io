@@ -70,20 +70,6 @@ const height = 20
 let pixels = new Uint8Array(4 * width * height)
 gl.readPixels(0, canvas.height - height, width, height, gl.RGBA, gl.UNSIGNED_BYTE, pixels)
 
-let colors = {}
-for (let i=0; i < pixels.length; i +=4) {
-  let color = ''
-  for (let j=0; j < 4; j++) {
-    color += pixels[i+j] + ', '
-  }
-  if (colors[color]) {
-    colors[color]++
-  }
-  else {
-    colors[color] = 1
-  }
-}
-
 vs = `#version 300 es
 in vec2 pos;
 in vec2 texcoord;
