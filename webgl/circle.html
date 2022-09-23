@@ -1,8 +1,12 @@
 <!DOCTYPE html>
+<!--
+  Draws anti-aliased circles using the fragment shader.
+  Shows a magnified view using readPixels.
+-->
 <title>magnify</title>
 <canvas width="400" height="400"></canvas>
 <p style="font-size: 140%">
-Here is some anti-aliasing using the using the WebGL fragment shader to calculate how much of each pixel is inside each disk. <p>
+Here is some anti-aliasing using the using the WebGL fragment shader to calculate how much of each pixel is inside each circle. <p>
   
 In other words, it doesn't do super-sampling. Nor does it use 
 <a href="https://en.wikipedia.org/wiki/Spatial_anti-aliasing">
