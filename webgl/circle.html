@@ -3,7 +3,7 @@
   Draws anti-aliased circles using the fragment shader.
   Shows a magnified view using readPixels.
 -->
-<title>magnify</title>
+<title>Circle</title>
 <canvas width="400" height="400"></canvas>
 <p style="font-size: 140%">
 Here is some anti-aliasing using the using the WebGL fragment shader to calculate how much of each pixel is inside each circle. <br><br>
@@ -18,9 +18,12 @@ For gamma correction, the alpha values are simply raised to the power of 0.4545 
 <script src="3rd-party/twgl-full.js"></script>
 <script>
 'use strict'
+let colors = {}
+const pr = console.log
 let canvas = document.querySelector('canvas')
 let gl = canvas.getContext('webgl2',
-      { //alpha: false,
+      { alpha: false,
+        antialias: false,   // because we are doing our own anti-aliasing.
         //premultipliedAlpha: true,
        })
 gl.clearColor(0,0,0, 1.0)
@@ -115,7 +118,7 @@ gl.useProgram(programInfo.program)
 let arrays = {
   centre: { size: 2, data: [ -0.95, 0.95,  -0.91, 0.92, ], divisor: 1},
   rad:    { size: 1, data: [ 0.0394,        0.038,      ], divisor: 1},
-  col:    { size: 3, data: [ 0,1,1,         1,1,0,      ], divisor: 1},
+  col:    { size: 3, data: [ 0,1,1,         1,0,0,      ], divisor: 1},
   coord:  { size: 2, data: [ -1,-1, 1,-1, 1,1, -1,-1, 1,1, -1,1, ] },
 }
 let bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays)
@@ -172,4 +175,32 @@ twgl.createTexture(gl, {
 })
 
 twgl.drawBufferInfo(gl, bufferInfo)
+
+// ------ Print a summary of the different colours ------
+
+hist()
+
+function hist() {
+  gl.flush()
+  colors = {}
+  let para = document.createElement('p')
+  document.body.appendChild(para)
+  for (let i=0; i < pixels.length; i +=4) {
+    let color = ''
+    for (let j=0; j < 3; j++) {
+      color += pixels[i+j] + ', '
+    }
+    if (colors[color]) {
+      colors[color]++
+    }
+    else {
+      colors[color] = 1
+    }
+  }
+  for (let c in colors) {
+    let msg = c + ' --- ' + colors[c]
+    pr(msg)
+    para.insertAdjacentHTML('beforeend', msg + '<br>')
+  }
+}
 </script>
