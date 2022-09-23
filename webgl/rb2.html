@@ -23,10 +23,9 @@
 <title>rb2</title>
 <canvas></canvas>
 <script src="3rd-party/twgl-full.js"></script>
+<script src="utils.js"></script>
 <script>
 'use strict'
-let colors = {}
-const pr = console.log
 let canvas = document.querySelector('canvas')
 let gl = canvas.getContext('webgl2',
     {antialias: false,
@@ -141,32 +140,9 @@ twgl.drawBufferInfo(gl, bi, gl.TRIANGLE_FAN)
 
 // ------ Print a summary of the different colours ------
 
-hist()
-
-function hist() {
-  gl.flush()
-  colors = {}
-  let pixels = new Uint8Array(4 * canvas.width * canvas.height)
-  gl.readPixels(0, 0, canvas.width, canvas.height, gl.RGBA, gl.UNSIGNED_BYTE, pixels)
-  let para = document.createElement('p')
-  document.body.appendChild(para)
-  for (let i=0; i < pixels.length; i +=4) {
-    let color = ''
-    for (let j=0; j < 3; j++) {
-      color += pixels[i+j] + ', '
-    }
-    if (colors[color]) {
-      colors[color]++
-    }
-    else {
-      colors[color] = 1
-    }
-  }
-  for (let c in colors) {
-    let msg = c + ' --- ' + colors[c]
-    pr(msg)
-    para.insertAdjacentHTML('beforeend', msg + '<br>')
-  }
-}
+let colors = {}
+let pixels = new Uint8Array(4 * canvas.width * canvas.height)
+gl.readPixels(0, 0, canvas.width, canvas.height, gl.RGBA, gl.UNSIGNED_BYTE, pixels)
+prHist(pixels)
 
 </script>
