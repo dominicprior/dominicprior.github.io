@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <!--
-  Draws anti-aliased circles using the fragment shader.
-  Shows a magnified view using readPixels.
+  Draws anti-aliased circles using the fragment shader and then shows a magnified view using readPixels.
 -->
 <title>Circle</title>
 <canvas width="400" height="400"></canvas>
@@ -16,10 +15,9 @@ which may explain the slightly square shaped circles. <br><br>
 For gamma correction, the alpha values are simply raised to the power of 0.4545 (as opposed to the more rigorous approach of doing gamma at the end of the whole picture).
   </p>
 <script src="3rd-party/twgl-full.js"></script>
+<script src="utils.js"></script>
 <script>
 'use strict'
-let colors = {}
-const pr = console.log
 let canvas = document.querySelector('canvas')
 let gl = canvas.getContext('webgl2',
       { alpha: false,
@@ -31,7 +29,7 @@ gl.clear(gl.COLOR_BUFFER_BIT)
 gl.enable(gl.BLEND)
 gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
 
-// ------ Draw the discs ------
+// ------ Draw the circles ------
 
 let vs = `#version 300 es
 uniform float canvasSize;   // assuming square for now
@@ -178,29 +176,6 @@ twgl.drawBufferInfo(gl, bufferInfo)
 
 // ------ Print a summary of the different colours ------
 
-hist()
+prHist(pixels)
 
-function hist() {
-  gl.flush()
-  colors = {}
-  let para = document.createElement('p')
-  document.body.appendChild(para)
-  for (let i=0; i < pixels.length; i +=4) {
-    let color = ''
-    for (let j=0; j < 3; j++) {
-      color += pixels[i+j] + ', '
-    }
-    if (colors[color]) {
-      colors[color]++
-    }
-    else {
-      colors[color] = 1
-    }
-  }
-  for (let c in colors) {
-    let msg = c + ' --- ' + colors[c]
-    pr(msg)
-    para.insertAdjacentHTML('beforeend', msg + '<br>')
-  }
-}
 </script>
