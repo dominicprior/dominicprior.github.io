@@ -16,7 +16,9 @@
   render buffer, and then blitted to a texture so I could then do the gamma correction
   at the end of the graphics pipeline.
 
-  Finally, for 
+  Note also the use of the devicePixelRatio for preventing any resampling.  See:
+
+  https://webgl2fundamentals.org/webgl/lessons/webgl-resizing-the-canvas.html
 -->
 <title>rb2</title>
 <canvas></canvas>
