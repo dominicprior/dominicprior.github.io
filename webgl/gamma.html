@@ -6,7 +6,7 @@
 <title>gamma</title>
 <canvas width="400" height="400"></canvas>
 <p style="font-size: 140%">
-This simple drawing, using all the default WebGL options, is enough to show a gamma correction problem. <p>
+This simple drawing, using all the default WebGL options, is enough to show a gamma correction problem. <br><br>
 
 The border between the red and green triangles are anti-aliased to (127,127,0), which is bad because the 127 values are then sent to the screen as (127/255)**2.2 * 255, which is far too dark.
     </p>
