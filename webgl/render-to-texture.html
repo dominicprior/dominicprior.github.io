@@ -1,14 +1,13 @@
 <!DOCTYPE html>
+<!--
+  Draws a twgl sphere on a texture and then draws a triangle with that texture.
+-->
 <title>render to texture</title>
 <canvas width="200" height="200"></canvas>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twgl.js/4.23.2/twgl-full.js"
-    integrity="sha512-eCsXZZ3wMTH/GSekpKxoFQYBb9MAhxAvMRavPeuozqbHSysVhKOxqF+MjeVPkBX2cdHwHLqgSuTVMaF/LfGytQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="3rd-party/twgl-full.js"></script>
+<script src="utils.js"></script>
 <script>
-// 
 'use strict'
-const params = 'VERTEX_ATTRIB_ARRAY_BUFFER_BINDING VERTEX_ATTRIB_ARRAY_ENABLED VERTEX_ATTRIB_ARRAY_SIZE VERTEX_ATTRIB_ARRAY_STRIDE VERTEX_ATTRIB_ARRAY_TYPE VERTEX_ATTRIB_ARRAY_NORMALIZED CURRENT_VERTEX_ATTRIB'.split(' ')
-const pr = console.log
 const gl = document.querySelector('canvas').getContext('webgl2')
 
 // ------ Draw a sphere to a texture ------
@@ -40,7 +39,7 @@ const targetTexture = twgl.createTexture(gl, {
 
 const fb = gl.createFramebuffer();
 gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
-gl.viewport(0, 0, 200, 200);
+//gl.viewport(0, 0, 200, 200);
 gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, targetTexture, 0);
 gl.clearColor(1, 0, 0, 1)  // red background for the texture
 gl.clear(gl.COLOR_BUFFER_BIT)
@@ -88,20 +87,9 @@ let arrays = {
     texcoord: { size: 2, data: [ 0,1, 0,0, 1,0.5, ], },
 }
 bi = twgl.createBufferInfoFromArrays(gl, arrays)
-
 twgl.setBuffersAndAttributes(gl, pi, bi)
-
 twgl.drawBufferInfo(gl, bi)
 
-
-function f() {
-  for (let i of [0,1]) {
-    pr(params.map(p => gl.getVertexAttrib(i, gl[p])))
-  }
-}
-
-f()
-// [WebGLBuffer, true, 2, 0, 5126, false, Float32Array(4)]
-// [WebGLBuffer, true, 2, 0, 5126, false, Float32Array(4)]
+prState()
 
 </script>
