@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<!--
+Draws a fish-eye circle.
+-->
+<title>fish 2</title>
+<canvas width="200" height="200"></canvas>
+<script src="3rd-party/twgl-full.js"></script>
+<script src="utils.js"></script>
+<script>
+'use strict'
+const gl = document.querySelector('canvas').getContext('webgl2')
+gl.clearColor(0.8, 0.9, 1, 1)
+gl.clear(gl.COLOR_BUFFER_BIT)
+
+const vs = `#version 300 es
+
+in vec3 starPos;
+in float n;
+uniform vec3 eyePos;
+
+float fish(vec2 v) {
+  float len = length(v);
+  float denom = v.y + len;
+  float FAR_AWAY = 100.0;
+  return denom == 0.0 ? FAR_AWAY : v.x / denom;
+}
+
+void main() {
+  float FAR = 0.001;
+  vec3 pos = starPos - eyePos;
+  float xz = length(pos.xz);
+  float R = 0.4;  // for now
+  float k = sqrt(dot(pos, pos) - R * R);
+  vec2 a = vec2(xz * k - pos.y * R, pos.y * k - xz * R);
+  vec2 b = vec2(xz * k + pos.y * R, pos.y * k + xz * R);
+  float af = fish(a);
+  float bf = fish(b);
+  float r = (af - bf) * 0.5;
+  float q = (af + bf) * 0.5;
+  float x = xz == 0.0 ? 0.0 : q * pos.x / xz;
+  float y = xz == 0.0 ? 0.0 : q * pos.z / xz;
+
+  gl_Position = vec4(
+        n == 0. || n == 3. || n == 5. ? x - r : x + r,
+        n == 0. || n == 3. || n == 1. ? y - r : y + r,
+        length(pos) * FAR,
+        1);
+}`
+const fs = `#version 300 es
+precision mediump float;
+out vec4 finalCol;
+void main() {
+  finalCol = vec4(1,0,0,1);   // red for now
+}`
+const pi = twgl.createProgramInfo(gl, [vs, fs])
+gl.useProgram(pi.program)
+let arrays = {
+    starPos: { size: 3, data: [ 0, 1, 0, ], },
+    n:       { size: 1, data: [ 0,1,2,3,4,5, ], divisor: 1, },
+}
+const bi = twgl.createBufferInfoFromArrays(gl, arrays)
+const uniforms = { eyePos: [0,0,0] }
+pr(1)
+twgl.setBuffersAndAttributes(gl, pi, bi)
+pr(2)
+twgl.drawBufferInfo(gl, bi, gl.TRIANGLES, 1, 0, 6)
+</script>
