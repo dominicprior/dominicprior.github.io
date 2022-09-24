@@ -12,9 +12,9 @@ in vec2 offset;
 in vec3 col;
 out vec3 fragCol;
 void main() {
-    fragCol = col;
-    gl_PointSize = 10.0;
-    gl_Position = vec4(pos + offset, 0.0, 1.0);
+  fragCol = col;
+  gl_PointSize = 10.0;
+  gl_Position = vec4(pos + offset, 0.0, 1.0);
 }`;
 
 const fs = `#version 300 es
@@ -23,7 +23,7 @@ precision mediump float;
 in vec3 fragCol;
 out vec4 fragColor;
 void main() {
-    fragColor = vec4(fragCol, 1.0);
+  fragColor = vec4(fragCol, 1.0);
 }`;
 
 let gl = document.querySelector('canvas').getContext('webgl2')
@@ -34,23 +34,14 @@ const programInfo = twgl.createProgramInfo(gl, [vs, fs])
 gl.useProgram(programInfo.program)
 
 let arrays = {
-  pos: { numComponents: 2, data:  [ -0.5, -0.5, 0, 0, 0.5, 0.5, ], },
-  offset: { numComponents: 2, data:  [ -0.2, 0.2, -0.4, 0.4, 0, 0, 0.2, -0.2, 0.4, -0.4, ], },
-  col: { numComponents: 3, data:  [1,0,0, 0,0,1, ], },
+  pos: { size: 2, data:  [ -0.5, -0.5, 0, 0, 0.5, 0.1, ], },
+  offset: { size: 2, data:  [ -0.2, 0.2, -0.4, 0.4, 0, 0, 0.2, -0.2, 0.4, -0.4, ],  divisor: 1, },
+  col: { size: 3, data:  [1,0,0, 0,0,1, ], divisor: 2, },
 }
 let bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays)
 twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo)
 
-const loc = gl.getAttribLocation(programInfo.program, 'pos')
-gl.vertexAttribDivisor(loc, 0)
-
-const loc2 = gl.getAttribLocation(programInfo.program, 'offset')
-gl.vertexAttribDivisor(loc2, 1)
-
-const loc3 = gl.getAttribLocation(programInfo.program, 'col')
-gl.vertexAttribDivisor(loc3, 2)
-
 const count = 3
 const numInstances = 5
-twgl.drawBufferInfo(gl, bufferInfo, gl.POINTS, count, 0, numInstances)
+twgl.drawBufferInfo(gl, bufferInfo, gl.TRIANGLES, count, 0, numInstances)
 </script>
