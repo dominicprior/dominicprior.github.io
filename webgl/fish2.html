@@ -17,6 +17,10 @@ const vs = `#version 300 es
 in vec3 starPos;
 in float n;
 uniform vec3 eyePos;
+uniform float canvasSize;   // assuming square for now
+out vec2 c;
+out vec2 io_pos;
+out float io_r;
 
 float fish(vec2 v) {
   float len = length(v);
@@ -40,17 +44,38 @@ void main() {
   float x = xz == 0.0 ? 0.0 : q * pos.x / xz;
   float y = xz == 0.0 ? 0.0 : q * pos.z / xz;
 
+  float qq = r;
+  io_r = qq * 10.0;
+  //io_r = 0.7;  // 0.0 - r * 100.0; //r*100.0; //.5; //r * canvasSize * 0.5;
+  c = vec2(x + 1.0, y + 1.0) * canvasSize * 0.5;
   gl_Position = vec4(
-        n == 0. || n == 3. || n == 5. ? x - r : x + r,
-        n == 0. || n == 3. || n == 1. ? y - r : y + r,
-        length(pos) * FAR,
-        1);
+      n == 0. || n == 3. || n == 5. ? x - r : x + r,
+      n == 0. || n == 3. || n == 1. ? y - r : y + r,
+      length(pos) * FAR,
+      1);
+  io_pos = (gl_Position.xy + 1.0) * canvasSize * 0.5;
 }`
 const fs = `#version 300 es
 precision mediump float;
+in vec2 c;
+in vec2 io_pos;
+in float io_r;
 out vec4 finalCol;
 void main() {
-  finalCol = vec4(1,0,0,1);   // red for now
+
+  vec2 d = abs(io_pos - c);  // to reduce the cases to one quadrant
+  if (d.y > d.x)
+    d = d.yx;             // to reduce down to one octant
+  vec2 near = d - 0.5;
+  vec2 far = d + 0.5;
+  float nearSq = dot(near, near);
+  float radSq = io_r * io_r;
+  if (radSq < nearSq) {
+    //discard;
+    //return;
+  }
+
+  finalCol = vec4(1, io_r+0., 0,1);   // red for now
 }`
 const pi = twgl.createProgramInfo(gl, [vs, fs])
 gl.useProgram(pi.program)
@@ -59,7 +84,7 @@ let arrays = {
     n:       { size: 1, data: [ 0,1,2,3,4,5, ], },
 }
 const bi = twgl.createBufferInfoFromArrays(gl, arrays)
-const uniforms = { eyePos: [0,0,0] }
+const uniforms = { eyePos: [0,0,0], canvasSize: gl.canvas.width, }
 twgl.setBuffersAndAttributes(gl, pi, bi)
 twgl.drawBufferInfo(gl, bi, gl.TRIANGLES, 6, 0, 1)
 </script>
