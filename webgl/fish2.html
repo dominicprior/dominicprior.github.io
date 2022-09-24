@@ -29,10 +29,10 @@ void main() {
   float FAR = 0.001;
   vec3 pos = starPos - eyePos;
   float xz = length(pos.xz);
-  float R = 0.4;  // for now
+  float R = 1.0;  // for now
   float k = sqrt(dot(pos, pos) - R * R);
-  vec2 a = vec2(xz * k - pos.y * R, pos.y * k - xz * R);
-  vec2 b = vec2(xz * k + pos.y * R, pos.y * k + xz * R);
+  vec2 a = vec2(xz * k - pos.y * R, pos.y * k + xz * R);
+  vec2 b = vec2(xz * k + pos.y * R, pos.y * k - xz * R);
   float af = fish(a);
   float bf = fish(b);
   float r = (af - bf) * 0.5;
@@ -55,7 +55,7 @@ void main() {
 const pi = twgl.createProgramInfo(gl, [vs, fs])
 gl.useProgram(pi.program)
 let arrays = {
-    starPos: { size: 3, data: [ 0, 1, 0, ], divisor: 1, },
+    starPos: { size: 3, data: [ 2, 2, 0, ], divisor: 1, },
     n:       { size: 1, data: [ 0,1,2,3,4,5, ], },
 }
 const bi = twgl.createBufferInfoFromArrays(gl, arrays)
