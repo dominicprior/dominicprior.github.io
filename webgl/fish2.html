@@ -55,13 +55,11 @@ void main() {
 const pi = twgl.createProgramInfo(gl, [vs, fs])
 gl.useProgram(pi.program)
 let arrays = {
-    starPos: { size: 3, data: [ 0, 1, 0, ], },
-    n:       { size: 1, data: [ 0,1,2,3,4,5, ], divisor: 1, },
+    starPos: { size: 3, data: [ 0, 1, 0, ], divisor: 1, },
+    n:       { size: 1, data: [ 0,1,2,3,4,5, ], },
 }
 const bi = twgl.createBufferInfoFromArrays(gl, arrays)
 const uniforms = { eyePos: [0,0,0] }
-pr(1)
 twgl.setBuffersAndAttributes(gl, pi, bi)
-pr(2)
-twgl.drawBufferInfo(gl, bi, gl.TRIANGLES, 1, 0, 6)
+twgl.drawBufferInfo(gl, bi, gl.TRIANGLES, 6, 0, 1)
 </script>
