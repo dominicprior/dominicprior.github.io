@@ -60,7 +60,13 @@ in vec2 c;
 in vec2 io_pos;
 in float io_r;
 out vec4 finalCol;
+
+float f(float a, float b, float c) {
+  return c == a ? 0.0 : (b - a) / (c - a);
+}
+
 void main() {
+  vec3 fsCol = vec3(1.0, 0.0, 0.0);
 
   vec2 d = abs(io_pos - c);  // to reduce the cases to one quadrant
   if (d.y > d.x)
@@ -73,8 +79,37 @@ void main() {
     discard;
     return;
   }
+  float farSq = dot(far, far);
+  if (radSq > farSq) {
+    finalCol = vec4(fsCol, 1);  // completely inside
+    return;
+  }
 
-  finalCol = vec4(1, io_r/15.0, 0,1);   // red for now
+  // The remaining cases depend on which corners of the pixel
+  // are inside the disc.
+
+  vec2 topLeft = vec2(near.x, far.y);
+  float topLeftSq = dot(topLeft, topLeft);
+  vec2 botRight = vec2(near.y, far.x);
+  float botRightSq = dot(botRight, botRight);
+  float k = f(nearSq, radSq, botRightSq);
+  if (radSq < topLeftSq) {
+    // then the intersection is a triangle, where k is the width and h is the height.
+    float h = f(nearSq, radSq, topLeftSq);
+    finalCol = vec4(fsCol, pow((h * k * 0.5), 0.4545));
+    return;
+  }
+  float k2 = f(topLeftSq, radSq, farSq);
+  if (radSq < botRightSq) {
+    // then the intersection is a trapezium.
+    finalCol = vec4(fsCol, pow(((k + k2) * 0.5), 0.4545));
+    return;
+  }
+  // else the intersection is the whole pixel minus a triangle.
+  float h2 = f(botRightSq, radSq, farSq);
+  float opacity = 1.0 - (1.0 - h2) * (1.0 - k2) * 0.5;
+  finalCol = vec4(fsCol, pow(opacity, 0.4545));
+
 }`
 const pi = twgl.createProgramInfo(gl, [vs, fs])
 gl.useProgram(pi.program)
