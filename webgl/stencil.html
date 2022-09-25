@@ -25,7 +25,7 @@ void main() {
    finalColor = color;
 }`
 
-const pi = twgl.createProgram(gl, [vs, fs]);
+const pi = twgl.createProgramInfo(gl, [vs, fs]);
 gl.useProgram(pi.program);
 
 const arrays = {
