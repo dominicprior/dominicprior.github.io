@@ -9,7 +9,7 @@ Draws a fish-eye circle.
 <script>
 'use strict'
 const gl = document.querySelector('canvas').getContext('webgl2')
-gl.clearColor(0.8, 0.9, 1, 1)
+gl.clearColor(0, 1, 1, 1)
 gl.clear(gl.COLOR_BUFFER_BIT)
 gl.enable(gl.BLEND)
 gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
@@ -116,7 +116,7 @@ void main() {
 const pi = twgl.createProgramInfo(gl, [vs, fs])
 gl.useProgram(pi.program)
 let arrays = {
-    starPos: { size: 3, data: [ 2, 2, 0, ], divisor: 1, },
+    starPos: { size: 3, data: [ 40, 2, 0, ], divisor: 1, },
     n:       { size: 1, data: [ 0,1,2,3,4,5, ], },
 }
 const bi = twgl.createBufferInfoFromArrays(gl, arrays)
@@ -125,7 +125,8 @@ twgl.setUniforms(pi, uniforms)
 twgl.setBuffersAndAttributes(gl, pi, bi)
 twgl.drawBufferInfo(gl, bi, gl.TRIANGLES, 6, 0, 1)
 
-let pixels = magnify(gl, 6,
-    0.15, -0.25, 0.2, 0.4,
+let pixels = magnify(gl, 18,
+    0.9, -0.05, 0.2, 0.2,
     -1, -1)
+prHist(pixels)
 </script>
