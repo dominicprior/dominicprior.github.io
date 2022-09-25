@@ -35,25 +35,24 @@ void main() {
   float xz = length(pos.xz);
   float R = 1.0;  // for now
   float k = sqrt(dot(pos, pos) - R * R);
-  vec2 a = vec2(xz * k - pos.y * R, pos.y * k + xz * R);
-  vec2 b = vec2(xz * k + pos.y * R, pos.y * k - xz * R);
+  vec2 a = vec2(xz * k + pos.y * R, pos.y * k - xz * R);
+  vec2 b = vec2(xz * k - pos.y * R, pos.y * k + xz * R);
   float af = fish(a);
   float bf = fish(b);
   float r = (af - bf) * 0.5;
   float q = (af + bf) * 0.5;
   float x = xz == 0.0 ? 0.0 : q * pos.x / xz;
   float y = xz == 0.0 ? 0.0 : q * pos.z / xz;
-
-  float qq = r;
-  io_r = qq * 10.0;
-  //io_r = 0.7;  // 0.0 - r * 100.0; //r*100.0; //.5; //r * canvasSize * 0.5;
-  c = vec2(x + 1.0, y + 1.0) * canvasSize * 0.5;
+  float scale = canvasSize * 0.5;
+  io_r = r * scale;
+  r = io_r / scale + 1.0;
+  c = vec2(x + 1.0, y + 1.0) * scale;
   gl_Position = vec4(
       n == 0. || n == 3. || n == 5. ? x - r : x + r,
       n == 0. || n == 3. || n == 1. ? y - r : y + r,
       length(pos) * FAR,
       1);
-  io_pos = (gl_Position.xy + 1.0) * canvasSize * 0.5;
+  io_pos = (gl_Position.xy + 1.0) * scale;
 }`
 const fs = `#version 300 es
 precision mediump float;
@@ -71,11 +70,11 @@ void main() {
   float nearSq = dot(near, near);
   float radSq = io_r * io_r;
   if (radSq < nearSq) {
-    //discard;
-    //return;
+    discard;
+    return;
   }
 
-  finalCol = vec4(1, io_r+0., 0,1);   // red for now
+  finalCol = vec4(1, io_r/15.0, 0,1);   // red for now
 }`
 const pi = twgl.createProgramInfo(gl, [vs, fs])
 gl.useProgram(pi.program)
@@ -85,6 +84,7 @@ let arrays = {
 }
 const bi = twgl.createBufferInfoFromArrays(gl, arrays)
 const uniforms = { eyePos: [0,0,0], canvasSize: gl.canvas.width, }
+twgl.setUniforms(pi, uniforms)
 twgl.setBuffersAndAttributes(gl, pi, bi)
 twgl.drawBufferInfo(gl, bi, gl.TRIANGLES, 6, 0, 1)
 </script>
