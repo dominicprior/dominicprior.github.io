@@ -3,7 +3,7 @@
 Draws a fish-eye circle.
 -->
 <title>fish 2</title>
-<canvas width="200" height="200"></canvas>
+<canvas width="600" height="600"></canvas>
 <script src="3rd-party/twgl-full.js"></script>
 <script src="utils.js"></script>
 <script>
@@ -124,4 +124,8 @@ const uniforms = { eyePos: [0,0,0], canvasSize: gl.canvas.width, }
 twgl.setUniforms(pi, uniforms)
 twgl.setBuffersAndAttributes(gl, pi, bi)
 twgl.drawBufferInfo(gl, bi, gl.TRIANGLES, 6, 0, 1)
+
+let pixels = magnify(gl, 6,
+    0.15, -0.25, 0.2, 0.4,
+    -1, -1)
 </script>
