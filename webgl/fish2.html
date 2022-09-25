@@ -11,6 +11,8 @@ Draws a fish-eye circle.
 const gl = document.querySelector('canvas').getContext('webgl2')
 gl.clearColor(0.8, 0.9, 1, 1)
 gl.clear(gl.COLOR_BUFFER_BIT)
+gl.enable(gl.BLEND)
+gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
 
 const vs = `#version 300 es
 
