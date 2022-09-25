@@ -84,4 +84,5 @@ function magnify(
     width: w
   })
   twgl.drawBufferInfo(gl, bi)
+  return pixels
 }
