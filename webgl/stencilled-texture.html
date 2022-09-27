@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<!--
+  Draws a stencilled sphere on a texture and then uses the texture.
+-->
+<title>Stencilled texture</title>
+<canvas width="200" height="200"></canvas>
+<script src="3rd-party/twgl-full.js"></script>
+<script src="utils.js"></script>
+<script>
+'use strict'
+const gl = document.querySelector('canvas').getContext('webgl2')
+
+let vs = `#version 300 es
+in vec4 position;
+void main() { gl_Position = position; }`
+let cyanFS = `#version 300 es
+precision mediump float;
+out vec4 finalCol;
+void main() { finalCol = vec4(0, 1, 1, 1); }`
+let whiteFS = `#version 300 es
+precision mediump float;
+out vec4 finalCol;
+void main() { finalCol = vec4(1, 1, 1, 1); }`
+let cyanPI  = twgl.createProgramInfo(gl, [vs, cyanFS])
+let whitePI = twgl.createProgramInfo(gl, [vs, whiteFS])
+
+// ------ Attach the texture and rb to the fb ------
+
+const t = twgl.createTexture(gl, {
+  mag: gl.NEAREST,  min: gl.LINEAR,
+  src: null,  width: 200,  height: 200,  format: gl.RGBA,
+})
+const rb = gl.createRenderbuffer()
+gl.bindRenderbuffer(gl.RENDERBUFFER, rb)
+const fb = gl.createFramebuffer()
+gl.bindFramebuffer(gl.FRAMEBUFFER, fb)
+//gl.viewport(0, 0, 200, 200);
+gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, t, 0);
+gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_STENCIL_ATTACHMENT, gl.RENDERBUFFER, rb)
+gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH24_STENCIL8, 200, 200)
+
+// ------ Create a triangle stencil on the rb ------
+
+gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT)
+gl.enable(gl.STENCIL_TEST)
+gl.stencilFunc(gl.ALWAYS, 1, 0xFF)
+gl.stencilOp(gl.KEEP, gl.KEEP, gl.REPLACE)
+gl.useProgram(whitePI.program)
+let arrays = { position: { size: 2, data: [ 0, -0.2, 0.2, 0.2, -0.2, 0.2, ], }, }
+let bi = twgl.createBufferInfoFromArrays(gl, arrays)
+twgl.setBuffersAndAttributes(gl, whitePI, bi)
+twgl.drawBufferInfo(gl, bi)
+
+// ------ Draw the sphere onto the texture with the triangle as the stencil ------
+
+gl.stencilFunc(gl.EQUAL, 0, 0xFF)
+gl.stencilOp(gl.KEEP, gl.KEEP, gl.KEEP)
+
+gl.useProgram(cyanPI.program)
+bi = twgl.primitives.createSphereBufferInfo(gl, 0.6, 4, 4)
+twgl.setBuffersAndAttributes(gl, cyanPI, bi)
+
+gl.clearColor(1, 0, 0, 1)
+gl.clear(gl.COLOR_BUFFER_BIT)
+twgl.drawBufferInfo(gl, bi)
+
+gl.bindFramebuffer(gl.FRAMEBUFFER, null)
+
+// ------ Use the texture ------
+
+const textureVS = `#version 300 es
+in vec4 position;
+in vec2 texcoord;
+out vec2 v_texCoord;
+void main() {
+  v_texCoord = texcoord;
+  gl_Position = position;
+}`
+const textureFS = `#version 300 es
+precision mediump float;
+in vec2 v_texCoord;
+out vec4 finalColour;
+uniform sampler2D s;
+void main() {
+  finalColour = texture(s, v_texCoord);
+}`
+let texturePI = twgl.createProgramInfo(gl, [textureVS, textureFS])
+gl.useProgram(texturePI.program)
+
+gl.clearColor(1.0, 0.8, 0.7, 1.0)   // overall beige background
+gl.clear(gl.COLOR_BUFFER_BIT)
+
+//gl.bindTexture(gl.TEXTURE_2D, t);
+//gl.viewport(0, 0, 200, 200);
+
+//gl.bindBuffer(ELEMENT_ARRAY_BUFFER, buffers.indices);  // I'm not sure how things work without this call
+
+arrays = {
+    position: { size: 2, data: [ -.9,.9,  -.9,-.9,  .9,0, ], },
+    texcoord: { size: 2, data: [ 0,1, 0,0, 1,0.5, ], },
+}
+bi = twgl.createBufferInfoFromArrays(gl, arrays)
+twgl.setBuffersAndAttributes(gl, texturePI, bi)
+twgl.drawBufferInfo(gl, bi)
+
+prState()
+
+</script>
