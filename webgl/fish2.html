@@ -3,7 +3,7 @@
 Draws a fish-eye circle.
 -->
 <title>fish 2</title>
-<canvas width="600" height="600"></canvas>
+<canvas width="200" height="200"></canvas>
 <script src="3rd-party/twgl-full.js"></script>
 <script src="utils.js"></script>
 <script>
@@ -14,7 +14,47 @@ gl.clear(gl.COLOR_BUFFER_BIT)
 gl.enable(gl.BLEND)
 gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
 
-const vs = `#version 300 es
+let whiteVS = `#version 300 es
+in vec4 position;
+void main() { gl_Position = position; }`
+let whiteFS = `#version 300 es
+precision mediump float;
+out vec4 finalCol;
+void main() { finalCol = vec4(1, 1, 1, 1); }`
+let whitePI = twgl.createProgramInfo(gl, [whiteVS, whiteFS])
+
+// ------ Attach the texture and rb to the fb ------
+
+const t = twgl.createTexture(gl, {
+  mag: gl.NEAREST,  min: gl.LINEAR,
+  src: null,  width: 200,  height: 200,  format: gl.RGBA,
+})
+const rb = gl.createRenderbuffer()
+gl.bindRenderbuffer(gl.RENDERBUFFER, rb)
+const fb = gl.createFramebuffer()
+gl.bindFramebuffer(gl.FRAMEBUFFER, fb)
+gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, t, 0);
+gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_STENCIL_ATTACHMENT, gl.RENDERBUFFER, rb)
+gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH24_STENCIL8, 200, 200)
+
+// ------ Create a triangle stencil on the rb ------
+
+gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT)
+gl.enable(gl.STENCIL_TEST)
+gl.stencilFunc(gl.ALWAYS, 1, 0xFF)
+gl.stencilOp(gl.KEEP, gl.KEEP, gl.REPLACE)
+gl.useProgram(whitePI.program)
+let arrays = { position: { size: 2, data: [ 0, -0.2, 0.2, 0.2, -0.2, 0.2, ], }, }
+let bi = twgl.createBufferInfoFromArrays(gl, arrays)
+twgl.setBuffersAndAttributes(gl, whitePI, bi)
+twgl.drawBufferInfo(gl, bi)
+
+// ------ Draw the circle on the texture ------
+
+gl.stencilFunc(gl.EQUAL, 0, 0xFF)
+gl.stencilOp(gl.KEEP, gl.KEEP, gl.KEEP)
+
+const fishVS = `#version 300 es
 
 in vec3 starPos;
 in float n;
@@ -56,7 +96,7 @@ void main() {
       1);
   io_pos = (gl_Position.xy + 1.0) * scale;
 }`
-const fs = `#version 300 es
+const fishFS = `#version 300 es
 precision mediump float;
 in vec2 c;
 in vec2 io_pos;
@@ -113,20 +153,49 @@ void main() {
   finalCol = vec4(fsCol, pow(opacity, 0.4545));
 
 }`
-const pi = twgl.createProgramInfo(gl, [vs, fs])
+const pi = twgl.createProgramInfo(gl, [fishVS, fishFS])
 gl.useProgram(pi.program)
-let arrays = {
-    starPos: { size: 3, data: [ 40, 2, 0, ], divisor: 1, },
+arrays = {
+    starPos: { size: 3, data: [ 1, 1, 0, ], divisor: 1, },
     n:       { size: 1, data: [ 0,1,2,3,4,5, ], },
 }
-const bi = twgl.createBufferInfoFromArrays(gl, arrays)
+bi = twgl.createBufferInfoFromArrays(gl, arrays)
 const uniforms = { eyePos: [0,0,0], canvasSize: gl.canvas.width, }
 twgl.setUniforms(pi, uniforms)
 twgl.setBuffersAndAttributes(gl, pi, bi)
 twgl.drawBufferInfo(gl, bi, gl.TRIANGLES, 6, 0, 1)
+gl.bindFramebuffer(gl.FRAMEBUFFER, null)
 
-let pixels = magnify(gl, 18,
-    0.9, -0.05, 0.2, 0.2,
-    -1, -1)
-prHist(pixels)
+// ------ Use the texture ------
+
+const textureVS = `#version 300 es
+in vec4 position;
+in vec2 texcoord;
+out vec2 v_texCoord;
+void main() {
+  v_texCoord = texcoord;
+  gl_Position = position;
+}`
+const textureFS = `#version 300 es
+precision mediump float;
+in vec2 v_texCoord;
+out vec4 finalColour;
+uniform sampler2D s;
+void main() {
+  finalColour = texture(s, v_texCoord);
+}`
+let texturePI = twgl.createProgramInfo(gl, [textureVS, textureFS])
+gl.useProgram(texturePI.program)
+
+gl.clearColor(1.0, 0.8, 0.7, 1.0)   // overall beige background
+gl.clear(gl.COLOR_BUFFER_BIT)
+
+arrays = {
+    position: { size: 2, data: [ -.9,.9,  -.9,-.9,  .9,0, ], divisor: 0, },
+    texcoord: { size: 2, data: [ 0,1, 0,0, 1,0.5, ], divisor: 0, },
+}
+bi = twgl.createBufferInfoFromArrays(gl, arrays)
+twgl.setBuffersAndAttributes(gl, texturePI, bi)
+twgl.drawBufferInfo(gl, bi)
+
 </script>
