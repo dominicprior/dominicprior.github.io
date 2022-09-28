@@ -16,11 +16,21 @@ gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
 
 let yellowVS = `#version 300 es
 in vec4 position;
-void main() { gl_Position = position; }`
+out vec2 pos;
+void main() {
+  pos = vec2(position);
+  gl_Position = position;
+}`
 let yellowFS = `#version 300 es
 precision mediump float;
+in vec2 pos;
 out vec4 finalCol;
-void main() { finalCol = vec4(1, 1, 0, 1); }`
+void main() {
+  if (dot(pos, pos) > 1.0) {
+    discard;
+  }
+  finalCol = vec4(1, 1, 0, 1);
+}`
 let yellowPI = twgl.createProgramInfo(gl, [yellowVS, yellowFS])
 
 // ------ Attach the texture and rb to the fb ------
@@ -37,7 +47,7 @@ gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, t, 
 gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_STENCIL_ATTACHMENT, gl.RENDERBUFFER, rb)
 gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH24_STENCIL8, 200, 200)
 
-// ------ Create a triangle stencil on the rb ------
+// ------ Create a circular stencil on the rb ------
 
 gl.clearColor(0, 0, 1, 1)  // blue background for the texture
 gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT)
@@ -45,10 +55,10 @@ gl.enable(gl.STENCIL_TEST)
 gl.stencilFunc(gl.ALWAYS, 1, 0xFF)
 gl.stencilOp(gl.KEEP, gl.KEEP, gl.REPLACE)
 gl.useProgram(yellowPI.program)
-let arrays = { position: { size: 2, data: [ 0, -0.7, 0.7, 0.7, -0.7, 0.7, ], }, }
+let arrays = { position: { size: 2, data: [ -1,-1, 1,-1, 1,1, -1,1, ], }, }
 let bi = twgl.createBufferInfoFromArrays(gl, arrays)
 twgl.setBuffersAndAttributes(gl, yellowPI, bi)
-twgl.drawBufferInfo(gl, bi)
+twgl.drawBufferInfo(gl, bi, gl.TRIANGLE_FAN)
 
 // ------ Draw the circle on the texture ------
 
@@ -157,7 +167,7 @@ void main() {
 const pi = twgl.createProgramInfo(gl, [fishVS, fishFS])
 gl.useProgram(pi.program)
 arrays = {
-    starPos: { size: 3, data: [ 1, 1, 0, ], divisor: 1, },
+    starPos: { size: 3, data: [ .9, .7, 0, ], divisor: 1, },
     n:       { size: 1, data: [ 0,1,2,3,4,5, ], },
 }
 bi = twgl.createBufferInfoFromArrays(gl, arrays)
