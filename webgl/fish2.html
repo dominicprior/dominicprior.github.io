@@ -139,19 +139,19 @@ void main() {
   if (radSq < topLeftSq) {
     // then the intersection is a triangle, where k is the width and h is the height.
     float h = f(nearSq, radSq, topLeftSq);
-    finalCol = vec4(fsCol, pow((h * k * 0.5), 0.4545));
+    finalCol = vec4(fsCol, h * k * 0.5);
     return;
   }
   float k2 = f(topLeftSq, radSq, farSq);
   if (radSq < botRightSq) {
     // then the intersection is a trapezium.
-    finalCol = vec4(fsCol, pow(((k + k2) * 0.5), 0.4545));
+    finalCol = vec4(fsCol, (k + k2) * 0.5);
     return;
   }
   // else the intersection is the whole pixel minus a triangle.
   float h2 = f(botRightSq, radSq, farSq);
   float opacity = 1.0 - (1.0 - h2) * (1.0 - k2) * 0.5;
-  finalCol = vec4(fsCol, pow(opacity, 0.4545));
+  finalCol = vec4(fsCol, opacity);
 
 }`
 const pi = twgl.createProgramInfo(gl, [fishVS, fishFS])
