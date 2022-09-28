@@ -9,19 +9,19 @@ Draws a fish-eye circle.
 <script>
 'use strict'
 const gl = document.querySelector('canvas').getContext('webgl2')
-gl.clearColor(0, 1, 1, 1)
+gl.clearColor(1.0, 0.8, 0.7, 1.0)   // overall beige background
 gl.clear(gl.COLOR_BUFFER_BIT)
 gl.enable(gl.BLEND)
 gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
 
-let whiteVS = `#version 300 es
+let yellowVS = `#version 300 es
 in vec4 position;
 void main() { gl_Position = position; }`
-let whiteFS = `#version 300 es
+let yellowFS = `#version 300 es
 precision mediump float;
 out vec4 finalCol;
-void main() { finalCol = vec4(1, 1, 1, 1); }`
-let whitePI = twgl.createProgramInfo(gl, [whiteVS, whiteFS])
+void main() { finalCol = vec4(1, 1, 0, 1); }`
+let yellowPI = twgl.createProgramInfo(gl, [yellowVS, yellowFS])
 
 // ------ Attach the texture and rb to the fb ------
 
@@ -39,19 +39,20 @@ gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH24_STENCIL8, 200, 200)
 
 // ------ Create a triangle stencil on the rb ------
 
+gl.clearColor(0, 0, 1, 1)  // blue background for the texture
 gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT)
 gl.enable(gl.STENCIL_TEST)
 gl.stencilFunc(gl.ALWAYS, 1, 0xFF)
 gl.stencilOp(gl.KEEP, gl.KEEP, gl.REPLACE)
-gl.useProgram(whitePI.program)
-let arrays = { position: { size: 2, data: [ 0, -0.2, 0.2, 0.2, -0.2, 0.2, ], }, }
+gl.useProgram(yellowPI.program)
+let arrays = { position: { size: 2, data: [ 0, -0.7, 0.7, 0.7, -0.7, 0.7, ], }, }
 let bi = twgl.createBufferInfoFromArrays(gl, arrays)
-twgl.setBuffersAndAttributes(gl, whitePI, bi)
+twgl.setBuffersAndAttributes(gl, yellowPI, bi)
 twgl.drawBufferInfo(gl, bi)
 
 // ------ Draw the circle on the texture ------
 
-gl.stencilFunc(gl.EQUAL, 0, 0xFF)
+gl.stencilFunc(gl.EQUAL, 1, 0xFF)
 gl.stencilOp(gl.KEEP, gl.KEEP, gl.KEEP)
 
 const fishVS = `#version 300 es
@@ -186,9 +187,6 @@ void main() {
 }`
 let texturePI = twgl.createProgramInfo(gl, [textureVS, textureFS])
 gl.useProgram(texturePI.program)
-
-gl.clearColor(1.0, 0.8, 0.7, 1.0)   // overall beige background
-gl.clear(gl.COLOR_BUFFER_BIT)
 
 arrays = {
     position: { size: 2, data: [ -.9,.9,  -.9,-.9,  .9,0, ], divisor: 0, },
