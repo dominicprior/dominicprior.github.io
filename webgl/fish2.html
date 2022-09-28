@@ -74,6 +74,7 @@ uniform float canvasSize;   // assuming square for now
 out vec2 c;
 out vec2 io_pos;
 out float io_r;
+out float concave;
 
 float fish(vec2 v) {
   float len = length(v);
@@ -91,6 +92,7 @@ void main() {
   vec2 a = vec2(xz * k + pos.y * R, pos.y * k - xz * R);
   vec2 b = vec2(xz * k - pos.y * R, pos.y * k + xz * R);
   float af = fish(a);
+  concave = af < 0.0 ? 1.0 : 0.0;
   float bf = fish(b);
   float r = (af - bf) * 0.5;
   float q = (af + bf) * 0.5;
@@ -101,8 +103,12 @@ void main() {
   r = io_r / scale + 1.0;
   c = vec2(x + 1.0, y + 1.0) * scale;
   gl_Position = vec4(
-      n == 0. || n == 3. || n == 5. ? x - r : x + r,
-      n == 0. || n == 3. || n == 1. ? y - r : y + r,
+    concave == 1.0
+      ? n == 0. || n == 3. || n == 5. ? -1.0 : 1.0
+      : n == 0. || n == 3. || n == 5. ? x - r : x + r,
+    concave == 1.0
+      ? n == 0. || n == 3. || n == 1. ? -1.0 : 1.0
+      : n == 0. || n == 3. || n == 1. ? y - r : y + r,
       length(pos) * FAR,
       1);
   io_pos = (gl_Position.xy + 1.0) * scale;
@@ -112,6 +118,7 @@ precision mediump float;
 in vec2 c;
 in vec2 io_pos;
 in float io_r;
+in float concave;
 out vec4 finalCol;
 
 float f(float a, float b, float c) {
@@ -128,11 +135,25 @@ void main() {
   vec2 far = d + 0.5;
   float nearSq = dot(near, near);
   float radSq = io_r * io_r;
+  float farSq = dot(far, far);
+
+  if (concave == 1.0) {
+    if (radSq > farSq) {
+      discard;
+    }
+    else if (radSq < nearSq) {
+      finalCol = vec4(fsCol, 1);
+    }
+    else {
+      finalCol = vec4(fsCol, f(farSq, radSq, nearSq));
+    }
+    return;
+  }
+
   if (radSq < nearSq) {
     discard;
     return;
   }
-  float farSq = dot(far, far);
   if (radSq > farSq) {
     finalCol = vec4(fsCol, 1);  // completely inside
     return;
@@ -167,7 +188,7 @@ void main() {
 const pi = twgl.createProgramInfo(gl, [fishVS, fishFS])
 gl.useProgram(pi.program)
 arrays = {
-    starPos: { size: 3, data: [ .9, .7, 0, ], divisor: 1, },
+    starPos: { size: 3, data: [ .54, -.88, 0, ], divisor: 1, },
     n:       { size: 1, data: [ 0,1,2,3,4,5, ], },
 }
 bi = twgl.createBufferInfoFromArrays(gl, arrays)
