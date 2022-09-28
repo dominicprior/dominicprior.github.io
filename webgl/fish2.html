@@ -189,11 +189,11 @@ let texturePI = twgl.createProgramInfo(gl, [textureVS, textureFS])
 gl.useProgram(texturePI.program)
 
 arrays = {
-    position: { size: 2, data: [ -.9,.9,  -.9,-.9,  .9,0, ], divisor: 0, },
-    texcoord: { size: 2, data: [ 0,1, 0,0, 1,0.5, ], divisor: 0, },
+    position: { size: 2, data: [ -1,-1, 1,-1, 1,1, -1,1, ], divisor: 0, },
+    texcoord: { size: 2, data: [ 0,0, 1,0, 1,1, 0,1, ], divisor: 0, },
 }
 bi = twgl.createBufferInfoFromArrays(gl, arrays)
 twgl.setBuffersAndAttributes(gl, texturePI, bi)
-twgl.drawBufferInfo(gl, bi)
+twgl.drawBufferInfo(gl, bi, gl.TRIANGLE_FAN)
 
 </script>
