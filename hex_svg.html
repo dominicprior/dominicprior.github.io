@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<!-- (will be) A seven-colour hexagon tesselation -->
+<title>Hexagons</title>
+<script src="https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3.0/dist/svg.min.js"></script>
+<noscript>This page needs JavaScript</noscript>
+<div></div>
+<script>
+const pr = console.log
+var draw = SVG().addTo('body').size(500, 300)
+function hexagon(x,y,r) {
+    const points = [0,1,2,3,4,5,0].map(i => {
+        const a = i * Math.PI / 3
+        return [x + r * Math.cos(a), y + r * Math.sin(a)]
+    })
+    draw.polyline(points).stroke({ width: 1 }).stroke('blue').fill('cyan')
+}
+hexagon(50, 50, 40)
+</script>
