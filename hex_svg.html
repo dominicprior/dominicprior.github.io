@@ -1,18 +1,34 @@
 <!DOCTYPE html>
-<!-- (will be) A seven-colour hexagon tesselation -->
+<!-- A seven-colour hexagon tesselation -->
 <title>Hexagons</title>
 <script src="https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3.0/dist/svg.min.js"></script>
 <noscript>This page needs JavaScript</noscript>
 <div></div>
 <script>
 const pr = console.log
-var draw = SVG().addTo('body').size(500, 300)
-function hexagon(x,y,r) {
-    const points = [0,1,2,3,4,5,0].map(i => {
-        const a = i * Math.PI / 3
-        return [x + r * Math.cos(a), y + r * Math.sin(a)]
-    })
-    draw.polyline(points).stroke({ width: 1 }).stroke('blue').fill('cyan')
+const r = 40
+const yStride = 36
+const xStride = yStride * Math.sqrt(3)
+var draw = SVG().addTo('body').size(720, 500)
+function colours(u, v) {
+    const b = 3 * u + v
+    const c = 2 * v - u
+    const k = (b + 1000000) % 7
+    const fill = ['pink', 'PaleGreen', 'yellow', 'bisque', 'violet', 'salmon', 'SkyBlue'][k]
+    //const stroke = b >= 9 && b <= 15 && c >= 0 && c <= 6 ? 'black' : 'none'
+    const stroke = 'none'
+    return [fill, stroke]
 }
-hexagon(50, 50, 40)
+function hexagon(x, y, colours) {
+  const points = [0,1,2,3,4,5,0].map(i => {
+    const a = i * Math.PI / 3
+    return [x + r * Math.cos(a), y + r * Math.sin(a)]
+  })
+  draw.polyline(points).stroke({ width: 2 }).fill(colours[0]).stroke(colours[1])
+}
+for (let u=-4; u<10; u++) {
+  for (let v=-4; v<10; v++) {
+    hexagon(50 + (u + v) * xStride, 250 + (v - u) * yStride, colours(u, v))
+  }
+}
 </script>
