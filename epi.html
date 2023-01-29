@@ -8,17 +8,42 @@
 const pr = console.log
 const sin = Math.sin
 const cos = Math.cos
-const r = 5
+const sqrt = Math.sqrt
+const size = 5
 const w = 600
 const h = 600
 var draw = SVG().addTo('body').size(w, h)
 draw.rect(w,h).fill(new SVG.Color('#dbf'))
 function dot(x, y) {
-  draw.circle(r).center(w/2 + x, h/2 - y).fill(new SVG.Color('#edf'))
+  draw.circle(size).center(w/2 + x, h/2 - y).fill(new SVG.Color('#edf'))
 }
-for (let t=-4; t<3000; t++) {
-  const a = t / 400
-  dot(140 * cos(a) + 65 * cos(13*a),
-      140 * sin(a) + 65 * sin(13*a))
+const numDots = 4000
+for (let t=0; t < numDots; t++) {
+  const a = 2 * Math.PI * t / numDots
+  // 7 and 7 is nice and simple.  So is 6 and 6.
+  const x = 140 * cos(a) + 65 * cos(9*a)  // 13 and 15 looks nice
+  const y = 140 * sin(a) + 65 * sin(9*a) 
+  const r = Math.hypot(x, y)
+  const newR = 25 * r ** 0.4
+  let newX
+  let newY
+  const style = 4
+  if (style == 1) {
+    newX = x
+    newY = y
+  }
+  if (style == 2) {
+    newX = x + r - w/4
+    newY = y
+  }
+  if (style == 3) {
+    newX = x * newR / r
+    newY = y * newR / r
+  }
+  if (style == 4) {
+    newX = 0.8 * x + 0.004 * r * y
+    newY = 0.8 * y - 0.004 * r * x
+  }
+  dot(newX, newY)
 }
 </script>
