@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<!-- Epicycles -->
+<title>Hexagons</title>
+<script src="https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3.0/dist/svg.min.js"></script>
+<noscript>This page needs JavaScript</noscript>
+<div></div>
+<script>
+const pr = console.log
+const sin = Math.sin
+const cos = Math.cos
+const r = 5
+const w = 600
+const h = 600
+var draw = SVG().addTo('body').size(w, h)
+draw.rect(w,h).fill(new SVG.Color('#dbf'))
+function dot(x, y) {
+  draw.circle(r).center(w/2 + x, h/2 - y).fill(new SVG.Color('#edf'))
+}
+for (let t=-4; t<3000; t++) {
+  const a = t / 400
+  dot(140 * cos(a) + 65 * cos(13*a),
+      140 * sin(a) + 65 * sin(13*a))
+}
+</script>
