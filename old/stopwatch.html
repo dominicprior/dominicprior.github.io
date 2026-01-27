@@ -15,7 +15,7 @@
 
 var w = 1600;
 var h = 900;
-var snd;
+// var snd;
 
 var t = 0;
 function show_time() {
@@ -27,7 +27,7 @@ function show_time() {
     paper.text(w / 2, h / 2, "" + m + ":" + z + s).
         attr({"font-size": 650, fill: c});
     if (t === 180 || t === 240 || t === 300) {
-        snd.play();
+        // snd.play();
     }
     t += 1;
 }
@@ -36,12 +36,12 @@ $( document ).ready(function() {
     paper = Raphael("paper1", w, h);
     show_time();
     setInterval(show_time, 1000);
-    snd = new Audio("windows balloon.wav");
+    // snd = new Audio("windows balloon.wav");
 });
 </script>
 </head>
 <body>
 <div id="paper1"></div>
-<script type="text/javascript" src="time.js"></script>
+<!-- <script type="text/javascript" src="time.js"></script> -->
 </body>
 </html> 
