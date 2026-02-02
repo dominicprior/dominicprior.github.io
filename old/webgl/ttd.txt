@@ -1,3 +1,0 @@
-<script src="https://greggman.github.io/webgl-lint/webgl-lint.js"></script>
-Consider using canvas.clientWidth instead of canvas.width
-Call gl.viewport whenever the canvas size changes.
