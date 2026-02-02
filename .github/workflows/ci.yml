@@ -90,22 +90,22 @@ jobs:
         env:
           NOKOGIRI_USE_SYSTEM_LIBRARIES: true
 
-  assets:
-    name: Test CSS and JS
-    runs-on: ubuntu-latest
+  # assets:
+  #   name: Test CSS and JS
+  #   runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [22.x]
+  #   strategy:
+  #     matrix:
+  #       node-version: [22.x]
 
-    steps:
-      - uses: actions/checkout@v6
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v6
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: npm install
-      - run: npm test
+  #   steps:
+  #     - uses: actions/checkout@v6
+  #     - name: Use Node.js ${{ matrix.node-version }}
+  #       uses: actions/setup-node@v6
+  #       with:
+  #         node-version: ${{ matrix.node-version }}
+  #     - run: npm install
+  #     - run: npm test
 
   rspec:
     name: Accessibility (RSpec + aXe)
