@@ -90,7 +90,7 @@ avoiding GPU bandwidth limits by favouring things like matrix multiply where the
 
 [Chinchilla's wild implications](https://www.lesswrong.com/posts/6Fpvch8RR29qLEWNH/chinchilla-s-wild-implications) - running out of data.
 
-[The Bitter Lesson](http://www.incompleteideas.net/IncIdeas/BitterLesson.html)
+[The Bitter Lesson](https://www.cs.utexas.edu/~eunsol/courses/data/bitter_lesson.pdf)
 
 [RedPajama-Data-v2: an Open Dataset with 30 Trillion Tokens](https://together.ai/blog/redpajama-data-v2)
 
