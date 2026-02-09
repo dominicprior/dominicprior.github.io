@@ -1,5 +1,6 @@
 ---
 title: Customization
+parent: Just the Docs
 nav_order: 6
 ---
 

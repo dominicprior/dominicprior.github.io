@@ -1,7 +1,9 @@
 ---
 layout: minimal
 title: Minimal layout test
-nav_exclude: true
+parent: Just the Docs
+nav_order: 9
+# nav_exclude: true
 ---
 
 # Minimal Layout Test Page
