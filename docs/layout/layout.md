@@ -1,5 +1,6 @@
 ---
 title: Layout
+parent: Just the Docs
 layout: default
 nav_order: 4.5
 ---

@@ -1,5 +1,6 @@
 ---
 title: UI Components
+parent: Just the Docs
 nav_order: 3
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: Migration and Upgrading
+parent: Just the Docs
 layout: default
 ---
 

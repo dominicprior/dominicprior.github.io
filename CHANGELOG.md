@@ -1,5 +1,6 @@
 ---
 title: CHANGELOG
+parent: Just the Docs
 layout: default
 ---
 
