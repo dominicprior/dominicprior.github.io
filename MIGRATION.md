@@ -239,7 +239,7 @@ To migrate, users should:
 
 This version changes the *styling* of many different components in Just the Docs to better meet accessibility standards (more specifically, [WCAG 2.1 AA](https://www.w3.org/TR/WCAG21/)). We strongly encourage all users to follow these accessibility standards. However, these style changes may inadvertently clash with other customizations that users have made.
 
-This list includes a brief description of each style change. To revert, we recommend users to override the change with [custom styles]({{site.baseurl}}/docs/customization/#override-and-completely-custom-styles) or [custom variables]({{site.baseurl}}/docs/customization/#override-and-define-new-variables) (rather than replacing theme `_scss` files), which will future-proof their site from future changes.
+This list includes a brief description of each style change. To revert, we recommend users to override the change with [custom styles]({{site.baseurl}}/docs/just-the-docs/customization/#override-and-completely-custom-styles) or [custom variables]({{site.baseurl}}/docs/just-the-docs/customization/#override-and-define-new-variables) (rather than replacing theme `_scss` files), which will future-proof their site from future changes.
 
 - changed `btn-blue`, `btn-green`, `label-green`, and `label-red` to have stronger color contrast in [#1750](https://github.com/just-the-docs/just-the-docs/pull/1750)
 - changed callout styling to have stronger color contrast in [#1748](https://github.com/just-the-docs/just-the-docs/pull/1748)
