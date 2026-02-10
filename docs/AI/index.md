@@ -1,5 +1,5 @@
 ---
-title: LLM
+title: AI
 nav_order: 2.5
 ---
 
