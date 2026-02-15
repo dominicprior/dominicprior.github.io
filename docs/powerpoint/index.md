@@ -28,6 +28,13 @@ nav_order: 5
 - Resizing, moving and cropping
 - Compressing photos
 
+## Text
+
+- Adding text
+- Fonts
+- Making text flow
+- Highlighting
+
 ## Staying organized
 
 - Duplicating or hiding slides
@@ -38,11 +45,6 @@ nav_order: 5
 - Author's notes
 - Sections
 
-## Sharing slides
-
-- Exporting as a PDF
-- Converting to Google slides
-
 ## Shapes and colours
 
 - Rotating, copying and aligning shapes
@@ -51,18 +53,15 @@ nav_order: 5
 - Splines
 - Resizing while keeping the same shape
 
-## Text
+## Sharing slides
 
-- Adding text
-- Fonts
-- Aligning
-- Making text flow
-- Highlighting
+- Exporting as a PDF
+- Converting to Google slides
 
 ## Animations
 
-- Making text or shapes or picture appear and disappear
+- Making things appear and disappear
 
 ## Transitions
 
-Morphing from one slide to another
+- Morphing from one slide to another
