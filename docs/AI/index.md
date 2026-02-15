@@ -1,6 +1,6 @@
 ---
 title: AI
-nav_order: 2.5
+nav_order: 1
 ---
 
 From writing poetry to giving medical advice, [large language models](https://en.wikipedia.org/wiki/Large_language_model) are amazingly general,
