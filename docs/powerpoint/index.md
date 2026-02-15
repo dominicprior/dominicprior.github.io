@@ -14,7 +14,7 @@ nav_order: 5
 - Getting out of funny modes
 - The ribbon
 - ESCAPE
-- Right clicking
+- Left clicking and right clicking
 - Dragging vs resizing
 - Finding the mouse
 - Cut, copy and paste
@@ -26,6 +26,7 @@ nav_order: 5
 - Adding photos
 - Adding pictures from the web
 - Resizing, moving and cropping
+- Compressing photos
 
 ## Staying organized
 
@@ -52,11 +53,11 @@ nav_order: 5
 
 ## Text
 
-- Resizing
+- Adding text
+- Fonts
 - Aligning
 - Making text flow
 - Highlighting
-- Paragraphs
 
 ## Animations
 
