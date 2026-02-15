@@ -17,7 +17,7 @@ complete_a11y_standards = %i[wcag22aa best-practice section508]
 # axe-core rules that are not required to be accessible / do not apply
 # You may temporarily want to add rules here during development.
 # See: https://github.com/dequelabs/axe-core/blob/develop/doc/rule-descriptions.md
-skipped_rules = [:"page-has-one-main"]
+skipped_rules = ["page-has-one-main"]
 # These are elements that are not required to be accessible
 # It should be rare to add to this list. This disables all rules for an element.
 # e.g. <img data-a11y-errors="true" src="..." /> would pass even though it's missing alt text.
