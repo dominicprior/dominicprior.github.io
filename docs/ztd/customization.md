@@ -178,7 +178,7 @@ New (v0.4.0)
 
 `_includes/toc_heading_custom.html`
 
-If the page has any child pages, and `has_toc` is not set to `false`, this content appears as a heading above the [auto-generating list of child pages]({% link docs/navigation/children.md %}) after the page's content.
+If the page has any child pages, and `has_toc` is not set to `false`, this content appears as a heading above the [auto-generating list of child pages]({% link docs/ztd/navigation/children.md %}) after the page's content.
 
 #### Example: changing TOC heading
 {: .no_toc }

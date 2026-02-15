@@ -42,11 +42,11 @@ The following pages illustrate `parent` disambiguation using `grand_parent` and 
 - [T][YT] is the only child of [S][YS]. Its `parent` is disambiguated by its `ancestor`
 - [U][YU] is the only child of [T][YT]. Its `parent` is disambiguated by its `ancestor`.
 
-[X]: {% link docs/navigation/main/x.md %}
-[XS]: {% link docs/navigation/main/xs.md %}
-[XT]: {% link docs/navigation/main/xt.md %}
-[XU]: {% link docs/navigation/main/xu.md %}
-[Y]: {% link docs/navigation/main/y.md %}
-[YS]: {% link docs/navigation/main/ys.md %}
-[YT]: {% link docs/navigation/main/yt.md %}
-[YU]: {% link docs/navigation/main/yu.md %}
+[X]: {% link docs/ztd/navigation/main/x.md %}
+[XS]: {% link docs/ztd/navigation/main/xs.md %}
+[XT]: {% link docs/ztd/navigation/main/xt.md %}
+[XU]: {% link docs/ztd/navigation/main/xu.md %}
+[Y]: {% link docs/ztd/navigation/main/y.md %}
+[YS]: {% link docs/ztd/navigation/main/ys.md %}
+[YT]: {% link docs/ztd/navigation/main/yt.md %}
+[YU]: {% link docs/ztd/navigation/main/yu.md %}
