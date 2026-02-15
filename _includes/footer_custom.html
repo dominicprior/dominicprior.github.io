@@ -1,3 +1,7 @@
 {%- if site.footer_content -%}
-  <p class="text-small mb-0">{{ site.footer_content }}</p>
+  AAA {{ page }}
+  {% if page.madeby != "dominic" %}
+    <p class="text-small mb-0">{{ site.footer_content }}</p>
+  {%- endif -%}
 {%- endif -%}
+SSS {{ site.mykey }} PPP {{ page.mykey  }}
