@@ -84,9 +84,7 @@ and then, intriguingly:
 > the gap between zero-, one-, and few-shot performance often grows with model capacity,
 > perhaps suggesting that larger models are more proficient meta-learners
 
-For completeness, here are the
-[GPT-2](https://d4mucfpksywv.cloudfront.net/better-language-models/language-models.pdf)
-small, medium, large and XL model sizes.
+For completeness, here are the GPT-2 small, medium, large and XL model sizes.
 
 ![Screenshot of a table of GPT-2 model sizes.](gpt2_sizes.png)
 
@@ -262,9 +260,6 @@ turns out to be a “computationally shallower” problem than we thought" -
 
 # Overviews
 
-[State of GPT](https://build.microsoft.com/en-US/sessions/db3f4859-cd30-4445-a0cd-553c3304f8e2) -
-including finetuning and RHLF at 13:00 to 17:00, and LoRA at 35:18.
-
 [Why GPT-3 Matters](https://bmk.sh/2020/05/29/GPT-3-A-Brief-Summary/)
 
 [The Decade of Deep Learning](https://bmk.sh/2019/12/31/The-Decade-of-Deep-Learning/)
@@ -281,9 +276,9 @@ including finetuning and RHLF at 13:00 to 17:00, and LoRA at 35:18.
 
 [Attention Is All You Need](https://arxiv.org/abs/1706.03762) - Transformers
 
-[Improving Language Understanding by Generative Pre-Training](https://s3-us-west-2.amazonaws.com/openai-assets/research-covers/language-unsupervised/language_understanding_paper.pdf) - GPT
+[Improving Language Understanding by Generative Pre-Training](https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf) - GPT
 
-[Language Models are Unsupervised Multitask Learners](https://d4mucfpksywv.cloudfront.net/better-language-models/language-models.pdf) - GPT-2
+[Language Models are Unsupervised Multitask Learners](https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf) - GPT-2
 
 [Language Models are Few-Shot Learners](https://arxiv.org/abs/2005.14165) - GPT-3
 
@@ -339,9 +334,7 @@ Wikipedia:
 [Where We See Shapes, AI Sees Textures](https://www.quantamagazine.org/where-we-see-shapes-ai-sees-textures-20190701/)
 
 ![YouTube logo](yt.png)
-[Hinton: Evolution is a tinkerer ... we probably don't need all those kinds of neurons to get an intelligent system]
-(https://youtu.be/Gg-w_n9NJIE?t=4355)
+[Hinton: Evolution is a tinkerer ... we probably don't need all those kinds of neurons to get an intelligent system](https://youtu.be/Gg-w_n9NJIE?t=4355)
 
 ![YouTube logo](yt.png)
-[Hassabis: AI-enabled scientific revolution]
-(https://youtu.be/Gg-w_n9NJIE?t=4423)
+[Hassabis: AI-enabled scientific revolution](https://youtu.be/Gg-w_n9NJIE?t=4423)
