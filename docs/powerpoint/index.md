@@ -34,6 +34,7 @@ nav_order: 5
 - Fonts
 - Making text flow
 - Highlighting
+- Hyperlinks
 
 ## Staying organized
 
@@ -65,3 +66,7 @@ nav_order: 5
 ## Transitions
 
 - Morphing from one slide to another
+
+## Other
+
+- Sounds, videos, tables, graphs
