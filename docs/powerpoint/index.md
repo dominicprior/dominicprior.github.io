@@ -15,6 +15,7 @@ nav_order: 5
 - The ribbon
 - ESCAPE
 - Left clicking and right clicking
+- Hovering with the mouse
 - Dragging vs resizing
 - Finding the mouse
 - Cut, copy and paste
@@ -24,6 +25,7 @@ nav_order: 5
 ## Help
 
 - YouTube, chatgpt.com
+- Tooltips
 
 ## Pictures
 

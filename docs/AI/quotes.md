@@ -27,3 +27,12 @@ GPT is now at the level of a somewhat confused maths undergraduate who doesn't r
 With GPT questions, the vaguer the better sometimes - [Terence Tao](https://www.youtube.com/watch?v=CGke7Q08hko)
 
 The thing about language models is the more I look at them, the more I think that they’re fractally interesting. Focus on any particular aspect, zoom in and there are just more questions, more unknowns and more interesting things to get into - [Simon Willison](https://simonwillison.net/2023/Aug/3/weird-world-of-llms/)
+
+GPT will have a shocking degree of understanding (because to do good prediction requires understanding the underlying structure of stuff (the underlying reality), as seen through the lens of text - Sutskever
+
+GPT-4 can just about add 40-digit numbers.  It has learnt an internal circuit for how to do it - Greg Brockman
+
+
+It’s part of the lore of neural nets that—in some sense—so long as the setup one has is “roughly right” it’s usually possible to home in on details just by doing sufficient training - [Stephen Wolfram](https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/)
+
+Cases that a human “can solve in a glance” the neural net can solve too. But cases that require doing something “more algorithmic” the neural net tends to somehow be “too computationally shallow” to reliably do - [Stephen Wolfram](https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/)
