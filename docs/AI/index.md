@@ -14,7 +14,7 @@ and yet deeply opaque.
 - TOC
 {:toc}
 
-# Weaknesses
+## Weaknesses
 
 As [Dan Piponi](https://mathstodon.xyz/@dpiponi/111116694861297725) noted:
 
@@ -51,13 +51,13 @@ Or in summary:
 
 [Prompt injection: What’s the worst that can happen?](https://simonwillison.net/2023/Apr/14/worst-that-can-happen/)
 
-# Hallucinations
+## Hallucinations
 
 [Looking for an interpretability paper](https://www.reddit.com/r/mlscaling/comments/175xtbt/looking_for_an_interpretability_paper_that/)
 
 [Chain-of-Verification Reduces Hallucination in Large Language Models](https://arxiv.org/abs/2309.11495)
 
-# Scale
+## Scale
 
 The GPT-3 paper, [Language Models are Few-Shot Learners](https://arxiv.org/abs/2005.14165), has this:
 
@@ -97,7 +97,7 @@ avoiding GPU bandwidth limits by favouring things like matrix multiply where the
 
 [RedPajama-Data-v2: an Open Dataset with 30 Trillion Tokens](https://together.ai/blog/redpajama-data-v2)
 
-# Text generation
+## Text generation
 
 [How to generate text](https://huggingface.co/blog/how-to-generate) - Greedy search, Beam search, Top-K Sampling, Top-p sampling
 
@@ -123,7 +123,7 @@ avoiding GPU bandwidth limits by favouring things like matrix multiply where the
 
 [GPT-3 has a habit of repeating its input](https://news.ycombinator.com/item?id=26442211)
 
-# Interpreting GPT
+## Interpreting GPT
 
 [Othello-GPT](https://www.neelnanda.io/mechanistic-interpretability/othello)
 
@@ -182,7 +182,7 @@ Making models more interpretable
 
 + One plausible explanation for polysemanticity is the superposition hypothesis, which suggests that neural network layers have more features than neurons as part of a “sparse coding” strategy to simulate a much larger layer.
 
-# Training
+## Training
 
 From the GPT-3 paper, [Language Models are Few-Shot Learners](https://arxiv.org/abs/2005.14165):
 
@@ -197,7 +197,7 @@ Here is the training data for [LLaMA: Open and Efficient Foundation Language Mod
 
 ![Llama training data](llama_training.png)
 
-# Optimization
+## Optimization
 
 [BitNet: Scaling 1-bit Transformers for Large Language Models](https://arxiv.org/abs/2310.11453) -
 reduce the FF matrices to 1-bit precision, by using just +1 or -1 values.
@@ -217,7 +217,7 @@ reduce the FF matrices to 1-bit precision, by using just +1 or -1 values.
 
 [FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness](https://arxiv.org/abs/2205.14135)
 
-# Tuning
+## Tuning
 
 "In general, it’s interesting how little “poking” the “originally trained” network seems to need
 to get it to usefully go in particular directions." -
@@ -228,7 +228,7 @@ to get it to usefully go in particular directions." -
 [LoRA: Low-Rank Adaptation of Large Language Models](https://arxiv.org/abs/2106.09685) -
 explanation [here](https://www.anyscale.com/blog/fine-tuning-llms-lora-or-full-parameter-an-in-depth-analysis-with-llama-2).
 
-# Using LLMs
+## Using LLMs
 
 [Catching up on the weird world of LLMs](https://simonwillison.net/2023/Aug/3/weird-world-of-llms/)
 
@@ -247,7 +247,7 @@ A prompt may include a few examples for a model to learn from, such as "maison -
 chat -> cat, chien ->", an approach called **few-shot learning**. -
 [Wikipedia](https://en.wikipedia.org/wiki/Prompt_engineering)
 
-# Brains
+## Brains
 
 [Thinking, Fast and Slow](https://en.wikipedia.org/wiki/Thinking,_Fast_and_Slow),
 says unexpected words cause a distinctive pattern in brain activity to
@@ -258,7 +258,7 @@ Apparently, the peak brain clock rate is 200 Hz and the synapse speed is less th
 turns out to be a “computationally shallower” problem than we thought" -
 [Wolfram](https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/)
 
-# Overviews
+## Overviews
 
 [Why GPT-3 Matters](https://bmk.sh/2020/05/29/GPT-3-A-Brief-Summary/)
 
@@ -272,7 +272,7 @@ turns out to be a “computationally shallower” problem than we thought" -
 
 > The Lottery Ticket Hypothesis asserts that most of a network’s performance comes from a certain subnetwork due to a lucky initialization.
 
-# Landmark papers
+## Landmark papers
 
 [Attention Is All You Need](https://arxiv.org/abs/1706.03762) - Transformers
 
@@ -282,7 +282,7 @@ turns out to be a “computationally shallower” problem than we thought" -
 
 [Language Models are Few-Shot Learners](https://arxiv.org/abs/2005.14165) - GPT-3
 
-# Resources
+## Resources
 
 [https://paperswithcode.com/](https://paperswithcode.com/)
 
@@ -304,7 +304,7 @@ Karpathy's 12 hour video series that builds towards [this implementation](https:
 
 [The Bloom base model](https://huggingface.co/bigscience/bloom)
 
-# The impacts of AI
+## The impacts of AI
 
 [AI and the automation of work](https://www.ben-evans.com/benedictevans/2023/7/2/working-with-ai)
 
@@ -312,7 +312,7 @@ Karpathy's 12 hour video series that builds towards [this implementation](https:
 
 [On the Opportunities and Risks of Foundation Models](https://arxiv.org/abs/2108.07258)
 
-# Random thoughts
+## Random thoughts
 
 We can't help equating language ability and intelligence.  Therefore, the LLMs' eloquence might be fooling us into thinking they are smart.
 

@@ -21,10 +21,15 @@ nav_order: 5
 - Undo and redo
 - Backups
 
+## Help
+
+- YouTube, chatgpt.com
+
 ## Pictures
 
 - Adding photos
 - Adding pictures from the web
+- Adding screenshots
 - Resizing, moving and cropping
 - Compressing photos
 

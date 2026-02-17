@@ -1,7 +1,6 @@
 ---
 title: Computers
 nav_order: 4
-madeby: dominic
 ---
 
 JavaScript and Python
