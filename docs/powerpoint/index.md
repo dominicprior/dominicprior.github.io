@@ -2,6 +2,12 @@
 title: PowerPoint
 nav_order: 5
 ---
+<style>
+hr {
+	background-color: #ede; /* #eeebee */
+}
+</style>
+
 ## Slide shows
 
 - Launching a slide show
@@ -14,8 +20,9 @@ nav_order: 5
 - Getting out of funny modes
 - The ribbon
 - ESCAPE
+- The mouse and the cursor
 - Left clicking and right clicking
-- Hovering with the mouse
+- Hovering
 - Dragging vs resizing
 - Finding the mouse
 - Cut, copy and paste
@@ -26,6 +33,8 @@ nav_order: 5
 
 - YouTube, chatgpt.com
 - Tooltips
+
+---
 
 ## Pictures
 
@@ -42,6 +51,8 @@ nav_order: 5
 - Making text flow
 - Highlighting
 - Hyperlinks
+
+---
 
 ## Staying organized
 
