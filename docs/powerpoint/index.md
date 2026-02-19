@@ -2,11 +2,6 @@
 title: PowerPoint
 nav_order: 5
 ---
-<style>
-hr {
-	background-color: #ede; /* #eeebee */
-}
-</style>
 
 ## Slide shows
 
