@@ -88,7 +88,7 @@ and:
 - bundle
 - bundle exec jekyll serve
 
-Wow, it ran!  And produced a webpage at <http://127.0.0.1:4000/> in a fraction of a second.
+Wow, it ran!  And produced a webpage at http://127.0.0.1:4000/ in a fraction of a second.
 
 - code \\wsl.localhost\Ubuntu-24.04\home\dominic\git\my-chirpy
 
