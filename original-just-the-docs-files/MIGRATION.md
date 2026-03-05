@@ -63,7 +63,7 @@ gem "just-the-docs", "0.12.0" # replace 0.12.0 with your desired version
 
 {::options toc_levels="2..4" /}
 
-[CHANGELOG]: {% link CHANGELOG.md %}
+[CHANGELOG]: {% link original-just-the-docs-files/CHANGELOG.md %}
 
 ## v0.11.x - v0.12.0
 
