@@ -33,6 +33,10 @@ Key Feature: It includes a dedicated "Tab" for categories and tags, and a "Last 
 
 Tools: Built-in search, syntax highlighting for code, and a clean sidebar.
 
+[I eventually installed Chirpy but gave up using it.](../installing-chirpy/)
+
+[Similarly for Al Folio.](../installing-al-folio)
+
 ## Simply Jekyll
 
 **Innovative, but scruffy.  Seems to need Netlify.**
