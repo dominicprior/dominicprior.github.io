@@ -3,7 +3,6 @@ title: Choosing a Jekyll theme
 parent: Computers
 nav_order: 2
 ---
-# Choosing a Jekyll theme
 
 Here are some rough notes based on answers from ChatGPT, Gemini and Claude.
 
