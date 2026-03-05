@@ -6,7 +6,7 @@ nav_order: 2
 
 Here are some rough notes based on answers from ChatGPT, Gemini and Claude.
 
-First of all, here some features they mentioned:
+First of all, here are the features they mentioned:
 
 - Breadcrumbs
 - Bidirectional links
