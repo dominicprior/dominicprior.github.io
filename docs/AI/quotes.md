@@ -10,7 +10,7 @@ In 2015, when we said we are going for AGI, people thought we were batshit insan
 
 If coding became 10x more productive, we would have more code, rather than fewer programmers.  There's a supply issue - [Sam Altman](https://www.youtube.com/watch?v=L_Guz73e6fw)
 
-Tasks—like writing essays—that we humans could do, but we didn’t think computers could do, are actually in some sense computationally easier than we thought - [Stephen Wolfram](https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/)
+Writing essays is computationally easier than we thought - [Stephen Wolfram](https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/)
 
 Deep learning equals getting something from applying scale.  What did people used to do with supercomputers? - [Ilya Sutskever](https://www.youtube.com/watch?v=SjhIlw3Iffs)
 
@@ -32,7 +32,11 @@ GPT will have a shocking degree of understanding (because to do good prediction 
 
 GPT-4 can just about add 40-digit numbers.  It has learnt an internal circuit for how to do it - Greg Brockman
 
-
 It’s part of the lore of neural nets that—in some sense—so long as the setup one has is “roughly right” it’s usually possible to home in on details just by doing sufficient training - [Stephen Wolfram](https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/)
 
 Cases that a human “can solve in a glance” the neural net can solve too. But cases that require doing something “more algorithmic” the neural net tends to somehow be “too computationally shallow” to reliably do - [Stephen Wolfram](https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/)
+
+Unexpected words cause a distinctive pattern in brain activity to
+start within a fifth of a second.
+So, the brain is continuously running an LLM! -
+[Thinking, Fast and Slow](https://en.wikipedia.org/wiki/Thinking,_Fast_and_Slow)
