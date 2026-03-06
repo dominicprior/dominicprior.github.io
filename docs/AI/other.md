@@ -1,7 +1,7 @@
 ---
 title: Other
 parent: AI
-nav_order: 3
+nav_order: 19
 ---
 
 [Finetuned language models are zero-shot learners](https://openreview.net/pdf?id=gEZrGCozdqR)

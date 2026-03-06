@@ -1,7 +1,7 @@
 ---
 title: Misc
 parent: AI
-nav_order: 4
+nav_order: 18
 ---
 
 ## Training

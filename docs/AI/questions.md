@@ -1,7 +1,7 @@
 ---
 title: Questions
 parent: AI
-nav_order: 2
+nav_order: 1.5
 ---
 ## Do LLMs actually know anything?
 
