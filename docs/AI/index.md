@@ -243,21 +243,6 @@ explanation [here](https://www.anyscale.com/blog/fine-tuning-llms-lora-or-full-p
 
 [Brex's Prompt Engineering Guide](https://github.com/brexhq/prompt-engineering) ⊗
 
-A prompt may include a few examples for a model to learn from, such as "maison -> house,
-chat -> cat, chien ->", an approach called **few-shot learning**. -
-[Wikipedia](https://en.wikipedia.org/wiki/Prompt_engineering)
-
-## Brains
-
-[Thinking, Fast and Slow](https://en.wikipedia.org/wiki/Thinking,_Fast_and_Slow),
-says unexpected words cause a distinctive pattern in brain activity to
-start within a fifth of a second.  So, the brain is continuously running an LLM!
-Apparently, the peak brain clock rate is 200 Hz and the synapse speed is less than a millisecond.
-
-"The reason a neural net can be successful in writing an essay is because writing an essay
-turns out to be a “computationally shallower” problem than we thought" -
-[Wolfram](https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/)
-
 ## Overviews
 
 [Why GPT-3 Matters](https://bmk.sh/2020/05/29/GPT-3-A-Brief-Summary/)
@@ -323,10 +308,7 @@ An LLM is like a fuzzy hologram of the web.
 Retrieval Augmented Generation.  OpenAI embeddings api.
 
 Wikipedia:
-[GPT-2](https://en.wikipedia.org/wiki/GPT-2),
-[GPT-3](https://en.wikipedia.org/wiki/GPT-3),
 [Prompt engineering](https://en.wikipedia.org/wiki/Prompt_engineering) ⊗,
-[GPT-4](https://en.wikipedia.org/wiki/GPT-4),
 [The Pile](https://en.wikipedia.org/wiki/The_Pile_(dataset)),
 
 [What OpenAI Really Wants](https://www.wired.com/story/what-openai-really-wants/) - A fun history of OpenAI.
