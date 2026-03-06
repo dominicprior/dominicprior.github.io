@@ -17,6 +17,6 @@ will produce a `foo.html` file in the `_site` output folder:
 ```html
 <h1 id="hi">hi</h1>
 ```
-Run Jekyll with `jekyll build` (or `jekyll serve` for continual builds).
+Run Jekyll with `jekyll build` (or `jekyll serve`).
 
 The two `---` lines enclose the header info.
