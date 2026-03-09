@@ -4,18 +4,18 @@ parent: Computers
 nav_order: 3
 ---
 
-It's not obvious from the [Official Jekyll docs](https://jekyllrb.com/docs/),
+It's not obvious from the [official Jekyll docs](https://jekyllrb.com/docs/),
 but a minimal Jekyll website is tiny.
 
 For example, a single `foo.md` file:
 ```
 ---
 ---
-# hi
+hello
 ```
 will produce a `foo.html` file in the `_site` output folder:
 ```html
-<h1 id="hi">hi</h1>
+<p>hello</p>
 ```
 Run Jekyll with `jekyll build` (or `jekyll serve`).
 

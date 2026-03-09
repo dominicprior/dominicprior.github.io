@@ -11,13 +11,15 @@ Jekyll includes a template subsystem called Liquid.
 For example, this:
 ```
 ---
-day: tues
+day: tuesday
 ---
-# hi {{ page.day }}
+{%- raw -%}
+hello {{ page.day }}
+{% endraw %}
 ```
 will produce this:
 ```html
-<h1 id="hi-tues">hi tues</h1>
+<p>hello tuesday</p>
 ```
 
 ## Misc
