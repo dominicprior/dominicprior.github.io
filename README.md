@@ -4,7 +4,7 @@ Dominic's website based on <https://github.com/just-the-docs/just-the-docs>.
 
 - (For Windows machines) install WSL Ubuntu
 - bundle install
-- bundle exec jekyll serve
+- bundle exec jekyll serve --incremental --force_polling --livereload
 
 ## Building on GitHub Pages
 

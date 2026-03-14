@@ -1,13 +1,13 @@
 ---
 title: Hello Jekyll
 parent: Computers
-nav_order: 3
+nav_order: 1
 ---
 
 It's not obvious from the [official Jekyll docs](https://jekyllrb.com/docs/),
 but a minimal Jekyll website is tiny.
 
-For example, a single `foo.md` file:
+For example, this single `foo.md` file:
 ```
 ---
 ---

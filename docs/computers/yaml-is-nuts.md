@@ -1,7 +1,7 @@
 ---
 title: YAML is nuts
 parent: Computers
-nav_order: 1
+nav_order: 3
 ---
 
 ## Crazy

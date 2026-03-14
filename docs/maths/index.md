@@ -4,7 +4,7 @@ nav_order: 2
 ---
 ### 🚧 Under construction 🚧
 
-*this will be my favourite maths snippets...*
+*... favourite maths snippets ....*
 
 Snell's Law and the Brachistochrone
 
@@ -58,6 +58,6 @@ IEEE 754
 
 soap bubbles
 
-PDEs - wave equation - 
+PDEs - wave equation - laplace
 
 ...

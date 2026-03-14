@@ -1,7 +1,7 @@
 ---
 title: Choosing a Jekyll theme
 parent: Computers
-nav_order: 2
+nav_order: 4
 ---
 
 Here are some rough notes based on answers from ChatGPT, Gemini and Claude.
