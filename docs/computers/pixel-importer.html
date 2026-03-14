@@ -216,7 +216,9 @@
 
     // ── Import method 3: Paste (Ctrl/Cmd+V) ─────────────────────────────────
     document.addEventListener('paste', e => {
-      const item = [...e.clipboardData.items].find(i => i.type.startsWith('image/'));
+      const items = [...e.clipboardData.items];
+      console.log('Clipboard types:', items.map(i => i.type));
+      const item = items.find(i => i.type.startsWith('image/'));
       if (item) loadImage(item.getAsFile());
     });
 
