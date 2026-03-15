@@ -134,6 +134,10 @@
   <!-- Pixel-processing filter buttons -->
   <div class="filters">
     <button id="btn-grey"   disabled onclick="applyFilter('grey')">greyscale</button>
+    <button id="btn-flat"   disabled onclick="applyFilter('flat')">flat</button>
+    <button id="btn-redgreen"   disabled onclick="applyFilter('redgreen')">redgreen</button>
+    <button id="btn-mirror"   disabled onclick="applyFilter('mirror')">mirror</button>
+    <button id="btn-jigsaw"   disabled onclick="applyFilter('jigsaw')">jigsaw</button>
     <button id="btn-invert" disabled onclick="applyFilter('invert')">invert</button>
     <button id="btn-sepia"  disabled onclick="applyFilter('sepia')">sepia</button>
     <button id="btn-edge"   disabled onclick="applyFilter('edge')">edge detect</button>
@@ -152,7 +156,7 @@
     const dropZone  = document.getElementById('drop-zone');
     const infoBar   = document.getElementById('info-bar');
     const pixelInfo = document.getElementById('pixel-info');
-    const buttons   = ['btn-grey','btn-invert','btn-sepia','btn-edge','btn-reset'];
+    const buttons   = ['btn-grey','btn-flat','btn-redgreen','btn-mirror','btn-jigsaw','btn-invert','btn-sepia','btn-edge','btn-reset'];
 
     let originalData = null;   // ImageData snapshot of the freshly-loaded image
 
@@ -262,6 +266,13 @@
           const l = Math.round(0.299 * r + 0.587 * g + 0.114 * b);
           r = g = b = l;
 
+        } else if (type === 'flat') {
+          const l = Math.round(0.33 * r + 0.33 * g + 0.33 * b);
+          r = g = b = l;
+
+        } else if (type === 'redgreen') {
+          r = g = Math.round(0.333 * r + 0.666 * g);
+
         } else if (type === 'invert') {
           r = 255 - r;
           g = 255 - g;
@@ -275,6 +286,51 @@
         }
 
         d[i] = r; d[i+1] = g; d[i+2] = b; d[i+3] = a;
+      }
+
+      if (type === 'mirror') {
+        for (let y = 0; y < h; y++) {
+          for (let x = 0; x < w; x++) {
+            const i = (y * w + x) * 4;  // index in src
+            const r = src[i], g = src[i+1], b = src[i+2], a = src[i+3];
+            const dx = w - x - 1;
+            const di = (y * w + dx) * 4;
+            d[di] = r; d[di+1] = g; d[di+2] = b; d[di+3] = a;
+          }
+        }
+      }
+
+      if (type === 'jigsaw') {
+        const n = 4;
+        const wx = ~~(w / n);
+        const hy = ~~(h / n);
+        const arr = Array.from({ length: n*n }, (_, i) => i);
+
+        // Fisher-Yates shuffle
+        for (let fi = arr.length - 1; fi > 0; fi--) {
+          const fj = Math.floor(Math.random() * (fi + 1));
+          [arr[fi], arr[fj]] = [arr[fj], arr[fi]]; // swap
+        }
+
+        for (let y = 0; y < h; y++) {    // pos in dest
+          for (let x = 0; x < w; x++) {  // pos in dest
+            const tx = ~~(x / wx);
+            const ty = ~~(y / hy);
+            const rx = x - tx * wx;
+            const ry = y - ty * hy;
+            const arr_i = ty * n + tx;
+            const shuffled_i = arr[arr_i];
+            const shuffled_x = shuffled_i % n;    // src tile
+            const shuffled_y = ~~(shuffled_i / n);
+            const sx = (shuffled_x * wx + rx) % w;   // src pixel x
+            const sy = (shuffled_y * hy + ry) % h;
+            const di = (y * w + x) * 4;  // index in dest
+
+            const si = (sy * w + sx) * 4;
+            const r = src[si], g = src[si+1], b = src[si+2], a = src[si+3];
+            d[di] = r; d[di+1] = g; d[di+2] = b; d[di+3] = a;
+          }
+        }
       }
 
       // Edge detection: 3×3 Laplacian convolution kernel
