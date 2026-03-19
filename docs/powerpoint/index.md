@@ -3,6 +3,7 @@ title: PowerPoint
 nav_order: 5
 nav_enabled: false
 permalink: /ppt/
+no_header: true
 ---
 
 ## Slide shows
