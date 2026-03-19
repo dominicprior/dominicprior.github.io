@@ -1,6 +1,8 @@
 ---
 title: PowerPoint
 nav_order: 5
+nav_enabled: false
+permalink: /ppt/
 ---
 
 ## Slide shows
