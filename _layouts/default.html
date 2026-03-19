@@ -17,7 +17,9 @@ layout: table_wrappers
     {% include components/sidebar.html %}
   {% endif %}
   <div class="main" id="top">
-    {% include components/header.html %}
+    {% if page.no_header != true %}
+      {% include components/header.html %}
+    {% endif %}
     <div class="main-content-wrap">
       {% include components/breadcrumbs.html %}
       <div id="main-content" class="main-content">
