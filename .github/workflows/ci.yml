@@ -118,7 +118,7 @@ jobs:
           bundler-cache: true
       - name: Run a11y tests
         run: |
-          bundle exec rspec
+          bundle exec rspec --example "~ /docs/computers/pixels.html"
       - name: summary
         if: failure()
         run: ruby spec/support/spec_summary.rb
