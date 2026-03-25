@@ -29,7 +29,7 @@ no_header: true
 
 ## Help
 
-- YouTube, chatgpt.com
+- YouTube, AI (chat.com, Copilot)
 - Tooltips
 
 ---
@@ -46,7 +46,6 @@ no_header: true
 
 - Adding text
 - Fonts
-- Making text flow
 - Highlighting
 - Hyperlinks
 
@@ -67,7 +66,7 @@ no_header: true
 - Rotating, copying and aligning shapes
 - Solid, semi-transparent and gradient colours
 - Outlines
-- Splines
+- Curves
 - Resizing while keeping the same shape
 
 ## Sharing slides
