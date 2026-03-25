@@ -29,7 +29,7 @@ no_header: true
 
 ## Help
 
-- YouTube, AI (chat.com, Copilot)
+- YouTube, AI (e.g. [chat.com](https://chat.com/), Copilot)
 - Tooltips
 
 ---
