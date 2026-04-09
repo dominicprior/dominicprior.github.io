@@ -16,6 +16,46 @@ $$v_π(s) = E_π[G_t | S_t = s]
 
 $$q_π(s, a) = E_π[G_t | S_t = s, A_t = a]$$
 
+$$
+Q^*(s, a) = \mathbb{E} \left[ R_{t+1} + \gamma \max_{a'} Q^*(s_{t+1}, a') \mid S_t = s, A_t = a \right]
+$$
+
+$$
+Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha [ \underbrace{R_{t+1} + \gamma \max_{a} Q(S_{t+1}, a)}_{\text{TD Target}} - Q(S_t, A_t) ]
+$$
+
+$$
+V_\pi(s) = \sum_{a \in \mathcal{A}} \pi(a \mid s) Q_\pi(s, a)
+$$
+
+$$
+V^*(s) = \max_{a} Q^*(s, a)
+$$
+
+{: .note }
+> **The Intuition:** $V(s)$ is how good it is to *be* in a state. $Q(s, a)$ is how good it is to *take an action* while in that state.
+
+
+```python
+import numpy as np
+
+# A simplified update for a specific state-action pair
+def get_q_value(state, action, V, gamma, transition_probs):
+    q_val = 0
+    # Iterating over possible next states and rewards
+    for next_state, prob, reward in transition_probs[state][action]:
+        q_val += prob * (reward + gamma * V[next_state])
+    return q_val
+```
+
+```python
+# The Q-Learning Update Rule
+# Q(s,a) = Q(s,a) + alpha * (reward + gamma * max(Q(s',a')) - Q(s,a))
+
+td_target = reward + gamma * np.max(Q[next_state])
+td_error = td_target - Q[state][action]
+Q[state][action] += alpha * td_error
+```
 
 $$
 \begin{aligned}
