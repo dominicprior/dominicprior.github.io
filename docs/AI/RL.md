@@ -14,8 +14,7 @@ $$p(s^′, r|s, a) = Pr[S_t+1 = s^′, R_{t+1} = r | S_t = s, A_t = a]$$
 $$v_π(s) = E_π[G_t | S_t = s]
 = ∑_aπ(a|s) ∑_{s^{'}}p(s^′, r|s, a)[r + γv_π(s^′)]$$
 
-
-qπ(s, a) = Eπ[Gt | St = s, At = a]
+$$q_π(s, a) = E_π[G_t | S_t = s, A_t = a]$$
 
 
 $$
