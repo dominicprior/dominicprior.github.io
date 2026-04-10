@@ -58,6 +58,19 @@ Q[state][action] += alpha * td_error
 ```
 
 $$
+\vec{\nabla} \times \vec{F} =
+            \left( \frac{\partial F_z}{\partial y} - \frac{\partial F_y}{\partial z} \right) \mathbf{i}
+          + \left( \frac{\partial F_x}{\partial z} - \frac{\partial F_z}{\partial x} \right) \mathbf{j}
+          + \left( \frac{\partial F_y}{\partial x} - \frac{\partial F_x}{\partial y} \right) \mathbf{k}
+$$
+
+$$
+(\nabla_X Y)^k = X^i (\nabla_i Y)^k =
+           X^i \left( \frac{\partial Y^k}{\partial x^i} + \Gamma_{im}^k Y^m \right)
+$$
+
+
+$$
 \begin{aligned}
 (a + b)^2 &= (a + b)(a + b) \\
 &= a^2 + ab + ba + b^2 \\
