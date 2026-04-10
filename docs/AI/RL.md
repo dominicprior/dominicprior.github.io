@@ -4,15 +4,50 @@ parent: AI
 nav_order: 6
 ---
 
-The quadratic formula is $$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$.
+## Markov decision processes
 
-$$G_t = R_{t+1} + γR_{t+2} + γ^2R_{t+3} + ···$$
+### Markov processes
+
+a.k.a. Markov chain.
+
+$$ \mathcal{P}_{ss'} =  \mathbb{P} [ S_{t+1} = s' \mid S_t = s ] $$
+
+We can sample episodes.
+
+### Markov reward processes
+
+"A Markov process with value judgements".
+
+We add reward,
+$$ \mathcal{R}_{s} = \mathbb{E} [ R_{t+1} \mid S_t = s ] $$, when we leave state, s.
+
+The total *return* is from leaving $$s$$ is: $$\; G_t = R_{t+1} + \gamma R_{t+2} + \gamma^2R_{t+3} + \dots $$
+
+The *state value function*, the long term value of being in $$s$$, is:   $$\;v(s) = \mathbb{E}[ G_t \mid S_t = s ]
+$$
+
+The *Bellman equation for MRPs* is:
+
+$$\;v(s) = \mathbb{E}[ R_{t+1} + \gamma v(S_{t+1}) \mid S_t = s ]
+= \mathcal{R}_{s} + \gamma \sum_{s' \in \mathcal{S}} \mathcal{P}_{ss'} \, v(s') $$
+
+### Markov decision processes
+
+Adding actions
+
+
+
+## Planning by Dynamic programming
+
+## Model-free prediction
+
+## Model-free control
 
 $$p(s^′, r|s, a) = Pr[S_t+1 = s^′, R_{t+1} = r | S_t = s, A_t = a]$$
 
 
 $$v_π(s) = E_π[G_t | S_t = s]
-= ∑_aπ(a|s) ∑_{s^{'}}p(s^′, r|s, a)[r + γv_π(s^′)]$$
+= ∑_aπ(a|s) ∑_{s^{'}}p(s^′, r|s, a)[r + \gamma v_π(s^′)]$$
 
 $$q_π(s, a) = E_π[G_t | S_t = s, A_t = a]$$
 
