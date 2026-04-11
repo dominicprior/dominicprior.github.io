@@ -82,6 +82,34 @@ $$ v_{\pi}(s) = \sum_{a \in \mathcal{A}} \pi(a|s)
 $$ q_{\pi}(s,a) = \mathcal{R}^a_s + \gamma \sum_{s' \in S} \mathcal{P}^a_{ss'}
         \sum_{a' \in \mathcal{A}} \pi(a'|s') q_{\pi}(s',a') $$
 
+The optimal value functions are simply:
+
+$$ v_{*}(s) = \max_{\pi} v_{\pi}(s) $$
+
+$$ q_{*}(s, a) = \max_{\pi} q_{\pi}(s, a) $$
+
+There is a partial ordering for policies:
+
+$$ \pi \geq \pi' \iff v_{\pi}(s) \geq v_{\pi'}(s), \forall s $$
+
+There is a theorem that says there is at least one deterministic policy $$ v_* $$ where:
+
+$$ v_* \geq v_{\pi}, \forall \pi $$
+
+The Bellman Optimality Equations:
+
+$$ v_*(s) = \max_a q_*(s, a)  $$
+
+$$ q_*(s,a) = \mathcal{R}^a_s + \gamma \sum_{s' \in S} \mathcal{P}^a_{ss'} v_*(s') $$
+
+$$ v_*(s) = \max_a
+        \left(
+            \mathcal{R}^a_s + \gamma \sum_{s' \in S} \mathcal{P}^a_{ss'} v_*(s')
+        \right) $$
+
+$$ q_*(s,a) = \mathcal{R}^a_s + \gamma \sum_{s' \in S} \mathcal{P}^a_{ss'}
+        \max_{a'} q_*(s',a') $$
+
 
 
 
