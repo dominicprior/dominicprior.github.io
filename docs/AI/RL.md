@@ -4,7 +4,9 @@ parent: AI
 nav_order: 6
 ---
 
-## Markov decision processes
+*Notes from David Silver's RL lecture series*
+
+## 2. Markov Decision Processes
 
 ### Markov processes
 
@@ -107,11 +109,9 @@ $$ v_*(s) = \max_a
 $$ q_*(s,a) = \mathcal{R}^a_s + \gamma \sum_{s' \in S} \mathcal{P}^a_{ss'}
         \max_{a'} q_*(s',a') $$
 
-## Planning by dynamic programming
+## 3. Planning by Dynamic Programming
 
 *An optimization method for sequential problems, given perfect knowledge of the environment*
-
-*Used for planning in an MDP*
 
 ### Policy evaluation (prediction, using the Bellman expectation equation)
 
@@ -131,7 +131,7 @@ $$ \vec{v} \gets \vec{\mathcal{R}} + \gamma \vec{\mathcal{P} v} $$
 
 We repeat these steps:
 
-$$ v_{\pi} \gets evaluate(\pi) $$
+$$ v_{\pi} \gets evaluate(\pi) \qquad  \text{iteratively}  $$
 
 $$ \pi \gets greedy(v_{\pi})  $$
 
@@ -139,21 +139,67 @@ Here is the greedy step:
 
 $$ \pi'(s) \gets \mathop{\mathrm{argmax}}_{a \in \mathcal{A}} \; q_{\pi}(s,a) $$
 
-### Value iteration
+### Value iteration (solving an MDP)
 
-*Applying the Bellman equation*
+*Applying the Bellman equation without an explicit policy*
 
-## Model-free prediction
+In the policy iteration (above), the $$evaluate(\pi)$$ stage contained
+an inner iteration of its own.  If we apply that inner iteration
+just once, we get *value iteration*.
 
-*Unknown rewards etc.?*
+Value iteration just repeats this step:
 
-## Model-free control
+$$ v \gets \max_a \left(
+        \vec{\mathcal{R}}^a + \gamma \vec{\mathcal{P}^a v}
+    \right) $$
+
+
+## 4. Model-Free Prediction
+
+*Evaluating an MDP without a model*
+
+### Monte-Carlo Learning
+
+$$ v_{\pi} = \mathbb{E}_{\pi} [ G_t \mid S_t = s]  $$
+
+*First-visit* MC policy evaluation only considers the first visit to a state in a given episode.
+
+*Every-visit* MC policy evaluation only considers all visits.
+
+Means can be computed incrementally:
+
+$$ \mu_k = \mu_{k-1} + \frac{1}{k} (x_k - \mu_{k-1}) $$
+
+$$ V(S_t) \; \text{ += } \; \frac{1}{N(S_t)} (G_t - V({S_t}))  $$
+
+For non-stationary problems or evolving policies, this is better:
+
+$$ V(S_t) \; \text{ += } \; \alpha (G_t - V({S_t}))  $$
+
+
+### Temporal-Difference Learning
+
+*Updates a guess towards a guess*
+
+$$ V(S_t) \; \text{ += } \;
+    \alpha (
+        \underbrace{
+             \underbrace{ R_{t+1} + \gamma V(S_{t+1})}
+                       _{\text{TD Target}} - V({S_t}) }
+                   _{\text{TD error}}
+           )
+$$
+
+Or more colloquially:
+
+$$ \text{Nudge } \, V(S_t) \, \text{ towards } \, R_{t+1} + \gamma V(S_{t+1}) $$
+
+
+### TD(λ)
+
+## 5. Model-free control
 
 ## Random bits of LaTeX
-
-$$
-Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha [ \underbrace{R_{t+1} + \gamma \max_{a} Q(S_{t+1}, a)}_{\text{TD Target}} - Q(S_t, A_t) ]
-$$
 
 $$
 \vec{\nabla} \times \vec{F} =
