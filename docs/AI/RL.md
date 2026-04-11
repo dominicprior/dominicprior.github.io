@@ -25,7 +25,7 @@ The *state-value function*, the long-term value of being in $$s$$, is:
 
 $$ v(s) = \mathbb{E}[ G_t \mid S_t = s ] $$
 
-The *Bellman equation for MRPs* is (if $$v$$ is a valid state function):
+The *Bellman expectation equation for MRPs* is (if $$v$$ is a valid state function):
 
 $$
 \begin{aligned}
@@ -35,9 +35,6 @@ v(s) &= \mathbb{E}[ R_{t+1} + \gamma v(S_{t+1}) \mid S_t = s ] \\
 $$
 
 $$ v = \mathcal{R} + \gamma \mathcal{P} v $$
-
-(We will see this variation in the next section:
-    $$ v_{\pi} = \mathcal{R}^{\pi} + \gamma \mathcal{P}^{\pi} v_{\pi} $$ ).
 
 We can evaluate $$ v $$ directly with $$ v = (I - \gamma \mathcal{P})^{-1} \mathcal{R} $$
 
@@ -110,13 +107,45 @@ $$ v_*(s) = \max_a
 $$ q_*(s,a) = \mathcal{R}^a_s + \gamma \sum_{s' \in S} \mathcal{P}^a_{ss'}
         \max_{a'} q_*(s',a') $$
 
+## Planning by dynamic programming
 
+*An optimization method for sequential problems, given perfect knowledge of the environment*
 
+*Used for planning in an MDP*
 
+### Policy evaluation (prediction, using the Bellman expectation equation)
 
-## Planning by Dynamic programming
+*How much return from a policy?  What is the $$v_{\pi}$$?*
+
+We repeat this step on the flattened MDP:
+
+<div style="display:none">
+$$ \newcommand{\vec}[1]{\boldsymbol{#1}} $$
+</div>
+
+$$ \vec{v} \gets \vec{\mathcal{R}} + \gamma \vec{\mathcal{P} v} $$
+
+### Policy iteration (solving an MDP)
+
+*Finding the best policy.  What is the $$v_*$$?*
+
+We repeat these steps:
+
+$$ v_{\pi} \gets evaluate(\pi) $$
+
+$$ \pi \gets greedy(v_{\pi})  $$
+
+Here is the greedy step:
+
+$$ \pi'(s) \gets \mathop{\mathrm{argmax}}_{a \in \mathcal{A}} \; q_{\pi}(s,a) $$
+
+### Value iteration
+
+*Applying the Bellman equation*
 
 ## Model-free prediction
+
+*Unknown rewards etc.?*
 
 ## Model-free control
 
