@@ -16,25 +16,37 @@ We can sample episodes.
 
 ### Markov reward processes
 
-"A Markov process with value judgements".
+*A Markov process with value judgements*
 
-We add reward,
-$$ \mathcal{R}_{s} = \mathbb{E} [ R_{t+1} \mid S_t = s ] $$, when we leave state, s.
+We get reward,
+$$ \mathcal{R}_{s} = \mathbb{E} [ R_{t+1} \mid S_t = s ] $$, when we leave state $$ s $$.
 
-The total *return* is from leaving $$s$$ is: $$\; G_t = R_{t+1} + \gamma R_{t+2} + \gamma^2R_{t+3} + \dots $$
+The total *return* from leaving $$s$$ is: $$\; G_t = R_{t+1} + \gamma R_{t+2} + \gamma^2R_{t+3} + \dots $$
 
-The *state value function*, the long term value of being in $$s$$, is:   $$\;v(s) = \mathbb{E}[ G_t \mid S_t = s ]
+The *state value function*, the long-term value of being in $$s$$, is:   $$\;v(s) = \mathbb{E}[ G_t \mid S_t = s ]
 $$
 
-The *Bellman equation for MRPs* is:
+The *Bellman equation for MRPs* is (if $$v$$ is a valid state function):
 
-$$\;v(s) = \mathbb{E}[ R_{t+1} + \gamma v(S_{t+1}) \mid S_t = s ]
-= \mathcal{R}_{s} + \gamma \sum_{s' \in \mathcal{S}} \mathcal{P}_{ss'} \, v(s') $$
+$$
+\begin{aligned}
+v(s) &= \mathbb{E}[ R_{t+1} + \gamma v(S_{t+1}) \mid S_t = s ] \\
+     &= \mathcal{R}_{s} + \gamma \sum_{s' \in \mathcal{S}} \mathcal{P}_{ss'} \, v(s')
+\end{aligned}
+$$
+
+$$ v = \mathcal{R} + \gamma \mathcal{P} v $$
+
+We can evaluate $$ v $$ directly with $$ v = (I - \gamma \mathcal{P})^{-1} \mathcal{R} $$
+
 
 ### Markov decision processes
 
-Adding actions
+*A Markov reward process with decisions*
 
+$$ \mathcal{P^a_{ss'}} = \mathbb{P}[ S_{t+1} = s' \mid S_t = s, A_t = a ] $$
+
+$$ \mathcal{R}^a_{s} = \mathbb{E} [ R_{t+1} \mid S_t = s, A_t = a ] $$
 
 
 ## Planning by Dynamic programming
@@ -104,11 +116,3 @@ $$
            X^i \left( \frac{\partial Y^k}{\partial x^i} + \Gamma_{im}^k Y^m \right)
 $$
 
-
-$$
-\begin{aligned}
-(a + b)^2 &= (a + b)(a + b) \\
-&= a^2 + ab + ba + b^2 \\
-&= a^2 + 2ab + b^2
-\end{aligned}
-$$
