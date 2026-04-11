@@ -12,8 +12,6 @@ a.k.a. Markov chain.
 
 $$ \mathcal{P}_{ss'} =  \mathbb{P} [ S_{t+1} = s' \mid S_t = s ] $$
 
-We can sample episodes.
-
 ### Markov reward processes
 
 *A Markov process with value judgements*
@@ -23,8 +21,9 @@ $$ \mathcal{R}_{s} = \mathbb{E} [ R_{t+1} \mid S_t = s ] $$, when we leave state
 
 The total *return* from leaving $$s$$ is: $$\; G_t = R_{t+1} + \gamma R_{t+2} + \gamma^2R_{t+3} + \dots $$
 
-The *state value function*, the long-term value of being in $$s$$, is:   $$\;v(s) = \mathbb{E}[ G_t \mid S_t = s ]
-$$
+The *state-value function*, the long-term value of being in $$s$$, is:
+
+$$ v(s) = \mathbb{E}[ G_t \mid S_t = s ] $$
 
 The *Bellman equation for MRPs* is (if $$v$$ is a valid state function):
 
@@ -37,6 +36,9 @@ $$
 
 $$ v = \mathcal{R} + \gamma \mathcal{P} v $$
 
+(We will see this variation in the next section:
+    $$ v_{\pi} = \mathcal{R}^{\pi} + \gamma \mathcal{P}^{\pi} v_{\pi} $$ ).
+
 We can evaluate $$ v $$ directly with $$ v = (I - \gamma \mathcal{P})^{-1} \mathcal{R} $$
 
 
@@ -47,6 +49,41 @@ We can evaluate $$ v $$ directly with $$ v = (I - \gamma \mathcal{P})^{-1} \math
 $$ \mathcal{P^a_{ss'}} = \mathbb{P}[ S_{t+1} = s' \mid S_t = s, A_t = a ] $$
 
 $$ \mathcal{R}^a_{s} = \mathbb{E} [ R_{t+1} \mid S_t = s, A_t = a ] $$
+
+<span>
+A policy $$ \pi $$ is defined as: $$ \; \pi(a|s) = \mathbb{P}[A_t = a \mid S_t = s]  $$
+</span>
+
+A Markov decision process can be flattened into a Markov reward process:
+
+$$ \mathcal{P}^{\pi}_{ss'} = \sum_{a \in \mathcal{A}} \pi (a|s) \mathcal{P}^a_{ss'} $$
+
+$$ \mathcal{R}^{\pi}_s = \sum_{a \in \mathcal{A}} \pi (a|s) \mathcal{R}^a_s $$
+
+The state-value function:
+
+$$ v_{\pi}(s) = \mathbb{E}_{\pi}[G_t \mid S_t = s]  $$
+
+The action-value function:
+
+$$ q_{\pi}(s, a) = \mathbb{E}_{\pi}[G_t \mid S_t = s, A_t = a]  $$
+
+Bellman again:
+
+$$ v_{\pi}(s) = \sum_{a \in \mathcal{A}} \pi(a|s) q_{\pi}(s,a) $$
+
+$$ q_{\pi}(s,a) = \mathcal{R}^a_s + \gamma \sum_{s' \in S} \mathcal{P}^a_{ss'} v_{\pi}(s') $$
+
+$$ v_{\pi}(s) = \sum_{a \in \mathcal{A}} \pi(a|s)
+        \left(
+            \mathcal{R}^a_s + \gamma \sum_{s' \in S} \mathcal{P}^a_{ss'} v_{\pi}(s')
+        \right) $$
+
+$$ q_{\pi}(s,a) = \mathcal{R}^a_s + \gamma \sum_{s' \in S} \mathcal{P}^a_{ss'}
+        \sum_{a' \in \mathcal{A}} \pi(a'|s') q_{\pi}(s',a') $$
+
+
+
 
 
 ## Planning by Dynamic programming
