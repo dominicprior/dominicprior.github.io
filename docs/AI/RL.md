@@ -154,11 +154,11 @@ $$ v \gets \max_a \left(
     \right) $$
 
 
-## 4. Model-Free Prediction
+## 4. Model-Free Prediction (no actions yet)
 
 *Evaluating an MDP without a model*
 
-### Monte-Carlo Learning
+### Monte-Carlo Learning (unbiased)
 
 $$ v_{\pi} = \mathbb{E}_{\pi} [ G_t \mid S_t = s]  $$
 
@@ -177,9 +177,11 @@ For non-stationary problems or evolving policies, this is better:
 $$ V(S_t) \; \text{ += } \; \alpha (G_t - V({S_t}))  $$
 
 
-### Temporal-Difference Learning
+### Temporal-Difference Learning (for model-free prediction) - TD(0)
 
-*Updates a guess towards a guess*
+*Updates a guess towards a guess. Lower variance and faster, but biased.
+TD(0) can converge incorrectly when using function approximation.
+More sensitive to the initial value.*
 
 $$ V(S_t) \; \text{ += } \;
     \alpha (
@@ -192,12 +194,63 @@ $$
 
 Or more colloquially:
 
-$$ \text{Nudge } \, V(S_t) \, \text{ towards } \, R_{t+1} + \gamma V(S_{t+1}) $$
+$$ \text{Nudge } \, V(S_t) \, \text{ towards, the target } \, R_{t+1} + \gamma V(S_{t+1}) $$
 
+A,0,B,0
+<br>
+B,1
+<br>
+B,1
+<br>
+B,0
+
+MC says V(A) = 1, but TD says V(A) = 0.5.
+
+|            | samples | full-width |
+| bootstraps |   TD    |    DP      |
+|            |   MC    | exhaustive |
 
 ### TD(λ)
 
+*A spectrum of sampling methods*
+
+One-step TD learning (n=1), TD(0):
+
+$$ G^{(1)}_t = R_{t+1} + \gamma V(S_{t+1}) $$
+
+Two-step TD learning (n=2):
+
+$$ G^{(2)}_t = R_{t+1} + \gamma R_{t+2} + \gamma^2 V(S_{t+2}) $$
+
+N-step TD learning:
+
+$$ \text{Nudge } \, V(S_t) \, \text{ towards } \, G^{(n)}_t $$
+
+TD(λ) learning:
+
+$$ \text{Nudge } \, V(S_t) \, \text{ towards } \, G^{\lambda}_t, \text{where} $$
+
+$$ G^{\lambda}_t = (1 - \lambda) \sum_{n=1}^{\infty} \lambda^{n-1} G^{(n)}_t $$
+
+The geometric decay of the $$ G^{(n)}_t $$ coefficients allows for these eligibility traces:
+
+$$ E_0(s) = 0 $$
+
+$$ E_t(s) = \gamma \lambda E_{t-1}(s) + \boldsymbol{1} (S_t = s) $$
+
+which gives us these steps:
+
+$$ \delta_t \gets R_{t+1} + \gamma V(S_{t+1}) - V(S_t) $$
+
+$$ V(s) \gets V(s) + \alpha \delta_t E_t(s) $$
+
 ## 5. Model-free control
+
+### On-Policy MC control
+
+### On-Policy TD Learning
+
+### Off-policy learning
 
 ## Random bits of LaTeX
 
