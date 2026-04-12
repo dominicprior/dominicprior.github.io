@@ -206,9 +206,14 @@ B,0
 
 MC says V(A) = 1, but TD says V(A) = 0.5.
 
-|            | samples | full-width |
-| bootstraps |   TD    |    DP      |
-|            |   MC    | exhaustive |
+$$
+\begin{array}{c|cc}
+  & samples & fullwidth \\
+\hline
+bootstraps & TD & DP \\
+  & MC & exhaustive
+\end{array}
+$$
 
 ### TD(λ)
 
@@ -254,30 +259,44 @@ $$ V(s) \gets V(s) + \alpha \delta_t E_t(s) $$
 
 There are two problems:
 
-- It needs the model for: $$ \pi'(s) = \mathrm{argmax} (\mathcal{R^a_s} + \mathcal{P^a_{ss'}} V(s')) $$
+- It needs the model because $$ \pi'(s) = \mathrm{argmax} (\mathcal{R^a_s} + \mathcal{P^a_{ss'}} V(s')) $$
 - It doesn't explore
 
-To solve the first problem, we use $q$ instead of $v$.
+For the first problem, we use $q$ instead of $v$.
 
-To solve the second problem, we use the $\varepsilon$-greedy policy.
+For the second problem, we use the $\varepsilon$-greedy policy:
+
+$$ \pi(a|s) = 
+\begin{cases}
+\epsilon / m + 1 - \epsilon  & \text{if } \; \displaystyle{\mathop{argmax}_{a \in \mathcal{A}}}  (Q(s, a)) = a^* \\
+\epsilon / m                 & \text{otherwise}
+\end{cases}
+$$
+
+To speed things up, we can change from:
+
+> loop(evaluate q with many MC episodes of running π; the ε-greedy step of making a new π)
+
+to:
+
+> loop(evaluate q with just one MC episode of running π; the ε-greedy step of making a new π)
+
+To make it simpler, the π is implicit and is always calculated from q.
 
 ### On-Policy TD Learning
+
+Use TD instead of MC.  Keep nudging q by updating a guess towards a (better) guess, at every step, not just every episode.
+
+It is known as SARSA, and a step is like this:
+
+$$ \text{Nudge } \, Q(S,A) \, \text{ towards } \,
+    R + \gamma Q(S',A') $$
+
+where we are in a state S and considering taking the action A,
+and we want to know the R and then the value of the next action we would take.
+
+Instead of this 1-step SARSA, we could have 2-step etc.
 
 ### Off-policy learning
 
 *Off-Policy: learning about π from experience sampled from some μ*
-
-## Random bits of LaTeX
-
-$$
-\vec{\nabla} \times \vec{F} =
-            \left( \frac{\partial F_z}{\partial y} - \frac{\partial F_y}{\partial z} \right) \mathbf{i}
-          + \left( \frac{\partial F_x}{\partial z} - \frac{\partial F_z}{\partial x} \right) \mathbf{j}
-          + \left( \frac{\partial F_y}{\partial x} - \frac{\partial F_x}{\partial y} \right) \mathbf{k}
-$$
-
-$$
-(\nabla_X Y)^k = X^i (\nabla_i Y)^k =
-           X^i \left( \frac{\partial Y^k}{\partial x^i} + \Gamma_{im}^k Y^m \right)
-$$
-
