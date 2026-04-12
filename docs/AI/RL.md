@@ -246,11 +246,26 @@ $$ V(s) \gets V(s) + \alpha \delta_t E_t(s) $$
 
 ## 5. Model-free control
 
+*Finding the optimal value functions without a model*
+
 ### On-Policy MC control
+
+*On-Policy: learning about π from experience sampled from π*
+
+There are two problems:
+
+- It needs the model for: $$ \pi'(s) = \mathrm{argmax} (\mathcal{R^a_s} + \mathcal{P^a_{ss'}} V(s')) $$
+- It doesn't explore
+
+To solve the first problem, we use $q$ instead of $v$.
+
+To solve the second problem, we use the $\varepsilon$-greedy policy.
 
 ### On-Policy TD Learning
 
 ### Off-policy learning
+
+*Off-Policy: learning about π from experience sampled from some μ*
 
 ## Random bits of LaTeX
 
