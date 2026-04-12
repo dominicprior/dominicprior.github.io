@@ -287,7 +287,7 @@ To make it simpler, the π is implicit and is always calculated from q.
 
 Use TD instead of MC.  Keep nudging q by updating a guess towards a (better) guess, at every step, not just every episode.
 
-It is known as SARSA, and a step is like this:
+It is known as **Sarsa**, and a step is like this:
 
 $$ \text{Nudge } \, Q(S,A) \, \text{ towards } \,
     R + \gamma Q(S',A') $$
@@ -295,8 +295,57 @@ $$ \text{Nudge } \, Q(S,A) \, \text{ towards } \,
 where we are in a state S and considering taking the action A,
 and we want to know the R and then the value of the next action we would take.
 
-Instead of this 1-step SARSA, we could have 2-step etc.
+Instead of this 1-step SARSA, we could have 2-step etc., or a λ version
+(including the eligibility traces).
 
 ### Off-policy learning
 
-*Off-Policy: learning about π from experience sampled from some μ*
+*Off-Policy: learning about π from experience sampled from some behaviour policy μ*
+
+Importance sampling: estimating the expectation of a different distribution, by multiplying by the ratio, and that corrects for the change between your distributions.
+
+$$
+\begin{aligned}
+\mathbb{E}_{X \sim P} [f(X)]
+    &= \sum P(X)f(X)  \\
+    &= \sum Q(X) \frac{P(X)}{Q(X)} f(X)  \\
+    &= \mathbb{E}_{X \sim Q} \left[ \frac{P(X)}{Q(X)} f(X) \right]
+\end{aligned}
+$$
+
+In MC, we could compute a $$ G_t^{\pi / \mu} $$ using lots of ratios, but it ends up with very high variance.
+
+Therefore, we have to use TD for off-policy learning, where we nudge $$V(S_t)$$ towards this target:
+
+$$
+\frac{\pi (A_t|S_t)}{\mu (A_t|S_t)} (R_{t+1} + \gamma V(S_{t+1}))
+$$
+
+Alternatively, we use **Q-learning** (which is specific to TD(0)):
+
+$\mu$ is the behaviour policy for selecting our next action $A_{t+1}$.
+
+But we are also going to consider an alternative successor action $A'$ we might have taken had we been following our target policy $\pi$.
+
+$$ A_{t+1} \sim \mu (\cdot | S_t) $$
+
+$$ A' \sim \pi (\cdot | S_t) $$
+
+We nudge $Q(S_t, A_t)$ towards this target:
+
+$$
+R_{t+1} + \gamma Q(S_{t+1}, A')
+$$
+
+The common case is where $\pi$ is greedy w.r.t. $Q(s,a)$ and $\mu$ is ε-greedy w.r.t. $Q(s,a)$.
+
+In other words, the $A'$ is taken greedily and the $A_{t+1}$ is sampled ε-greedily.
+
+$$
+\begin{align}
+R_{t+1} + \gamma Q(S_{t+1}, A')
+&= R_{t+1} + \gamma Q(S_{t+1}, \mathrm{argmax} \; Q(S_{t+1}, a'))  \\
+&= R_{t+1} + \mathrm{max} \; \gamma Q(S_{t+1}, a')
+\end{align}
+$$
+
