@@ -1,5 +1,5 @@
 ---
-title: Interpreting GPT
+title: Interpreting LLMs
 parent: Large language models
 nav_order: 1
 ---
