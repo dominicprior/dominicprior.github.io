@@ -66,10 +66,6 @@ Making models more interpretable
 
 + The nodes are the variables and the weights are the program.
 
-+ IOI
-
-+ Superposition
-
 + Causal interventions on the internals of a model.
 
 + Activation patching - run the model twice; replace a node's activation in one run with the activation from the other run.
