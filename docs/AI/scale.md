@@ -1,7 +1,7 @@
 ---
 title: Scale
 parent: Large language models
-nav_order: 3
+nav_order: 6
 ---
 
 The GPT-3 paper, [Language Models are Few-Shot Learners](https://arxiv.org/abs/2005.14165), has this:

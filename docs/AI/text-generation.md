@@ -1,7 +1,7 @@
 ---
 title: Text generation
 parent: Large language models
-nav_order: 4
+nav_order: 7
 ---
 
 [How to generate text](https://huggingface.co/blog/how-to-generate) - Greedy search, Beam search, Top-K Sampling, Top-p sampling

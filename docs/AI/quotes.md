@@ -1,7 +1,7 @@
 ---
 title: Quotes
 parent: Large language models
-nav_order: 1
+nav_order: 5
 ---
 
 The most beautiful idea in deep learning is that it actually works - [Ilya Sutskever](https://www.youtube.com/watch?v=13CZPWmke6A)

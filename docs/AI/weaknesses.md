@@ -1,7 +1,7 @@
 ---
 title: Weaknesses
 parent: Large language models
-nav_order: 2
+nav_order: 8
 ---
 
 As [Dan Piponi](https://mathstodon.xyz/@dpiponi/111116694861297725) noted:

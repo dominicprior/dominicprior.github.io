@@ -1,7 +1,7 @@
 ---
 title: Interpreting GPT
 parent: Large language models
-nav_order: 5
+nav_order: 1
 ---
 
 

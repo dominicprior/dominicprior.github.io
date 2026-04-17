@@ -1,7 +1,7 @@
 ---
 title: Misc
 parent: Large language models
-nav_order: 18
+nav_order: 2
 ---
 
 ## Training
