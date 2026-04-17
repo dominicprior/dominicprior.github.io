@@ -61,3 +61,24 @@ Making models more interpretable
 (unlike the [Grandmother cell](https://en.wikipedia.org/wiki/Grandmother_cell)).
 
 + One plausible explanation for polysemanticity is the superposition hypothesis, which suggests that neural network layers have more features than neurons as part of a “sparse coding” strategy to simulate a much larger layer.
+
+## Other
+
++ The nodes are the variables and the weights are the program.
+
++ IOI
+
++ Superposition
+
++ Causal interventions on the internals of a model.
+
++ Activation patching - run the model twice; replace a node's activation in one run with the activation from the other run.
++ It measures counter-factuals.  What would 
+
++ Path patching
+
++ Automatic circuit discovery
+
++ With patching in general, you have to choose your input distribution carefully.
+
++ Attention heads (?) can refer to other info by value or by pointer.  They showed that, in their IOI example, the second John was being referred to by (relative) pointer.

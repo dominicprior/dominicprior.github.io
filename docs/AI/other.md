@@ -25,27 +25,6 @@ A popular paper, I think
 
 [Exploring Neural Networks with Activation Atlases](https://distill.pub/2019/activation-atlas/)
 
-## Interpreting GPT
-
-+ The nodes are the variables and the weights are the program.
-
-+ IOI
-
-+ Superposition
-
-+ Causal interventions on the internals of a model.
-
-+ Activation patching - run the model twice; replace a node's activation in one run with the activation from the other run.
-+ It measures counter-factuals.  What would 
-
-+ Path patching
-
-+ Automatic circuit discovery
-
-+ With patching in general, you have to choose your input distribution carefully.
-
-+ Attention heads (?) can refer to other info by value or by pointer.  They showed that, in their IOI example, the second John was being referred to by (relative) pointer.
-
 ## A mechanism for solving relational tasks in transformer language models
 
 in an in-context learning setting
