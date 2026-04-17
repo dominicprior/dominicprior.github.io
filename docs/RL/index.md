@@ -1,6 +1,5 @@
 ---
 title: Reinforcement Learning
-parent: Large language models
 nav_order: 6
 ---
 
