@@ -1,6 +1,6 @@
 ---
 title: Reinforcement Learning
-parent: AI
+parent: Large language models
 nav_order: 6
 ---
 

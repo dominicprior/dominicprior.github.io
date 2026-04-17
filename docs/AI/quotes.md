@@ -1,6 +1,6 @@
 ---
 title: Quotes
-parent: AI
+parent: Large language models
 nav_order: 1
 ---
 

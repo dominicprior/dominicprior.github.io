@@ -1,5 +1,5 @@
 ---
-title: AI
+title: Large language models
 nav_order: 1
 ---
 ### 🚧 Under construction 🚧

@@ -1,6 +1,6 @@
 ---
 title: Interpreting GPT
-parent: AI
+parent: Large language models
 nav_order: 5
 ---
 

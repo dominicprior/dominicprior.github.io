@@ -1,6 +1,6 @@
 ---
 title: Weaknesses
-parent: AI
+parent: Large language models
 nav_order: 2
 ---
 

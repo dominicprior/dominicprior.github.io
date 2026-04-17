@@ -1,6 +1,6 @@
 ---
 title: Text generation
-parent: AI
+parent: Large language models
 nav_order: 4
 ---
 

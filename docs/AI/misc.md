@@ -1,6 +1,6 @@
 ---
 title: Misc
-parent: AI
+parent: Large language models
 nav_order: 18
 ---
 

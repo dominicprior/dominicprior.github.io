@@ -1,6 +1,6 @@
 ---
 title: Questions
-parent: AI
+parent: Large language models
 nav_order: 1.5
 ---
 ## Do LLMs actually know anything?

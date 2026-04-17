@@ -1,6 +1,6 @@
 ---
 title: Other
-parent: AI
+parent: Large language models
 nav_order: 19
 ---
 
