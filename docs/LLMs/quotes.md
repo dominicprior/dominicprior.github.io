@@ -40,3 +40,5 @@ Unexpected words cause a distinctive pattern in brain activity to
 start within a fifth of a second.
 So, the brain is continuously running an LLM! -
 [Thinking, Fast and Slow](https://en.wikipedia.org/wiki/Thinking,_Fast_and_Slow)
+
+"Coding directly in weights is kind of hard (I tried)".  It's fun making NAND-gates etc., but it doesn't come anywhere near explaining the emergent behaviour of a trained NN.
