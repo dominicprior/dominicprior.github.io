@@ -1,9 +1,8 @@
 ---
+layout: ppt_default
 title: PowerPoint
 nav_order: 5
-nav_enabled: false
 permalink: /ppt/
-no_header: true
 ---
 
 ## Slide shows
@@ -19,7 +18,7 @@ no_header: true
 - The ribbon
 - ESCAPE
 - The mouse and the cursor
-- Left clicking and right clicking
+- Left clicking, right clicking and shift clicking
 - Hovering
 - Dragging vs resizing
 - Finding the mouse

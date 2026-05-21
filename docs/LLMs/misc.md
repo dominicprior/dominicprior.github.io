@@ -8,7 +8,7 @@ nav_order: 2
 
 From the GPT-3 paper, [Language Models are Few-Shot Learners](https://arxiv.org/abs/2005.14165):
 
-![GPT-3 datasets](../training_data.png)
+![GPT-3 datasets](training_data.png)
 
 > **Datasets used to train GPT-3**. “Weight in training mix” refers to the fraction of examples during training
 that are drawn from a given dataset, which we intentionally do not make proportional to the size of the dataset. As a
@@ -17,7 +17,7 @@ are seen less than once.
 
 Here is the training data for [LLaMA: Open and Efficient Foundation Language Models](https://arxiv.org/abs/2302.13971):
 
-![Llama training data](../llama_training.png)
+![Llama training data](llama_training.png)
 
 ## Optimization
 
@@ -97,7 +97,7 @@ explanation [here](https://www.anyscale.com/blog/fine-tuning-llms-lora-or-full-p
 
 [AI Canon](https://a16z.com/ai-canon/)
 
-![YouTube logo](../yt.png)
+![YouTube logo](yt.png)
 [Neural Networks: Zero to Hero](https://www.youtube.com/playlist?list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ) -
 Karpathy's 12 hour video series that builds towards [this implementation](https://github.com/karpathy/ng-video-lecture/blob/master/gpt.py).
 
@@ -137,8 +137,8 @@ Wikipedia:
 
 [Where We See Shapes, AI Sees Textures](https://www.quantamagazine.org/where-we-see-shapes-ai-sees-textures-20190701/)
 
-![YouTube logo](../yt.png)
+![YouTube logo](yt.png)
 [Hinton: Evolution is a tinkerer ... we probably don't need all those kinds of neurons to get an intelligent system](https://youtu.be/Gg-w_n9NJIE?t=4355)
 
-![YouTube logo](../yt.png)
+![YouTube logo](yt.png)
 [Hassabis: AI-enabled scientific revolution](https://youtu.be/Gg-w_n9NJIE?t=4423)

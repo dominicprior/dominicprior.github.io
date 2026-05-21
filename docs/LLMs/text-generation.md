@@ -18,11 +18,11 @@ nav_order: 7
 > of technique to write *entire* books.
 
 "GPT learning has been great at capturing the underlying reality and maybe the weak point is the text generation" - Sutskever -
-![YouTube logo](../yt.png)
+![YouTube logo](yt.png)
 [https://www.youtube.com/watch?v=SjhIlw3Iffs](https://www.youtube.com/watch?v=SjhIlw3Iffs)
 
 [The Curious Case of Neural Text Degeneration](https://arxiv.org/abs/1904.09751) - Beam search text (blue) is less surprising than human text (orange):
-![A graph of the surprisingness of beam search vs human text](../beam_search_is_less_surprising.png)
+![A graph of the surprisingness of beam search vs human text](beam_search_is_less_surprising.png)
 
 > Why is human-written text not the most probable text? ... people optimize against stating the obvious.
 

@@ -1,1 +1,25 @@
-// custom setup code goes here
+$header-height: 7rem;
+
+/*
+Claude showed me where to set this variable:
+
+Yes, variables are trickier to override, and the !default flag is the key to understanding why.
+
+In Sass, !default means "only set this value if the variable isn't already defined." So to override it,
+you need to declare your new value before the theme's _variables.scss is imported — not after.
+
+Just the Docs provides exactly the right hook for this: _sass/custom/setup.scss, which is specifically
+intended for defining new SCSS variables. Because the theme imports setup.scss before it processes its
+own variables, anything you put there will be seen first, and the !default in _variables.scss will leave it alone.
+
+So your override would be simply:
+
+// _sass/custom/setup.scss
+$header-height: 7rem;
+
+Note: drop the !default from your override. You want this to be a firm declaration, not another "set if unset" — though
+in practice it wouldn't matter much since at this point in the load order it should be unset anyway.
+
+Also worth noting the warning in the Just the Docs docs: editing the variables directly in _sass/support/variables.scss
+is not recommended and can cause other dependencies to fail — you should use scheme files or setup.scss instead.
+*/

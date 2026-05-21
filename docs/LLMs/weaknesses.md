@@ -22,7 +22,7 @@ Anyway, here are some weaknesses:
 
 + They only correspond to a small part of the human brain, and so they may not be as smart as we think.
 
-![Picture of Broca's and Wernicke's part of the brain](../broca.png)
+![Picture of Broca's and Wernicke's part of the brain](broca.png)
 
 [Wolfram](https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/) highlights another major gap:
 

@@ -6,7 +6,7 @@ nav_order: 6
 
 The GPT-3 paper, [Language Models are Few-Shot Learners](https://arxiv.org/abs/2005.14165), has this:
 
-![Screenshot of a table of model sizes.](../model_sizes.png)
+![Screenshot of a table of model sizes.](model_sizes.png)
 
 The last row shows that the full GPT-3 has 175 billion parameters, arranged in 96 blocks
 where each block has an attention layer with 4 * 12288 * 12288 parameters
@@ -31,7 +31,7 @@ and then, intriguingly:
 
 For completeness, here are the GPT-2 small, medium, large and XL model sizes.
 
-![Screenshot of a table of GPT-2 model sizes.](../gpt2_sizes.png)
+![Screenshot of a table of GPT-2 model sizes.](gpt2_sizes.png)
 
 [Memory bandwidth constraints imply economies of scale in AI inference](https://www.lesswrong.com/posts/cB2Rtnp7DBTpDy3ii/memory-bandwidth-constraints-imply-economies-of-scale-in-ai) -
 avoiding GPU bandwidth limits by favouring things like matrix multiply where the computation is O(N<sup>3</sup>) and the memory is O(N<sup>2</sup>), possibly with tiling to make sure things fit in the cache.
