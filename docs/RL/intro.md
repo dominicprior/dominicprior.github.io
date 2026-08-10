@@ -1,10 +1,10 @@
 ---
-title: RL Intro
+title: RL video
 parent: Reinforcement Learning
 nav_order: 2
 ---
 
-https://www.youtube.com/watch?v=VnpRp7ZglfA
+Notes from <https://www.youtube.com/watch?v=VnpRp7ZglfA>
 
 Helps robots learn to walk
 
