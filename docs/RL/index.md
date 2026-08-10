@@ -350,3 +350,18 @@ R_{t+1} + \gamma Q(S_{t+1}, A')
 \end{align}
 $$
 
+## 6. Value Function Approximation
+
+In linear MC policy evaluation, we have some supervised training data like this:
+
+$$
+\left\langle S_1, G_1 \right\rangle, \left\langle S_2, G_2 \right\rangle, \, \dots
+$$
+
+where $G_1$ etc. are the returns from the episode.
+
+It is the same for TD learning, except the supervised training data is like this:
+
+$$
+\left\langle S_1, R_2 + \gamma \hat v\left( S_2, \boldsymbol{w} \right) \right\rangle, \, \dots
+$$
