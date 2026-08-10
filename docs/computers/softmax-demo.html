@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Softmax Demo</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --panel: #171a21;
+    --border: #2a2f3a;
+    --text: #e6e8ec;
+    --muted: #8b91a0;
+    --accent1: #6ee7b7;
+    --accent2: #60a5fa;
+    --accent3: #f0abfc;
+    --accent4: #fbbf24;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 32px;
+  }
+  h1 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 4px 0;
+  }
+  p.sub {
+    color: var(--muted);
+    margin: 0 0 24px 0;
+    font-size: 14px;
+  }
+  .wrap {
+    display: flex;
+    gap: 24px;
+    max-width: 900px;
+    flex-wrap: wrap;
+  }
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .left {
+    flex: 0 0 280px;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    height: 320px;
+  }
+  .right {
+    flex: 1 1 400px;
+    min-width: 340px;
+    height: 320px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    gap: 16px;
+  }
+  .slider-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    justify-content: flex-end;
+  }
+  .slider-col input[type=range] {
+    writing-mode: vertical-lr;
+    direction: rtl;
+    width: 8px;
+    height: 220px;
+    accent-color: var(--slider-color, var(--accent2));
+  }
+  .val-label {
+    margin-top: 10px;
+    font-variant-numeric: tabular-nums;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .name-label {
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 13px;
+  }
+  .bar-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    flex: 1;
+  }
+  .bar {
+    width: 44px;
+    border-radius: 6px 6px 0 0;
+    transition: height 0.08s ease-out;
+    min-height: 2px;
+  }
+  .bar-val {
+    margin-top: 10px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    font-size: 14px;
+  }
+  .bar-name {
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .footer-note {
+    max-width: 900px;
+    margin-top: 20px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  code {
+    background: #1f2430;
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+</style>
+</head>
+<body>
+
+<h1>Softmax, live</h1>
+<p class="sub">Drag the input sliders (each in [-5, 5]) and watch the softmax distribution update.</p>
+
+<div class="wrap">
+  <div class="panel left" id="sliders"></div>
+  <div class="panel right" id="bars"></div>
+</div>
+
+<p class="footer-note">
+  softmax(x)<sub>i</sub> = e<sup>x<sub>i</sub></sup> / Σ e<sup>x<sub>j</sub></sup>. Values on the left are raw
+  inputs ("logits"); bars on the right are the resulting probabilities, which always sum to 1.
+</p>
+
+<script>
+  const colors = ['#6ee7b7', '#60a5fa', '#f0abfc', '#fbbf24'];
+  const initial = [1.0, 0.5, -1.0, 2.0];
+  const n = initial.length;
+
+  const slidersEl = document.getElementById('sliders');
+  const barsEl = document.getElementById('bars');
+
+  const sliders = [];
+  const valLabels = [];
+  const bars = [];
+  const barVals = [];
+
+  for (let i = 0; i < n; i++) {
+    // slider column
+    const col = document.createElement('div');
+    col.className = 'slider-col';
+    col.style.setProperty('--slider-color', colors[i]);
+
+    const name = document.createElement('div');
+    name.className = 'name-label';
+    name.textContent = 'x' + (i + 1);
+    name.style.color = colors[i];
+
+    const input = document.createElement('input');
+    input.type = 'range';
+    input.min = '-5';
+    input.max = '5';
+    input.step = '0.1';
+    input.value = initial[i];
+
+    const valLabel = document.createElement('div');
+    valLabel.className = 'val-label';
+
+    col.appendChild(name);
+    col.appendChild(input);
+    col.appendChild(valLabel);
+    slidersEl.appendChild(col);
+
+    sliders.push(input);
+    valLabels.push(valLabel);
+
+    // bar column
+    const bcol = document.createElement('div');
+    bcol.className = 'bar-col';
+
+    const barVal = document.createElement('div');
+    barVal.className = 'bar-val';
+    barVal.style.color = colors[i];
+
+    const bar = document.createElement('div');
+    bar.className = 'bar';
+    bar.style.background = colors[i];
+
+    const barName = document.createElement('div');
+    barName.className = 'bar-name';
+    barName.textContent = 'p' + (i + 1);
+
+    bcol.appendChild(barVal);
+    bcol.appendChild(bar);
+    bcol.appendChild(barName);
+    barsEl.appendChild(bcol);
+
+    bars.push(bar);
+    barVals.push(barVal);
+
+    input.addEventListener('input', update);
+  }
+
+  const MAX_BAR_HEIGHT = 260; // px, matches available height in right panel
+
+  function softmax(xs) {
+    const m = Math.max(...xs);
+    const exps = xs.map(x => Math.exp(x - m));
+    const sum = exps.reduce((a, b) => a + b, 0);
+    return exps.map(e => e / sum);
+  }
+
+  function update() {
+    const xs = sliders.map(s => parseFloat(s.value));
+    xs.forEach((x, i) => { valLabels[i].textContent = x.toFixed(1); });
+
+    const probs = softmax(xs);
+    probs.forEach((p, i) => {
+      bars[i].style.height = Math.max(2, p * MAX_BAR_HEIGHT) + 'px';
+      barVals[i].textContent = (p * 100).toFixed(1) + '%';
+    });
+  }
+
+  update();
+</script>
+
+</body>
+</html>

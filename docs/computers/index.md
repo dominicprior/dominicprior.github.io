@@ -8,4 +8,6 @@ JavaScript vs Python ...
 
 Haskell ...
 
+[Softmax demo](softmax-demo.html)
+
 [pixels](pixels.html)
