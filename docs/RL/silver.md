@@ -6,8 +6,6 @@ nav_order: 1
 
 *Notes from David Silver's RL lecture series*
 
-[RL Demo](https://dominicprior.github.io/rl/)  [(source)](https://github.com/dominicprior/rl)
-
 ## 2. Markov Decision Processes
 
 ### Markov processes
