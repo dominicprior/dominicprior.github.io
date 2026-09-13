@@ -4,8 +4,10 @@ nav_order: 2
 ---
 ### 🚧 Under construction 🚧
 
+<br>
 *... favourite maths snippets ....*
 
+<br>
 Snell's Law and the Brachistochrone
 
 Σ(i³) = (Σi)²
