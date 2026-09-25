@@ -1,13 +1,11 @@
 ---
-layout: ppt_default
 title: AI course
 nav_order: 3.5
-page_class: extra-h3-spacing
 ---
 
 *Slides for [Computers, brains and AI](https://www.u3ac.org.uk/courses/?course=4760)*
 
-### With captions
+<h3 style="margin-bottom: 1em;">With captions</h3>
 
 [1) Intro](slides/tiny-template.pdf)
 
@@ -19,8 +17,7 @@ page_class: extra-h3-spacing
 
 [5) Deep Learning](slides/tiny-template.pdf)
 
-
-### Without captions
+<h3 style="margin-bottom: 1em;">Without captions</h3>
 
 [1) Intro](slides/tiny-template.pdf)
 
