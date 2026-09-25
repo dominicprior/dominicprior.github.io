@@ -1,6 +1,8 @@
 ---
 title: AI course
 nav_order: 3.5
+layout: ppt_default
+nav_enabled: false
 ---
 
 *Slides for [Computers, brains and AI](https://www.u3ac.org.uk/courses/?course=4760)*
