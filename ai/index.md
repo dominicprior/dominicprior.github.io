@@ -1,7 +1,7 @@
 ---
+layout: ppt_default
 title: AI course
 nav_order: 3.5
-layout: ppt_default
 nav_enabled: false
 ---
 
