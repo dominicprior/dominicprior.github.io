@@ -21,12 +21,12 @@ nav_enabled: false
 
 <h3 style="margin-bottom: 1em;">Without captions</h3>
 
-[1) Intro](slides/tiny-template.pdf)
+[1) Intro](slides/tiny-template-without-captions.pdf)
 
-[2) Foundations](slides/tiny-template.pdf)
+[2) Foundations](slides/tiny-template-without-captions.pdf)
 
-[3) Logic](slides/tiny-template.pdf)
+[3) Logic](slides/tiny-template-without-captions.pdf)
 
-[4) Deep Learning](slides/tiny-template.pdf)
+[4) Deep Learning](slides/tiny-template-without-captions.pdf)
 
-[5) Deep Learning](slides/tiny-template.pdf)
+[5) Deep Learning](slides/tiny-template-without-captions.pdf)
