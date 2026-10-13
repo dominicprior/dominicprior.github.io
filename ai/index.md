@@ -11,6 +11,10 @@ nav_enabled: false
 
 [1) Intro](slides/01-intro-with-captions.pdf)
 
+[2) Foundations](slides/02-foundations-with-captions.pdf)
+
 <h3 style="margin-bottom: 1em;">Without captions</h3>
 
 [1) Intro](slides/01-intro-without-captions.pdf)
+
+[2) Foundations](slides/02-foundations-without-captions.pdf)
