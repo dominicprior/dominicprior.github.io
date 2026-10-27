@@ -135,6 +135,9 @@
   <div class="filters">
     <button id="btn-grey"   disabled onclick="applyFilter('grey')">greyscale</button>
     <button id="btn-flat"   disabled onclick="applyFilter('flat')">flat</button>
+    <button id="btn-red"   disabled onclick="applyFilter('red')">red</button>
+    <button id="btn-green"   disabled onclick="applyFilter('green')">green</button>
+    <button id="btn-blue"   disabled onclick="applyFilter('blue')">blue</button>
     <button id="btn-redgreen"   disabled onclick="applyFilter('redgreen')">redgreen</button>
     <button id="btn-mirror"   disabled onclick="applyFilter('mirror')">mirror</button>
     <button id="btn-jigsaw"   disabled onclick="applyFilter('jigsaw')">jigsaw</button>
@@ -156,7 +159,7 @@
     const dropZone  = document.getElementById('drop-zone');
     const infoBar   = document.getElementById('info-bar');
     const pixelInfo = document.getElementById('pixel-info');
-    const buttons   = ['btn-grey','btn-flat','btn-redgreen','btn-mirror','btn-jigsaw','btn-invert','btn-sepia','btn-edge','btn-reset'];
+    const buttons   = ['btn-grey','btn-flat','btn-red','btn-green','btn-blue','btn-redgreen','btn-mirror','btn-jigsaw','btn-invert','btn-sepia','btn-edge','btn-reset'];
 
     let originalData = null;   // ImageData snapshot of the freshly-loaded image
 
@@ -269,6 +272,15 @@
         } else if (type === 'flat') {
           const l = Math.round(0.33 * r + 0.33 * g + 0.33 * b);
           r = g = b = l;
+
+        } else if (type === 'red') {
+          g = b = 0;
+
+        } else if (type === 'green') {
+          r = b = 0;
+
+        } else if (type === 'blue') {
+          r = g = 0;
 
         } else if (type === 'redgreen') {
           r = g = Math.round(0.333 * r + 0.666 * g);
