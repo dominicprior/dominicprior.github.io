@@ -15,6 +15,8 @@ nav_enabled: false
 
 [3) Silicon](slides/03-silicon-with-captions.pdf)
 
+[4) Deep learning](slides/04-deep-learning-with-captions.pdf)
+
 <h3 style="margin-bottom: 1em;">Without captions</h3>
 
 [1) Intro](slides/01-intro-without-captions.pdf)
@@ -22,3 +24,5 @@ nav_enabled: false
 [2) Foundations](slides/02-foundations-without-captions.pdf)
 
 [3) Silicon](slides/03-silicon-without-captions.pdf)
+
+[4) Deep learning](slides/04-deep-learning-without-captions.pdf)
