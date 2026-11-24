@@ -23,6 +23,8 @@ nav_enabled: false
 
 [7) ChatGPT](slides/07-chatgpt-with-captions.pdf)
 
+[8) ChatGPT](slides/08-chatgpt-with-captions.pdf)
+
 <h3 style="margin-bottom: 1em;">Without captions</h3>
 
 [1) Intro](slides/01-intro-without-captions.pdf)
@@ -38,3 +40,5 @@ nav_enabled: false
 [6) Deep learning + Chat](slides/06-deep-learning-and-chat-without-captions.pdf)
 
 [7) ChatGPT](slides/07-chatgpt-without-captions.pdf)
+
+[8) ChatGPT](slides/08-chatgpt-without-captions.pdf)
